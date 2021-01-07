@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "607374199765",
+    "project_id": "mygoaldiary",
+    "storage_bucket": "mygoaldiary.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:607374199765:android:b07dee7e3c9196aee2cb5c",
+        "android_client_info": {
+          "package_name": "com.example.mygoaldiary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "607374199765-2t0nj19albn8go2ne20kph7e9rnbd4t2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUeqPmM16gF1MSkoNNIG6S9XRlLkXBgYg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "607374199765-2t0nj19albn8go2ne20kph7e9rnbd4t2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

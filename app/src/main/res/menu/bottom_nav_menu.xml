@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/homeFromMenu"
+        android:title="Home"
+        android:icon="@drawable/ic_home"/>
+
+    <item
+        android:id="@+id/aaaaFromMenu"
+        android:title="Aaaaa"
+        android:icon="@drawable/ic_outline_ad_units_24"/>
+
+    <item
+        android:id="@+id/socialFromMenu"
+        android:title="Social"
+        android:icon="@drawable/ic_explore"/>
+
+    <item
+        android:id="@+id/suggestionsFromMenu"
+        android:title="Suggestions"
+        android:icon="@drawable/ic_suggestions"/>
+
+</menu>
