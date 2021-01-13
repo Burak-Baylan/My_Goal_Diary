@@ -19,4 +19,27 @@
         <item name="android:textSize">20sp</item>
         <item name="android:padding">2dip</item>
     </style>
+
+    <style name="AlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+    </style>
+    
+    <style name="custom_checkbox_for_new_project" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">@color/darkOrange</item>
+        <item name="colorSecondary">@color/darkBlue</item>
+    </style>
+
+    <style name="RoundedCheckBox" parent="@style/Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/rounded_checkbox_selector</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="BottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+    </style>
+
+    <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@color/transparent</item>
+    </style>
+
 </resources>

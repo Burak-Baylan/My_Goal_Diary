@@ -23,15 +23,15 @@ class MyAdapter(var ctx: Context, var resource: Int, var items: ArrayList<Model>
         val layoutInflater = LayoutInflater.from(ctx)
         val view = layoutInflater.inflate(resource, null)
 
-        val descTv : TextView = view.findViewById(R.id.idTv)
+        val descTv : TextView = view.findViewById(R.id.nameTextViewFromListViewRow)
         val mImage : ImageView = view.findViewById(R.id.mImageViewFromListViewRow)
 
 
 
         val typeFace = resource
 
-        val params = LinearLayout.LayoutParams(55, 55)
-        mImage.layoutParams = params
+        /*val params = LinearLayout.LayoutParams(40, 40)
+        mImage.layoutParams = params*/
 
         descTv.text = items[position].desc
         mImage.setImageDrawable(ctx.resources.getDrawable(items[position].img))

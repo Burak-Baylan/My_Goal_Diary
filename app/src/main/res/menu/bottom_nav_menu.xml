@@ -19,6 +19,6 @@
     <item
         android:id="@+id/suggestionsFromMenu"
         android:title="Suggestions"
-        android:icon="@drawable/ic_suggestions"/>
+        android:icon="@drawable/ic_suggestion"/>
 
 </menu>

@@ -1,38 +1,49 @@
 package com.example.mygoaldiary
 
-import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
-import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import com.example.mygoaldiary.ListView.ListViewCreator
-import com.example.mygoaldiary.ListView.Model
-import com.example.mygoaldiary.R
+import androidx.fragment.app.Fragment
+import com.example.mygoaldiary.Fragments.Fragments.BottomNavFragments.Aaaa
+import com.example.mygoaldiary.Fragments.Fragments.BottomNavFragments.Home
+import com.example.mygoaldiary.Fragments.Fragments.BottomNavFragments.Social
+import com.example.mygoaldiary.Fragments.Fragments.BottomNavFragments.Suggestions
+import com.example.mygoaldiary.SQL.SQLVariablesModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 open class MainActivity : AppCompatActivity() {
 
-    lateinit var mListView : ListView
+    private val homeFragment = Home()
+    private val aaaFragments = Aaaa()
+    private val socialFragment = Social()
+    private val suggestionsFragment = Suggestions()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        supportActionBar?.hide()
 
-        val lVCreator = ListViewCreator(this, this)
+        window.statusBarColor = Color.parseColor("#A5A5A5")
 
-        val items = ArrayList<Model>()
-        items.add(Model("Tasks", R.drawable.ic_tasks))
-        items.add(Model("Reports", R.drawable.ic_notes_for_reports))
-        items.add(Model("Diary", R.drawable.ic_diary))
-        items.add(Model("Add Project", R.drawable.ic_add))
+        val bottomNavBar : BottomNavigationView = findViewById(R.id.bottom_nav)
 
-        val mListView = lVCreator.createListView(R.id.mListView, R.layout.row_list_view, items)
+        makeCurrentFragment(homeFragment)
 
-        mListView.setOnItemClickListener { parent, view, position, id ->
-            val tvHere : TextView = view.findViewById(R.id.idTv) as TextView
-            val intent = Intent(this, Details::class.java)
-            intent.putExtra("key", tvHere.text.toString())
-            startActivity(intent)
+        bottomNavBar.setOnNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.homeFromMenu -> makeCurrentFragment(homeFragment)
+                R.id.aaaaFromMenu -> makeCurrentFragment(aaaFragments)
+                R.id.socialFromMenu -> makeCurrentFragment(socialFragment)
+                R.id.suggestionsFromMenu -> makeCurrentFragment(suggestionsFragment)
+            }
+            true
         }
     }
 
+    private fun makeCurrentFragment(fragment : Fragment) =
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fl_wrapper, fragment)
+            commit()
+        }
 }

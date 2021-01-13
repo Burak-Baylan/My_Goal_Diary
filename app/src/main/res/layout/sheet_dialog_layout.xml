@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:background="@drawable/sheet_dialog_background"
+    android:id="@+id/bottomSheetContainer">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save Project"
+        android:layout_gravity="center_horizontal"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:layout_marginTop="5dp"
+        android:textSize="20dp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/showColorFromSheet"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center_vertical"
+            android:src="#000000" />
+
+        <TextView
+            android:id="@+id/projectNameFromSheet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Project Name"
+            android:gravity="center"
+            android:layout_marginEnd="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="10dp"
+            android:textColor="#000000"
+            style="bold"
+            android:textSize="17dp"/>
+    </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/saveInternetTooCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:theme="@style/custom_checkbox_for_new_project"
+        android:text="Upload this project internet too."
+        android:textStyle="bold"
+        android:fontFamily="@font/allerta"
+        android:paddingLeft="5dp"
+        android:includeFontPadding="true"
+        style="@style/RoundedCheckBox"
+        android:textColor="#266785" />
+
+    <TextView
+        android:id="@+id/learnDetailsTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="5dp"
+        android:text="Learn Details"
+        android:textColor="#A33434"
+        android:textStyle="bold" />
+
+
+    <Button
+        android:id="@+id/projectSaveButton"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="SAVE"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/sooDarkGreen"/>
+
+
+</LinearLayout>

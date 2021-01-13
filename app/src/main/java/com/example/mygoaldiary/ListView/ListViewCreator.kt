@@ -5,10 +5,9 @@ import android.content.Context
 import android.widget.ListView
 import com.example.mygoaldiary.MainActivity
 
-class ListViewCreator (val ctx : Context, val activity : Activity) : MainActivity(){
+class ListViewCreator (private val ctx : Context, private val activity : Activity) : MainActivity(){
 
-    fun createListView (listViewId : Int, listViewRowId : Int, items : ArrayList<Model>) : ListView{
-        val listView : ListView = activity.findViewById(listViewId)
+    fun createListView (listView : ListView, listViewRowId : Int, items : ArrayList<Model>) : ListView{
         listView.adapter = MyAdapter(ctx, listViewRowId, items, activity)
         return listView
     }
