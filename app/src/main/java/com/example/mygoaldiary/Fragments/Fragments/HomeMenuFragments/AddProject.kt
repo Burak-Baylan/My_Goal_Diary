@@ -44,7 +44,7 @@ class AddProject : Fragment() {
     )
 
     private lateinit var projectNameEditText : EditText
-    val textCustomizer = TextCustomizer()
+    private val textCustomizer = TextCustomizer()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -67,9 +67,9 @@ class AddProject : Fragment() {
 
         val showColorImageView = view.findViewById<CircleImageView>(R.id.showColorImageView)
         showColorImageView.setImageResource(R.color.darkRed)
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+        /*if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             showColorImageView.foreground = ContextCompat.getDrawable(context!!, R.drawable.ic_checkmark_white)
-        }
+        }*/
 
         colorCreator(gridLayout, showColorImageView)
 
@@ -136,7 +136,15 @@ class AddProject : Fragment() {
 
         bottomSheetView.findViewById<CircleImageView>(R.id.showColorFromSheet).setImageResource(selectedColor)
         bottomSheetView.findViewById<TextView>(R.id.projectNameFromSheet).text = projectNameEditText.text.toString()
-        bottomSheetView.findViewById<TextView>(R.id.learnDetailsTv).text = textCustomizer.underlinedTextCreator("Learn Details")
+
+        val learnDetailTextView = bottomSheetView.findViewById<TextView>(R.id.learnDetailsTv)
+        learnDetailTextView.text = textCustomizer.underlinedTextCreator("Learn Details")
+
+        learnDetailTextView.setOnClickListener {
+            alertCreator = ShowAlert(context!!).apply {
+                alertCreator.infoAlert("Learn Details", R.string.learnDetailsAboutUploadInternet, true)
+            }
+        }
 
         bottomSheetView.findViewById<TextView>(R.id.saveInternetTooCheckBox).setOnClickListener {
             if (!saveInternetTooIsChecked){

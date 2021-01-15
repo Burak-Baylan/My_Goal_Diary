@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">My Goal Diary</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="learnDetailsAboutUploadInternet">If you enable this option, you will upload this project to both your phone memory and your account (internet) at the same time.</string>
+
 </resources>

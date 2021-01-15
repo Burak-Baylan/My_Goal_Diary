@@ -33,7 +33,7 @@ class Details : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
 
-        window.statusBarColor = Color.parseColor("#A5A5A5")
+        window.statusBarColor = Color.parseColor("#B8B8B8")
         supportActionBar?.hide()
         finder()
         clickListener()

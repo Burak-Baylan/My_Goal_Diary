@@ -54,3 +54,5 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-storage-ktx'
 }
+
+apply plugin: 'com.google.gms.google-services'

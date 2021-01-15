@@ -15,6 +15,7 @@ class ShowAlert (val context : Context){
     private var mCancelable = false
     lateinit var mAlertDialog : AlertDialog
 
+    /**********************************************************************************************/
     fun infoAlert(title : String, message : String, cancelable : Boolean){
         this.mCancelable = cancelable
         val view = alertCreator(R.layout.alert_info_layout)
@@ -25,9 +26,22 @@ class ShowAlert (val context : Context){
         view.findViewById<Button>(R.id.infoOkayButton).setOnClickListener {
             mAlertDialog.dismiss()
         }
-
         mAlertDialog.show()
     }
+
+    fun infoAlert(title : String, message : Int, cancelable : Boolean){
+        this.mCancelable = cancelable
+        val view = alertCreator(R.layout.alert_info_layout)
+
+        view.findViewById<TextView>(R.id.infoTitleText).text = title
+        view.findViewById<TextView>(R.id.infoMessageText).setText(message)
+
+        view.findViewById<Button>(R.id.infoOkayButton).setOnClickListener {
+            mAlertDialog.dismiss()
+        }
+        mAlertDialog.show()
+    }
+    /**********************************************************************************************/
 
     fun successAlert (title : String, message : String, cancelable : Boolean){
         this.mCancelable = cancelable
@@ -38,7 +52,6 @@ class ShowAlert (val context : Context){
         view.findViewById<TextView>(R.id.successOkayButton).setOnClickListener {
             mAlertDialog.dismiss()
         }
-
         mAlertDialog.show()
     }
 
@@ -78,5 +91,4 @@ class ShowAlert (val context : Context){
         this.mAlertDialog = alertDialog
         return view
     }
-
 }

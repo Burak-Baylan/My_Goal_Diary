@@ -1,7 +1,9 @@
 package com.example.mygoaldiary
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.mygoaldiary.Fragments.Fragments.BottomNavFragments.Aaaa
@@ -24,9 +26,10 @@ open class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         supportActionBar?.hide()
 
-        window.statusBarColor = Color.parseColor("#A5A5A5")
+        window.statusBarColor = Color.parseColor("#B8B8B8")
 
         val bottomNavBar : BottomNavigationView = findViewById(R.id.bottom_nav)
+        val loginLayout : LinearLayout = findViewById(R.id.loginLayout)
 
         makeCurrentFragment(homeFragment)
 
@@ -38,6 +41,11 @@ open class MainActivity : AppCompatActivity() {
                 R.id.suggestionsFromMenu -> makeCurrentFragment(suggestionsFragment)
             }
             true
+        }
+
+        loginLayout.setOnClickListener {
+            val intent = Intent(this, LoginScreen::class.java)
+            startActivity(intent)
         }
     }
 
