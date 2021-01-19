@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mygoaldiary.Creators.ShowAlert
-import com.example.mygoaldiary.ListView.HomeRecyclerViewAdapter
-import com.example.mygoaldiary.ListView.Model
+import com.example.mygoaldiary.RecyclerView.HomeRecyclerViewAdapter
+import com.example.mygoaldiary.RecyclerView.Model
 import com.example.mygoaldiary.R
 import com.example.mygoaldiary.SQL.ManageSQL
 import java.util.*
@@ -26,8 +26,8 @@ class Home() : Fragment() {
     private lateinit var showAlert : ShowAlert
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
 
@@ -57,7 +57,7 @@ class Home() : Fragment() {
                 items.add(Model(title, projectColor, yearDate, time))
             }
         }
-        catch (e : Exception){
+        catch (e: Exception){
             e.localizedMessage!!
         }
 
@@ -70,23 +70,23 @@ class Home() : Fragment() {
         val adapter = HomeRecyclerViewAdapter(items)
         recyclerViewHere.adapter = adapter
 
-
-        val touchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP.or(ItemTouchHelper.DOWN) , 0){
-            override fun onMove(recyclerView: RecyclerView, dragged : RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-
-                val positionDragged = dragged.adapterPosition
-                val positionTarget = target.adapterPosition
-
-                Collections.swap(items, positionDragged, positionTarget)
-                adapter.notifyItemMoved(positionDragged, positionTarget)
+        val touchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP.or(ItemTouchHelper.DOWN).or(ItemTouchHelper.START).or(ItemTouchHelper.END), 0) {
+            override fun onMove(recyclerView: RecyclerView, dragged: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+                val fromPosition = dragged.adapterPosition
+                val toPosition = target.adapterPosition
+                Collections.swap(items, fromPosition, toPosition)
+                println("items size: ${items.size} position target: $toPosition positionDragged: $fromPosition")
+                if (toPosition != 0 && toPosition != 1 && toPosition != 2 && toPosition != items.size - 1) {
+                    if (fromPosition != 0 && fromPosition != 1 && fromPosition != 2 && fromPosition != items.size - 1) {
+                        recyclerView.adapter?.notifyItemMoved(fromPosition, toPosition)
+                    }
+                }
                 return false
             }
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int){}
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {}
         })
-
         touchHelper.attachToRecyclerView(recyclerViewHere)
-
-
         return view
     }
 }

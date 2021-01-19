@@ -1,5 +1,6 @@
-package com.example.mygoaldiary.ListView
+package com.example.mygoaldiary.RecyclerView
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mygoaldiary.Details
 import com.example.mygoaldiary.R
+import kotlin.collections.ArrayList
 
 class HomeRecyclerViewAdapter (var items: ArrayList<Model>) : RecyclerView.Adapter<HomeRecyclerViewAdapter.Holder>() {
 
@@ -26,14 +28,17 @@ class HomeRecyclerViewAdapter (var items: ArrayList<Model>) : RecyclerView.Adapt
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         context = parent.context
         val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.row_list_view, parent, false)
+        val view = inflater.inflate(R.layout.projects_row, parent, false)
+
         return Holder(view)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.nameTextView.text = items[position].title
         holder.imageView.setImageResource(items[position].imgColor)
         holder.dateTextView.text = items[position].yearDate
+
         holder.mMainLayout.setOnClickListener {
             val intent = Intent(context, Details::class.java)
             intent.putExtra("key", holder.nameTextView.text.toString())
