@@ -4,4 +4,26 @@
 
     <string name="learnDetailsAboutUploadInternet">If you enable this option, you will upload this project to both your phone memory and your account (internet) at the same time.</string>
 
+    <string name="error">Error</string>
+
+    <string name="errorOccurred">An error occurred while trying to add a project. Please try again.</string>
+
+    <string name="success">Success</string>
+
+    <string name="emailSentCheckEmail">Email sent. Please check your mail box.</string>
+
+    <string name="userCreateFail">User create fail, Please try again.</string>
+
+    <string name="learnDetails">Learn Details</string>
+
+    <string name="newProject">New Project</string>
+
+    <string name="emailPasswordCouldNotEmpty">Email and Password cannot be empty.</string>
+
+    <string name="emailShouldntEmpty">E-Mail shouldn\'t be empty.</string>
+
+    <string name="login">Login</string>
+
+    <string name="emailPasswordUsernameCannotEmpty">Email, Password and Username cannot be empty.</string>
+
 </resources>

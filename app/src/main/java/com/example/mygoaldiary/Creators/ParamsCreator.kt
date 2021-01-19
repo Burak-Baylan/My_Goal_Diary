@@ -1,4 +1,4 @@
-package com.example.mygoaldiary.ComponentCreator
+package com.example.mygoaldiary.Creators
 
 import android.widget.LinearLayout
 

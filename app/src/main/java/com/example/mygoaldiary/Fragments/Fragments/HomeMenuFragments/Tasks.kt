@@ -21,12 +21,11 @@ class Tasks : Fragment() {
 
         val lVCreator = ListViewCreator(context!!, activity!!)
 
-        val items = ArrayList<Model>()
+        /*val items = ArrayList<Model>()
         items.add(Model("Daily", R.drawable.ic_sunny_for_day))
         items.add(Model("Weekly", R.drawable.ic_notes_for_reports))
         items.add(Model("Monthly", R.drawable.ic_notes_for_reports))
-        items.add(Model("Yearly", R.drawable.ic_diary))
-
+        items.add(Model("Yearly", R.drawable.ic_diary))*/
         return view
     }
 }

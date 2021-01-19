@@ -42,11 +42,12 @@
                 android:src="@drawable/ic_user"/>
 
             <TextView
+                android:id="@+id/showUsernameTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:textColor="#E65E27"
-                android:text="Login"/>
+                android:text="Login"
+                android:textColor="#E65E27" />
 
         </LinearLayout>
 

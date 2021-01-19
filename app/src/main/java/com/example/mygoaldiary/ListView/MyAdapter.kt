@@ -11,13 +11,10 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.mygoaldiary.R
+import de.hdodenhof.circleimageview.CircleImageView
 
 
-class MyAdapter(var ctx: Context, var resource: Int, var items: ArrayList<Model>, var act: Activity) : ArrayAdapter<Model>(
-        ctx,
-        resource,
-        items
-) {
+class MyAdapter(var ctx: Context, var resource: Int, var items: ArrayList<Model>, var act: Activity) : ArrayAdapter<Model>(ctx, resource, items) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val layoutInflater = LayoutInflater.from(ctx)
@@ -25,6 +22,7 @@ class MyAdapter(var ctx: Context, var resource: Int, var items: ArrayList<Model>
 
         val descTv : TextView = view.findViewById(R.id.nameTextViewFromListViewRow)
         val mImage : ImageView = view.findViewById(R.id.mImageViewFromListViewRow)
+        val dateTextView : TextView = view.findViewById(R.id.dateTextViewFromListView)
 
 
 
@@ -33,8 +31,9 @@ class MyAdapter(var ctx: Context, var resource: Int, var items: ArrayList<Model>
         /*val params = LinearLayout.LayoutParams(40, 40)
         mImage.layoutParams = params*/
 
-        descTv.text = items[position].desc
-        mImage.setImageDrawable(ctx.resources.getDrawable(items[position].img))
+        descTv.text = items[position].title
+        mImage.setImageResource(items[position].imgColor)
+        dateTextView.text = items[position].yearDate
 
         return view
     }

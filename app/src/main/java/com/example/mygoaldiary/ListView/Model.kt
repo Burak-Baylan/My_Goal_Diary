@@ -1,6 +1,8 @@
 package com.example.mygoaldiary.ListView
 
 data class Model (
-    val desc : String,
-    val img : Int
+    val title : String,
+    val imgColor : Int,
+    val yearDate : String,
+    val time : String
 )

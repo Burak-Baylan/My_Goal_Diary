@@ -2,8 +2,10 @@ package com.example.mygoaldiary.Fragments.Fragments.BottomNavFragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnLongClickListener
 import android.view.ViewGroup
 import android.widget.ListView
 import android.widget.TextView
@@ -17,6 +19,7 @@ import com.baoyz.swipemenulistview.SwipeMenuCreator
 import com.baoyz.swipemenulistview.SwipeMenuItem
 import com.baoyz.swipemenulistview.SwipeMenuListView
 import com.baoyz.widget.PullRefreshLayout
+import com.example.mygoaldiary.Creators.ShowAlert
 import com.example.mygoaldiary.Details
 import com.example.mygoaldiary.ListView.ListViewCreator
 import com.example.mygoaldiary.ListView.Model
@@ -27,12 +30,11 @@ import com.example.mygoaldiary.SQL.SQLVariablesModel
 
 class Home : Fragment() {
 
-    //val sqlManage = ManageSQL(context!!, activity!!)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
 
+    private lateinit var showAlert : ShowAlert
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,62 +46,42 @@ class Home : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
-
         val lVCreator = ListViewCreator(context!!, activity!!)
-
-        val fragmentManager = activity!!.supportFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
 
         val items = ArrayList<Model>()
 
-        items.add(Model("Tasks", R.drawable.ic_tasks))
-        items.add(Model("Reports", R.drawable.ic_notes_for_reports))
-        items.add(Model("Diary", R.drawable.ic_diary))
-        /***/
-        items.add(Model("Red", R.drawable.ic_red_color_round))
-        items.add(Model("Pink", R.drawable.ic_pink_color_round))
-        items.add(Model("Blue", R.drawable.ic_blue_color_round))
-        items.add(Model("Green", R.drawable.ic_green_color_round))
-        items.add(Model("Orange", R.drawable.ic_orange_color_round))
-        /***/
-        items.add(Model("Add Project", R.drawable.ic_add))
+        showAlert = ShowAlert(context!!)
 
-        /******************************************************************************************/
+        items.add(Model("Tasks", R.drawable.ic_tasks, "", ""))
+        items.add(Model("Reports", R.drawable.ic_notes_for_reports, "", ""))
+        items.add(Model("Diary", R.drawable.ic_diary, "", ""))
+
         val mSql = sqlManage.createSqlVariable("HomePage")
-        sqlManage.tableCreator(mSql, "userProject", "name VARCHAR, age INT")
+        sqlManage.tableCreator(mSql, "allUserProjectDeneme2", "title VARCHAR, projectColor INT, yearDate VARCHAR, time VARCHAR")
 
-        mSql?.execSQL("DELETE FROM userProject")
+        try {
+            val cursor = mSql?.rawQuery("SELECT * FROM allUserProjectDeneme2", null)
+            while (cursor!!.moveToNext()) {
 
-        for (i in 0..5){
-            try{
-                mSql?.execSQL("INSERT INTO userProject (name, age) VALUES ('Burak $i', $i)")
-            }catch (e : Exception){
-                println()
-                println("gelemedi\n$e")
+                val title = cursor.getString(cursor.getColumnIndex("title"))
+                val projectColor = cursor.getInt(cursor.getColumnIndex("projectColor"))
+                val yearDate = cursor.getString(cursor.getColumnIndex("yearDate"))
+                val time = cursor.getString(cursor.getColumnIndex("time"))
+                items.add(Model(title, projectColor, yearDate, time))
             }
         }
+        catch (e : Exception){
+            e.localizedMessage!!
+        }
 
-        /*val getArrayList = sqlManage.get(mSql!!, "userProject", "name", "age")
-
-        for(i in getArrayList){
-            println("Gelen veri: $i\nArrayList Size: ${getArrayList.size}")
-            items.add(Model("$i", R.drawable.ic_notes_for_reports))
-        }*/
-
-        /******************************************************************************************/
-        val lvHere: SwipeMenuListView = view.findViewById(R.id.mListView45)
-
-
-        listViewSlider(lvHere)
+        items.add(Model("Add Project", R.drawable.ic_add, "", ""))
+        val lvHere : ListView = view.findViewById(R.id.mListView45)
 
         val mListView = lVCreator.createListView(
             lvHere,
             R.layout.row_list_view,
             items
         )
-
-
-        //listViewSlider(mListView)
 
         mListView.setOnItemClickListener { parent, viewHere, position, id ->
             val tvHere : TextView = viewHere.findViewById(R.id.nameTextViewFromListViewRow) as TextView
@@ -108,67 +90,14 @@ class Home : Fragment() {
             startActivity(intent)
         }
 
+        mListView.setOnItemLongClickListener { parent, view, position, id ->
+            if (position != 0 && position != 1 && position != 2 && position != mListView.size){
+                println(mListView.size)
+                showAlert.errorAlert(R.string.error, R.string.userCreateFail, true)
+            }
+            true
+        }
+
         return view
-    }
-
-    private fun makeCurrentFragment(fragment: Fragment) =
-            activity!!.supportFragmentManager.beginTransaction().apply {
-                add(R.id.fl_wrapper, fragment)
-                commit()
-            }
-
-    private fun listViewSlider(listView: SwipeMenuListView){
-
-        val creator = SwipeMenuCreator { menu -> // create "open" item
-            val showItem = SwipeMenuItem(context!!)
-            showItem.width = 100
-            showItem.setIcon(R.drawable.ic_eye)
-            menu.addMenuItem(showItem)
-
-            val editItem = SwipeMenuItem(context)
-            editItem.width = 100
-            editItem.setIcon(R.drawable.ic_edit)
-            menu.addMenuItem(editItem)
-
-            val deleteItem = SwipeMenuItem(context)
-            deleteItem.width = 100
-            deleteItem.setIcon(R.drawable.ic_delete)
-            menu.addMenuItem(deleteItem)
-        }
-        listView.setMenuCreator(creator)
-
-        listView.setOnMenuItemClickListener { position, menu, index ->
-            when (index) {
-                0 -> { println("showItem Clicked") }
-                1 -> { println("editItem Clicked") }
-                2 -> { println("deleteItem Clicked") }
-            }
-            // false : close the menu; true : not close the menu
-            false
-        }
-
-
-        listView.setOnSwipeListener(object : SwipeMenuListView.OnSwipeListener{
-            override fun onSwipeStart(position: Int) {
-                if (position == 0){
-                    val creator2 = SwipeMenuCreator { menu -> // create "open" item
-                        val deleteItem = SwipeMenuItem(context)
-                        deleteItem.width = 100
-                        deleteItem.setIcon(R.drawable.ic_delete)
-                        menu.addMenuItem(deleteItem)
-                    }
-                    listView.setMenuCreator(creator2)
-                    println("zoportMoport")
-                }
-            }
-
-            override fun onSwipeEnd(position: Int) {
-
-            }
-
-        })
-
-
-
     }
 }

@@ -1,4 +1,4 @@
-package com.example.mygoaldiary.ComponentCreator
+package com.example.mygoaldiary.Creators
 
 import android.app.AlertDialog
 import android.content.Context
@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
+import android.widget.Toast
 import com.example.mygoaldiary.R
 
 class ShowAlert (val context : Context){
@@ -29,11 +29,11 @@ class ShowAlert (val context : Context){
         mAlertDialog.show()
     }
 
-    fun infoAlert(title : String, message : Int, cancelable : Boolean){
+    fun infoAlert(title : Int, message : Int, cancelable : Boolean){
         this.mCancelable = cancelable
         val view = alertCreator(R.layout.alert_info_layout)
 
-        view.findViewById<TextView>(R.id.infoTitleText).text = title
+        view.findViewById<TextView>(R.id.infoTitleText).text = "$title"
         view.findViewById<TextView>(R.id.infoMessageText).setText(message)
 
         view.findViewById<Button>(R.id.infoOkayButton).setOnClickListener {
@@ -43,11 +43,11 @@ class ShowAlert (val context : Context){
     }
     /**********************************************************************************************/
 
-    fun successAlert (title : String, message : String, cancelable : Boolean){
+    fun successAlert (title : Int, message : Int, cancelable : Boolean){
         this.mCancelable = cancelable
         val view = alertCreator(R.layout.alert_success_layout)
-        view.findViewById<TextView>(R.id.successTitleText).text = title
-        view.findViewById<TextView>(R.id.successMessageText).text = message
+        view.findViewById<TextView>(R.id.successTitleText).text = "$title"
+        view.findViewById<TextView>(R.id.successMessageText).text = "$message"
 
         view.findViewById<TextView>(R.id.successOkayButton).setOnClickListener {
             mAlertDialog.dismiss()
@@ -68,16 +68,29 @@ class ShowAlert (val context : Context){
         return view.findViewById(R.id.warningYesButton)
     }
 
-    fun errorAlert (title : String, message : String, cancelable : Boolean){
+    /**********************************************************************************************/
+    fun errorAlert (title : Int, message : Int, cancelable : Boolean){
         this.mCancelable = cancelable
         val view = alertCreator(R.layout.alert_error_layout)
-        view.findViewById<TextView>(R.id.errorTitleText).text = title
+        view.findViewById<TextView>(R.id.errorTitleText).text = "$title"
+        view.findViewById<TextView>(R.id.errorMessageText).text = "$message"
+        view.findViewById<Button>(R.id.errorOkayButton).setOnClickListener {
+            mAlertDialog.dismiss()
+        }
+        mAlertDialog.show()
+    }
+
+    fun errorAlert (title : Int, message : String, cancelable : Boolean){
+        this.mCancelable = cancelable
+        val view = alertCreator(R.layout.alert_error_layout)
+        view.findViewById<TextView>(R.id.errorTitleText).text = "$title"
         view.findViewById<TextView>(R.id.errorMessageText).text = message
         view.findViewById<Button>(R.id.errorOkayButton).setOnClickListener {
             mAlertDialog.dismiss()
         }
         mAlertDialog.show()
     }
+    /**********************************************************************************************/
 
     private fun alertCreator(alertLayout : Int) : View {
         val builder : AlertDialog.Builder = AlertDialog.Builder(context, R.style.AlertDialogTheme)
@@ -90,5 +103,33 @@ class ShowAlert (val context : Context){
         }
         this.mAlertDialog = alertDialog
         return view
+    }
+
+    /**********************************************************************************************/
+
+    fun successToast(toastMessage : String){
+
+    }
+
+    fun errorToast(toastMessage : String){
+
+    }
+
+    fun infoToast(toastMessage : String){
+
+    }
+
+    fun warningToast(toastMessage : String){
+
+    }
+
+    private fun getToast(drawable : Int, message : String, imageViewBackground : Int, textViewBackground : Int){
+        val view = LayoutInflater.from(context).inflate(drawable, null)
+        toast = Toast(context)
+
+    }
+
+    companion object{
+        lateinit var toast : Toast
     }
 }

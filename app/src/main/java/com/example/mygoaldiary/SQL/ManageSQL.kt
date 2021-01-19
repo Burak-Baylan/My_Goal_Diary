@@ -3,6 +3,7 @@ package com.example.mygoaldiary.SQL
 import android.app.Activity
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
+import androidx.recyclerview.widget.ItemTouchHelper
 
 class ManageSQL(private val context: Context?, private val activity: Activity?){
 
@@ -17,7 +18,7 @@ class ManageSQL(private val context: Context?, private val activity: Activity?){
             }
         }
         else{
-            println("openOrCreate error")
+            println("openOrCreate error (context or activity null)")
             null
         }
     }
@@ -31,23 +32,33 @@ class ManageSQL(private val context: Context?, private val activity: Activity?){
         }
     }
 
-    fun adder (sql : SQLiteDatabase?, tableName : String, variablesName : String, variables : String){
-        try{
-            sql?.execSQL("INSERT INTO $tableName ($variablesName) VALUES ($variables)")
+    fun adder (sql : SQLiteDatabase?, tableName : String, variablesName : String, variables : String) : Boolean{
+        return try{
+            if (sql != null) {
+                sql.execSQL("INSERT INTO $tableName ($variablesName) VALUES ($variables)")
+                true
+            }
+            else{
+                false
+            }
         }catch (e : Exception){
-            e.localizedMessage
+            e.localizedMessage!!
+            false
         }
     }
 
-    fun get(sql : SQLiteDatabase, getColumnName : String, vararg columns : String): ArrayList<Any> {
+    /*fun get(sql : SQLiteDatabase, getColumnName : String, vararg columns : String): ArrayList<Any> {
+        val cursor = sql.rawQuery("SELECT * FROM $getColumnName", null)
+
+    }*/
+
+    fun get(sql : SQLiteDatabase, getColumnName : String, vararg columns : String): ArrayList<Any>{
         val cursor = sql.rawQuery("SELECT * FROM $getColumnName", null)
         val variablesSize = columns.size
         val returnArray = ArrayList<Any>(variablesSize - 1)
         val arrayHere = ArrayList<Int>(variablesSize - 1)
         var counter = 0
-        println("while'ın dışında")
         while (cursor.moveToNext()){
-            println("while'ın içinde")
             for (i in columns){
                 println("for'un içinde Bu kadar: ${cursor.count} Burada:$i")
                 println("Cursor index: $i")
@@ -56,7 +67,7 @@ class ManageSQL(private val context: Context?, private val activity: Activity?){
 
             for (i in 0..columns.size){
                 println("for'un içinde Bu kadar: ${cursor.count} Burada:$i")
-                //arrayHere.add(cursor.getColumnIndex("$i"))
+                arrayHere.add(cursor.getColumnIndex("$i"))
             }
 
             returnArray.add(
@@ -78,6 +89,7 @@ class ManageSQL(private val context: Context?, private val activity: Activity?){
         cursor.close()
         return returnArray
     }
+
 }
 
 /*

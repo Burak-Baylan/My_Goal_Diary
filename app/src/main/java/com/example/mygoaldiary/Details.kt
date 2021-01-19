@@ -4,22 +4,19 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.ListView
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.Fragment
 import com.example.mygoaldiary.Fragments.Fragments.HomeMenuFragments.AddProject
 import com.example.mygoaldiary.Fragments.Fragments.HomeMenuFragments.Tasks
+
+import com.example.mygoaldiary.Helpers.WordShortener
 import com.example.mygoaldiary.ListView.ListViewCreator
 import com.example.mygoaldiary.ListView.Model
 import com.example.mygoaldiary.SQL.ManageSQL
-import de.hdodenhof.circleimageview.CircleImageView
-import java.lang.Exception
 
 class Details : AppCompatActivity() {
 
-    val lVCreator = ListViewCreator(this, this)
+    private val lVCreator = ListViewCreator(this, this)
     private lateinit var goBackButton : ImageView
     private lateinit var titleTextView : TextView
     private lateinit var mListView : ListView
@@ -39,19 +36,18 @@ class Details : AppCompatActivity() {
         clickListener()
 
         val key = intent.getStringExtra("key")
-        title = key
         keyController(key!!)
+        WordShortener.shorten(key, "...", 15, 0, 15, titleTextView)
 
-        titleTextView.text = key
-
-        val mSql = sqlManage.createSqlVariable(key)
+        //val mSql = sqlManage.createSqlVariable(key)
 
     }
 
     private fun keyController (key : String){
-        if (key == "Tasks" || key == "Reports"){
-
-            when(key) {
+        if (key == "Diary" || key == "Add Project" || key == "Tasks" || key == "Reports")
+        {
+            when(key)
+            {
                 "Tasks" -> {
                     val tasksFragment = Tasks()
                     makeCurrentFragment(tasksFragment)
@@ -59,26 +55,21 @@ class Details : AppCompatActivity() {
                 "Reports" -> {
 
                 }
-            }
-        }
-        else if (key == "Diary" || key == "Add Project")
-        {
-            when(key)
-            {
+
                 "Diary" -> {
 
                 }
                 "Add Project" -> {
                     val addProjectFragment = AddProject()
                     makeCurrentFragment(addProjectFragment)
-                    title = "New Project"
+                    title = "${R.string.newProject}"
                     shadowLayout.visibility = View.GONE
                     supportActionBarLayout.visibility = View.GONE
                     goBackButton.setImageResource(R.drawable.ic_exit)
                 }
             }
         }
-        else{// Sql çalıştır. Sql'deki kayıtlara göre göster.
+        else{// Sql'deki kayıtlara göre göster.
 
         }
     }
