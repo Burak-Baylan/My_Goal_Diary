@@ -1,34 +1,23 @@
 package com.example.mygoaldiary.Fragments.Fragments.BottomNavFragments
 
-import android.content.Intent
 import android.os.Bundle
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnLongClickListener
 import android.view.ViewGroup
-import android.widget.ListView
-import android.widget.TextView
-import android.widget.Toast
-import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.baoyz.swipemenulistview.SwipeMenu
-import com.baoyz.swipemenulistview.SwipeMenuCreator
-import com.baoyz.swipemenulistview.SwipeMenuItem
-import com.baoyz.swipemenulistview.SwipeMenuListView
-import com.baoyz.widget.PullRefreshLayout
 import com.example.mygoaldiary.Creators.ShowAlert
-import com.example.mygoaldiary.Details
-import com.example.mygoaldiary.ListView.ListViewCreator
+import com.example.mygoaldiary.ListView.HomeRecyclerViewAdapter
 import com.example.mygoaldiary.ListView.Model
 import com.example.mygoaldiary.R
 import com.example.mygoaldiary.SQL.ManageSQL
-import com.example.mygoaldiary.SQL.SQLVariablesModel
+import java.util.*
+import kotlin.collections.ArrayList
 
 
-class Home : Fragment() {
+class Home() : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +34,6 @@ class Home : Fragment() {
         val sqlManage = ManageSQL(context!!, activity!!)
 
         val view = inflater.inflate(R.layout.fragment_home, container, false)
-
-        val lVCreator = ListViewCreator(context!!, activity!!)
 
         val items = ArrayList<Model>()
 
@@ -75,28 +62,30 @@ class Home : Fragment() {
         }
 
         items.add(Model("Add Project", R.drawable.ic_add, "", ""))
-        val lvHere : ListView = view.findViewById(R.id.mListView45)
+        val recyclerViewHere : RecyclerView = view.findViewById(R.id.mRecyclerView)
 
-        val mListView = lVCreator.createListView(
-            lvHere,
-            R.layout.row_list_view,
-            items
-        )
+        val layoutManager = LinearLayoutManager(context!!)
+        recyclerViewHere.layoutManager = layoutManager
 
-        mListView.setOnItemClickListener { parent, viewHere, position, id ->
-            val tvHere : TextView = viewHere.findViewById(R.id.nameTextViewFromListViewRow) as TextView
-            val intent = Intent(context, Details::class.java)
-            intent.putExtra("key", tvHere.text.toString())
-            startActivity(intent)
-        }
+        val adapter = HomeRecyclerViewAdapter(items)
+        recyclerViewHere.adapter = adapter
 
-        mListView.setOnItemLongClickListener { parent, view, position, id ->
-            if (position != 0 && position != 1 && position != 2 && position != mListView.size){
-                println(mListView.size)
-                showAlert.errorAlert(R.string.error, R.string.userCreateFail, true)
+
+        val touchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP.or(ItemTouchHelper.DOWN) , 0){
+            override fun onMove(recyclerView: RecyclerView, dragged : RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+
+                val positionDragged = dragged.adapterPosition
+                val positionTarget = target.adapterPosition
+
+                Collections.swap(items, positionDragged, positionTarget)
+                adapter.notifyItemMoved(positionDragged, positionTarget)
+                return false
             }
-            true
-        }
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int){}
+        })
+
+        touchHelper.attachToRecyclerView(recyclerViewHere)
+
 
         return view
     }

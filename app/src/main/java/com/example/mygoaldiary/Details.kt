@@ -10,13 +10,10 @@ import com.example.mygoaldiary.Fragments.Fragments.HomeMenuFragments.AddProject
 import com.example.mygoaldiary.Fragments.Fragments.HomeMenuFragments.Tasks
 
 import com.example.mygoaldiary.Helpers.WordShortener
-import com.example.mygoaldiary.ListView.ListViewCreator
-import com.example.mygoaldiary.ListView.Model
 import com.example.mygoaldiary.SQL.ManageSQL
 
 class Details : AppCompatActivity() {
 
-    private val lVCreator = ListViewCreator(this, this)
     private lateinit var goBackButton : ImageView
     private lateinit var titleTextView : TextView
     private lateinit var mListView : ListView
