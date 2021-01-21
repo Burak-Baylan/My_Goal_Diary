@@ -55,7 +55,9 @@ class LoginScreen : AppCompatActivity() {
                 firebaseSuperClass.userAuthManage().login(emailEditText.text.toString(), passwordEditText.text.toString(), {loginSuccess()})
             }
             else{
-                showAlert.errorAlert(R.string.error, R.string.emailPasswordCouldNotEmpty, true)
+
+
+                showAlert.errorAlert(getString(R.string.error), getString(R.string.emailPasswordCouldNotEmpty), true)
             }
         }
 
@@ -94,7 +96,7 @@ class LoginScreen : AppCompatActivity() {
                     dialog.dismiss()
                 }
                 else{
-                    showAlert.errorAlert(R.string.error, R.string.emailShouldntEmpty, true)
+                    showAlert.errorAlert(getString(R.string.error), getString(R.string.emailShouldntEmpty), true)
                 }
             }
         }
@@ -108,7 +110,9 @@ class LoginScreen : AppCompatActivity() {
     }
 
     private fun loginSuccess(){
-        finish()
+        /** Arkada açık olan tüm Activityleri kapat ve mainActivity'i tekrar başlat. **/
+        val i = Intent(this, MainActivity::class.java)
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        startActivity(i)
     }
-
 }

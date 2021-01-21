@@ -20,20 +20,7 @@ class ShowAlert (val context : Context){
         this.mCancelable = cancelable
         val view = alertCreator(R.layout.alert_info_layout)
 
-        view.findViewById<TextView>(R.id.infoTitleText).text = title
-        view.findViewById<TextView>(R.id.infoMessageText).text = message
-
-        view.findViewById<Button>(R.id.infoOkayButton).setOnClickListener {
-            mAlertDialog.dismiss()
-        }
-        mAlertDialog.show()
-    }
-
-    fun infoAlert(title : Int, message : Int, cancelable : Boolean){
-        this.mCancelable = cancelable
-        val view = alertCreator(R.layout.alert_info_layout)
-
-        view.findViewById<TextView>(R.id.infoTitleText).text = "$title"
+        view.findViewById<TextView>(R.id.infoTitleText).setText(title)
         view.findViewById<TextView>(R.id.infoMessageText).setText(message)
 
         view.findViewById<Button>(R.id.infoOkayButton).setOnClickListener {
@@ -43,11 +30,11 @@ class ShowAlert (val context : Context){
     }
     /**********************************************************************************************/
 
-    fun successAlert (title : Int, message : Int, cancelable : Boolean){
+    fun successAlert (title : String, message : String, cancelable : Boolean){
         this.mCancelable = cancelable
         val view = alertCreator(R.layout.alert_success_layout)
-        view.findViewById<TextView>(R.id.successTitleText).text = "$title"
-        view.findViewById<TextView>(R.id.successMessageText).text = "$message"
+        view.findViewById<TextView>(R.id.successTitleText).setText(title)
+        view.findViewById<TextView>(R.id.successMessageText).setText(message)
 
         view.findViewById<TextView>(R.id.successOkayButton).setOnClickListener {
             mAlertDialog.dismiss()
@@ -58,8 +45,8 @@ class ShowAlert (val context : Context){
     fun warningAlert (title : String, message : String, cancelable : Boolean) : Button{
         this.mCancelable = cancelable
         val view = alertCreator(R.layout.alert_warning_layout)
-        view.findViewById<TextView>(R.id.warningTitleText).text = title
-        view.findViewById<TextView>(R.id.warningMessageText).text = message
+        view.findViewById<TextView>(R.id.warningTitleText).setText(title)
+        view.findViewById<TextView>(R.id.warningMessageText).setText(message)
 
         view.findViewById<Button>(R.id.warningNoButton).setOnClickListener {
             mAlertDialog.dismiss()
@@ -69,22 +56,11 @@ class ShowAlert (val context : Context){
     }
 
     /**********************************************************************************************/
-    fun errorAlert (title : Int, message : Int, cancelable : Boolean){
+    fun errorAlert (title : String, message : String, cancelable : Boolean){
         this.mCancelable = cancelable
         val view = alertCreator(R.layout.alert_error_layout)
-        view.findViewById<TextView>(R.id.errorTitleText).text = "$title"
-        view.findViewById<TextView>(R.id.errorMessageText).text = "$message"
-        view.findViewById<Button>(R.id.errorOkayButton).setOnClickListener {
-            mAlertDialog.dismiss()
-        }
-        mAlertDialog.show()
-    }
-
-    fun errorAlert (title : Int, message : String, cancelable : Boolean){
-        this.mCancelable = cancelable
-        val view = alertCreator(R.layout.alert_error_layout)
-        view.findViewById<TextView>(R.id.errorTitleText).text = "$title"
-        view.findViewById<TextView>(R.id.errorMessageText).text = message
+        view.findViewById<TextView>(R.id.errorTitleText).setText(title)
+        view.findViewById<TextView>(R.id.errorMessageText).setText(message)
         view.findViewById<Button>(R.id.errorOkayButton).setOnClickListener {
             mAlertDialog.dismiss()
         }

@@ -8,6 +8,7 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import com.example.mygoaldiary.Fragments.Fragments.HomeMenuFragments.AddProject
 import com.example.mygoaldiary.Fragments.Fragments.HomeMenuFragments.Tasks
+import com.example.mygoaldiary.Helpers.MyHelpers
 
 import com.example.mygoaldiary.Helpers.WordShortener
 import com.example.mygoaldiary.SQL.ManageSQL
@@ -34,7 +35,7 @@ class Details : AppCompatActivity() {
 
         val key = intent.getStringExtra("key")
         keyController(key!!)
-        WordShortener.shorten(key, "...", 15, 0, 15, titleTextView)
+        MyHelpers.wordShortener().shorten(key, "...", 15, 0, 15, titleTextView)
 
         //val mSql = sqlManage.createSqlVariable(key)
 

@@ -41,7 +41,7 @@ class FirebaseAuthClass (private val ctx : Context, private val act : Activity):
             }
         }.addOnFailureListener {
             loadingDialog!!.dismissDialog()
-            showAlert.errorAlert(R.string.error, it.localizedMessage!!, true)
+            showAlert.errorAlert(ctx.getString(R.string.error), it.localizedMessage!!, true)
         }
     }
 
@@ -54,7 +54,7 @@ class FirebaseAuthClass (private val ctx : Context, private val act : Activity):
         auth.currentUser?.let {
             it.delete().addOnCompleteListener {
                 showAlert = ShowAlert(context!!)
-                showAlert.errorAlert(R.string.error, R.string.userCreateFail, true)
+                showAlert.errorAlert(ctx.getString(R.string.error), ctx.getString(R.string.userCreateFail), true)
             }
         }
         loadingDialog!!.dismissDialog()
@@ -66,17 +66,17 @@ class FirebaseAuthClass (private val ctx : Context, private val act : Activity):
             successFunc()
         }.addOnFailureListener {
             loadingDialog!!.dismissDialog()
-            showAlert.errorAlert(R.string.error, it.localizedMessage!!, true)
+            showAlert.errorAlert(ctx.getString(R.string.error), it.localizedMessage!!, true)
         }
     }
 
     fun sendForgotPasswordEmail(email : String){
         showAlert = ShowAlert(ctx)
         auth.sendPasswordResetEmail(email).addOnSuccessListener {
-            showAlert.successAlert(R.string.success, R.string.emailSentCheckEmail, true)
+            showAlert.successAlert(ctx.getString(R.string.success), ctx.getString(R.string.emailSentCheckEmail), true)
             loadingDialog!!.dismissDialog()
         }.addOnFailureListener {
-            showAlert.errorAlert(R.string.error, it.localizedMessage!!, true)
+            showAlert.errorAlert(ctx.getString(R.string.error), it.localizedMessage!!, true)
             loadingDialog!!.dismissDialog()
         }
     }

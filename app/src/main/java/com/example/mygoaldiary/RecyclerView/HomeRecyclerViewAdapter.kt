@@ -3,18 +3,24 @@ package com.example.mygoaldiary.RecyclerView
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mygoaldiary.Creators.ParamsCreator
+import com.example.mygoaldiary.Creators.ShowAlert
 import com.example.mygoaldiary.Details
 import com.example.mygoaldiary.R
 import kotlin.collections.ArrayList
 
-class HomeRecyclerViewAdapter (var items: ArrayList<Model>) : RecyclerView.Adapter<HomeRecyclerViewAdapter.Holder>() {
+class HomeRecyclerViewAdapter (var items: ArrayList<Model>) : RecyclerView.Adapter<HomeRecyclerViewAdapter.Holder>(){
 
     class Holder (view : View) : RecyclerView.ViewHolder(view){
         var imageView : ImageView = view.findViewById(R.id.mImageViewFromListViewRow)
@@ -29,14 +35,25 @@ class HomeRecyclerViewAdapter (var items: ArrayList<Model>) : RecyclerView.Adapt
         context = parent.context
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.projects_row, parent, false)
+        showAlert = ShowAlert(context)
+
+        itemsFull = ArrayList(items)
 
         return Holder(view)
     }
 
+
+    lateinit var itemsFull : ArrayList<Model>
+
     @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(holder: Holder, position: Int) {
+        holder.nameTextView.setTextColor(Color.parseColor(items[position].textViewColor))
+        holder.nameTextView.setTypeface(null, items[position].typeFace)
         holder.nameTextView.text = items[position].title
+
         holder.imageView.setImageResource(items[position].imgColor)
+        holder.imageView.layoutParams = ParamsCreator().constraintLayoutLayoutParamsCreator(items[position].imageViewSize, items[position].imageViewSize)
+
         holder.dateTextView.text = items[position].yearDate
 
         holder.mMainLayout.setOnClickListener {
@@ -44,9 +61,23 @@ class HomeRecyclerViewAdapter (var items: ArrayList<Model>) : RecyclerView.Adapt
             intent.putExtra("key", holder.nameTextView.text.toString())
             context.startActivity(intent)
         }
+
+        holder.mMainLayout.setOnLongClickListener {
+            showAlert.errorAlert("Error", "dsadas", true)
+            true
+        }
     }
+
+
+
+    private lateinit var showAlert : ShowAlert
 
     override fun getItemCount(): Int {
         return items.size
+    }
+
+    fun filteredList(filteredList : MutableList<Model>){
+        items = filteredList as ArrayList<Model>
+        notifyDataSetChanged()
     }
 }

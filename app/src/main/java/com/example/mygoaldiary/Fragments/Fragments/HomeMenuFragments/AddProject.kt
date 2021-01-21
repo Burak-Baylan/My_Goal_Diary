@@ -12,15 +12,14 @@ import android.widget.*
 import androidx.core.content.ContextCompat
 import com.example.mygoaldiary.Creators.ParamsCreator
 import com.example.mygoaldiary.Creators.ShowAlert
-import com.example.mygoaldiary.Customizers.TextCustomizer
+import com.example.mygoaldiary.Customizers.TextCustomizer.Companion.underlinedTextCreator
 import com.example.mygoaldiary.FirebaseManage.FirebaseSuperClass
-import com.example.mygoaldiary.FirebaseManage.Firestore
+import com.example.mygoaldiary.LoadingDialog
 import com.example.mygoaldiary.R
 import com.example.mygoaldiary.SQL.ManageSQL
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import de.hdodenhof.circleimageview.CircleImageView
-import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashMap
@@ -51,9 +50,9 @@ class AddProject : Fragment() {
     )
 
     private lateinit var projectNameEditText : EditText
-    private val textCustomizer = TextCustomizer()
     private val auth = FirebaseAuth.getInstance()
     private var currentUser = auth.currentUser
+    private lateinit var loadingDialog : LoadingDialog
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -65,6 +64,8 @@ class AddProject : Fragment() {
         view.findViewById<ImageView>(R.id.goBackButtonAddProject).setOnClickListener {
             activity!!.finish()
         }
+
+        loadingDialog = LoadingDialog(activity!!)
 
         val doneButton : TextView = view.findViewById(R.id.nextButtonFromAddProject)
         doneButton.setOnClickListener {
@@ -156,11 +157,12 @@ class AddProject : Fragment() {
         bottomSheetView.findViewById<TextView>(R.id.projectNameFromSheet).text = projectName
 
         val learnDetailTextView = bottomSheetView.findViewById<TextView>(R.id.learnDetailsTv)
-        learnDetailTextView.text = textCustomizer.underlinedTextCreator("Learn Details")
+
+        learnDetailTextView.text = (getString(R.string.learnDetails)).underlinedTextCreator()
 
         learnDetailTextView.setOnClickListener {
             alertCreator = ShowAlert(context!!).apply {
-                alertCreator.infoAlert(R.string.learnDetails, R.string.learnDetailsAboutUploadInternet, true)
+                alertCreator.infoAlert(getString(R.string.learnDetails), getString(R.string.learnDetailsAboutUploadInternet), true)
             }
         }
 
@@ -181,6 +183,7 @@ class AddProject : Fragment() {
             if (saveInternetTooIsChecked){ // Save internet too.
 
                 if (currentUser != null){// Loged in.
+                    loadingDialog.startLoadingDialog()
                     val hashData : HashMap<String, Any> = hashMapOf(
                             "userId" to currentUser!!.uid,
                             "userName" to currentUser!!.displayName!!,
@@ -202,7 +205,7 @@ class AddProject : Fragment() {
                     activity!!.finish()
                 }
                 else{
-                    alertCreator.errorAlert(R.string.error, R.string.errorOccurred, true)
+                    alertCreator.errorAlert(getString(R.string.error), getString(R.string.errorOccurred), true)
                 }
             }
         }
@@ -220,12 +223,13 @@ class AddProject : Fragment() {
             activity!!.finish()
         }
         else{
-            alertCreator.errorAlert(R.string.error, R.string.errorOccurred, true)
+            alertCreator.errorAlert(getString(R.string.error), getString(R.string.errorOccurred), true)
         }
+        loadingDialog.dismissDialog()
     }
 
     private fun projectSaveFailFun(){
-        alertCreator.errorAlert(R.string.error, R.string.errorOccurred, true)
+        alertCreator.errorAlert(getString(R.string.error), getString(R.string.errorOccurred), true)
+        loadingDialog.dismissDialog()
     }
-
 }

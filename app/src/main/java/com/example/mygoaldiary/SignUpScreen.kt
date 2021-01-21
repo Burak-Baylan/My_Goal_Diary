@@ -53,7 +53,7 @@ class SignUpScreen : AppCompatActivity() {
                 firebaseSuperClass.userAuthManage().addNewUser(usernameEditText.text.toString(), emailEditText.text.toString(), passwordEditText.text.toString())
             }
             else{
-                showAlert.errorAlert(R.string.error, R.string.emailPasswordUsernameCannotEmpty, true)
+                showAlert.errorAlert(getString(R.string.error), getString(R.string.emailPasswordUsernameCannotEmpty), true)
             }
         }
     }
