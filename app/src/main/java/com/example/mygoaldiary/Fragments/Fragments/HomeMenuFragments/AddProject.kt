@@ -1,5 +1,6 @@
 package com.example.mygoaldiary.Fragments.Fragments.HomeMenuFragments
 
+import android.annotation.SuppressLint
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.text.Editable
@@ -10,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.content.ContextCompat
+import com.example.mygoaldiary.Creators.AddProjectSheet
 import com.example.mygoaldiary.Creators.ParamsCreator
 import com.example.mygoaldiary.Creators.ShowAlert
 import com.example.mygoaldiary.Customizers.TextCustomizer.Companion.underlinedTextCreator
@@ -17,6 +19,7 @@ import com.example.mygoaldiary.FirebaseManage.FirebaseSuperClass
 import com.example.mygoaldiary.LoadingDialog
 import com.example.mygoaldiary.R
 import com.example.mygoaldiary.SQL.ManageSQL
+import com.example.mygoaldiary.databinding.FragmentAddProjectBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import de.hdodenhof.circleimageview.CircleImageView
@@ -46,37 +49,41 @@ class AddProject : Fragment() {
         R.color.lightPink,
         R.color.black,
         R.color.darkGray,
-        R.color.gray,
+        R.color.gray
     )
 
-    private lateinit var projectNameEditText : EditText
     private val auth = FirebaseAuth.getInstance()
     private var currentUser = auth.currentUser
     private lateinit var loadingDialog : LoadingDialog
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    private var _binding : FragmentAddProjectBinding? = null
+    private val binding get() = _binding!!
 
-        val view = inflater.inflate(R.layout.fragment_add_project, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = FragmentAddProjectBinding.inflate(inflater, container, false)
+        val view = binding.root
+
+        sqlManage = ManageSQL(context, activity)
+        mSql = sqlManage.createSqlVariable("HomePage")
+
         val gridLayout : androidx.gridlayout.widget.GridLayout = view.findViewById(R.id.mGridLayout)
 
-        projectNameEditText = view.findViewById(R.id.projectNameEditText)
+        alertCreator = ShowAlert(requireContext())
 
-        view.findViewById<ImageView>(R.id.goBackButtonAddProject).setOnClickListener {
-            activity!!.finish()
+        binding.goBackButtonAddProject.setOnClickListener {
+            requireActivity().finish()
         }
 
-        loadingDialog = LoadingDialog(activity!!)
+        loadingDialog = LoadingDialog(requireActivity())
 
-        val doneButton : TextView = view.findViewById(R.id.nextButtonFromAddProject)
-        doneButton.setOnClickListener {
+        binding.nextButtonFromAddProject.setOnClickListener {
             done()
         }
-        projectNameEditTextChangeListener(view.findViewById(R.id.projectNameEditText), doneButton)
+        projectNameEditTextChangeListener(binding.projectNameEditText, binding.nextButtonFromAddProject)
 
-        val showColorImageView = view.findViewById<CircleImageView>(R.id.showColorImageView)
-        showColorImageView.setImageResource(R.color.darkRed)
+        binding.showColorImageView.setImageResource(R.color.darkRed)
 
-        colorCreator(gridLayout, showColorImageView)
+        colorCreator(gridLayout, binding.showColorImageView)
 
         return view
     }
@@ -99,15 +106,17 @@ class AddProject : Fragment() {
     private fun colorCreator(layout : androidx.gridlayout.widget.GridLayout, showColorImageView : CircleImageView){
         var marginTopInt : Int
         var marginBottomInt : Int
+
         for ((counter, i) in (0..19).withIndex()){
             val colorImageView = CircleImageView(context)
             colorImageView.setImageResource(colorArray[i])
             val colorNow = colorArray[i]
+
             imageViewArray.add(colorImageView)
             colorImageView.setOnClickListener {
                 allForegroundCleaner(imageViewArray)
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                    colorImageView.foreground = ContextCompat.getDrawable(context!!, R.drawable.ic_checkmark_white)
+                    colorImageView.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_checkmark_white)
                 }
                 selectedColor = colorNow
                 showColorImageView.setImageResource(colorNow)
@@ -129,107 +138,91 @@ class AddProject : Fragment() {
         for(i in 0 until imageViewArray.size){
             val circleImageViewHere = imageViewArray[i]
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                circleImageViewHere.foreground = ContextCompat.getDrawable(context!!, R.color.transparent)
+                circleImageViewHere.foreground = ContextCompat.getDrawable(requireContext(), R.color.transparent)
             }
         }
     }
 
-    private lateinit var alertCreator : ShowAlert
-    private lateinit var sqlManage : ManageSQL
 
     private var saveInternetTooIsChecked = false
     private var projectName = ""
 
+
+    private lateinit var alertCreator : ShowAlert
+    private lateinit var sqlManage : ManageSQL
+    private var mSql: SQLiteDatabase? = null
+
+    @SuppressLint("InflateParams")
     private fun done(){
+        projectName = binding.projectNameEditText.text.toString()
 
-        alertCreator = ShowAlert(context!!)
+        sqlManage.tableCreator(mSql, "allUserProjectDeneme3", "id INTEGER PRIMARY KEY, title TEXT, projectColor INTEGER, yearDate TEXT, time TEXT, lastInteraction, targetedDeadline")
 
-        projectName = projectNameEditText.text.toString()
+        val addProjectSheet = AddProjectSheet(requireContext(), requireActivity()).createSheet(projectName, selectedColor)
 
-        sqlManage = ManageSQL(context, activity)
-        val mSql = sqlManage.createSqlVariable("HomePage")
-        sqlManage.tableCreator(mSql, "allUserProjectDeneme2", "title TEXT, projectColor INTEGER, yearDate TEXT, time TEXT")
-
-        val bottomSheetDialog = BottomSheetDialog(context!!, R.style.BottomSheetDialogTheme)
-        val bottomSheetView = LayoutInflater.from(context!!).inflate(R.layout.sheet_dialog_layout, null)
-
-        bottomSheetView.findViewById<CircleImageView>(R.id.showColorFromSheet).setImageResource(selectedColor)
-        bottomSheetView.findViewById<TextView>(R.id.projectNameFromSheet).text = projectName
-
-        val learnDetailTextView = bottomSheetView.findViewById<TextView>(R.id.learnDetailsTv)
-
-        learnDetailTextView.text = (getString(R.string.learnDetails)).underlinedTextCreator()
-
-        learnDetailTextView.setOnClickListener {
-            alertCreator = ShowAlert(context!!).apply {
-                alertCreator.infoAlert(getString(R.string.learnDetails), getString(R.string.learnDetailsAboutUploadInternet), true)
-            }
-        }
-
-        bottomSheetView.findViewById<TextView>(R.id.saveInternetTooCheckBox).setOnClickListener {
+        addProjectSheet.findViewById<TextView>(R.id.saveInternetTooCheckBox).setOnClickListener {
             saveInternetTooIsChecked = !saveInternetTooIsChecked
         }
 
-        bottomSheetView.findViewById<Button>(R.id.projectSaveButton).setOnClickListener {
-
-            val uuid = UUID.randomUUID()
-
-            val yearDateSdf = SimpleDateFormat("yyyy-MM-dd")
-            val yearDateStfString = yearDateSdf.format(Date())
-
-            val timeSdf = SimpleDateFormat("HH:mm:ss")
-            val timeDateStfString = timeSdf.format(Date())
-
-            if (saveInternetTooIsChecked){ // Save internet too.
-
-                if (currentUser != null){// Loged in.
-                    loadingDialog.startLoadingDialog()
-                    val hashData : HashMap<String, Any> = hashMapOf(
-                            "userId" to currentUser!!.uid,
-                            "userName" to currentUser!!.displayName!!,
-                            "projectId" to projectName,
-                            "projectColor" to selectedColor,
-                            "yearDate" to yearDateStfString,
-                            "timeDate" to timeDateStfString
-                    )
-                    FirebaseSuperClass(context!!, activity!!).fireStoreManage()
-                            .addData("Users", currentUser!!.uid, "Projects",uuid.toString(), hashData, {projectSaveSuccessFun(mSql, yearDateStfString, timeDateStfString)}, {projectSaveFailFun()})
-                }
-                else{// Not logged in.
-
-                }
-
-            }else{ // Just save SQL.
-                val reason = sqlManage.adder(mSql, "allUserProjectDeneme2", "title, projectColor, yearDate, time", "'$projectName', $selectedColor, '$yearDateStfString', '$timeDateStfString'")
-                if (reason){
-                    activity!!.finish()
-                }
-                else{
-                    alertCreator.errorAlert(getString(R.string.error), getString(R.string.errorOccurred), true)
-                }
-            }
+        addProjectSheet.findViewById<Button>(R.id.projectSaveButton).setOnClickListener {
+            saveProject()
         }
+    }
 
-        bottomSheetDialog.setContentView(bottomSheetView)
-        bottomSheetDialog.show()
+    @SuppressLint("SimpleDateFormat")
+    private fun saveProject() {
+        val uuid = UUID.randomUUID()
+
+        val yearDateSdf = SimpleDateFormat("yyyy-MM-dd")
+        val yearDateStfString = yearDateSdf.format(Date())
+
+        val timeSdf = SimpleDateFormat("HH:mm:ss")
+        val timeDateStfString = timeSdf.format(Date())
+
+        if (saveInternetTooIsChecked){ // Save internet too.
+            if (currentUser != null){// Loged in.
+                loadingDialog.startLoadingDialog()
+                val hashData : HashMap<String, Any> = hashMapOf(
+                        "userId" to currentUser!!.uid,
+                        "userName" to currentUser!!.displayName!!,
+                        "projectId" to projectName,
+                        "projectColor" to selectedColor,
+                        "yearDate" to yearDateStfString,
+                        "timeDate" to timeDateStfString
+                )
+                FirebaseSuperClass(requireContext(), requireActivity()).fireStoreManage()
+                        .addData("Users", currentUser!!.uid, "Projects",uuid.toString(), hashData, {
+                            projectSaveSuccessFun(mSql, yearDateStfString, timeDateStfString)}, {projectSaveFailFun() })
+            }
+            else{// Not logged in.
+
+            }
+        }else{ // Just save SQL.
+            saveProjectFromSql(mSql, yearDateStfString, timeDateStfString)
+        }
     }
 
     private fun projectSaveSuccessFun(mSql: SQLiteDatabase?, yearDateStfString: String, timeDateStfString: String) {
-        val getReason = sqlManage.adder(
-                mSql!!, "allUserProjectDeneme2", "title, projectColor, yearDate, time",
-                "'$projectName', $selectedColor, '$yearDateStfString', '$timeDateStfString'"
-        )
-        if (getReason){
-            activity!!.finish()
-        }
-        else{
-            alertCreator.errorAlert(getString(R.string.error), getString(R.string.errorOccurred), true)
-        }
+        saveProjectFromSql(mSql, yearDateStfString, timeDateStfString)
         loadingDialog.dismissDialog()
     }
 
     private fun projectSaveFailFun(){
         alertCreator.errorAlert(getString(R.string.error), getString(R.string.errorOccurred), true)
         loadingDialog.dismissDialog()
+    }
+
+    private fun saveProjectFromSql(mSql: SQLiteDatabase?, yearDateStfString: String, timeDateStfString: String){
+        // Add Project From User Projects
+        val getReason = sqlManage.adder(
+                mSql!!, "allUserProjectDeneme3", "title, projectColor, yearDate, time",
+                "'$projectName', $selectedColor, '$yearDateStfString', '$timeDateStfString'"
+        )
+        if (getReason){
+            requireActivity().finish()
+        }
+        else{
+            alertCreator.errorAlert(getString(R.string.error), getString(R.string.errorOccurred), true)
+        }
     }
 }

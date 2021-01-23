@@ -4,41 +4,44 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.*
 import androidx.fragment.app.Fragment
 import com.example.mygoaldiary.Fragments.Fragments.HomeMenuFragments.AddProject
 import com.example.mygoaldiary.Fragments.Fragments.HomeMenuFragments.Tasks
+import com.example.mygoaldiary.Fragments.Fragments.HomeMenuFragments.UserProjects
 import com.example.mygoaldiary.Helpers.MyHelpers
-
-import com.example.mygoaldiary.Helpers.WordShortener
 import com.example.mygoaldiary.SQL.ManageSQL
+import com.example.mygoaldiary.databinding.ActivityDetailsBinding
 
 class Details : AppCompatActivity() {
 
-    private lateinit var goBackButton : ImageView
-    private lateinit var titleTextView : TextView
-    private lateinit var mListView : ListView
-    private lateinit var shadowLayout : View
-    private lateinit var supportActionBarLayout : LinearLayout
+    private lateinit var binding : ActivityDetailsBinding
 
     //val mDb = openOrCreateDatabase("Tasks", Context.MODE_PRIVATE, null)
     val sqlManage = ManageSQL(this, this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_details)
+
+        binding = ActivityDetailsBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         window.statusBarColor = Color.parseColor("#B8B8B8")
         supportActionBar?.hide()
-        finder()
         clickListener()
 
-        val key = intent.getStringExtra("key")
-        keyController(key!!)
-        MyHelpers.wordShortener().shorten(key, "...", 15, 0, 15, titleTextView)
+        key = intent.getStringExtra("key")!!
+        projectId = intent.getStringExtra("id")
 
-        //val mSql = sqlManage.createSqlVariable(key)
+        println("Gelen id: $projectId")
 
+        keyController(key)
+        MyHelpers.wordShortener().shorten(key, "...", 15, 0, 15, binding.titleTextView)
+    }
+
+    companion object{
+        var key = ""
+        var projectId : String? = null
     }
 
     private fun keyController (key : String){
@@ -53,22 +56,20 @@ class Details : AppCompatActivity() {
                 "Reports" -> {
 
                 }
-
                 "Diary" -> {
 
                 }
                 "Add Project" -> {
                     val addProjectFragment = AddProject()
                     makeCurrentFragment(addProjectFragment)
-                    title = "${R.string.newProject}"
-                    shadowLayout.visibility = View.GONE
-                    supportActionBarLayout.visibility = View.GONE
-                    goBackButton.setImageResource(R.drawable.ic_exit)
+                    supportActionBarHider()
                 }
             }
         }
-        else{// Sql'deki kayıtlara göre göster.
-
+        else{// Sql'deki kayıtlara göre göster
+            val userProject = UserProjects()
+            makeCurrentFragment(userProject)
+            supportActionBarHider()
         }
     }
 
@@ -78,19 +79,14 @@ class Details : AppCompatActivity() {
             commit()
         }
 
-    private fun finder(){
-        goBackButton = findViewById(R.id.goBackButtonDetails)
-        titleTextView = findViewById(R.id.titleTextView)
-        mListView = findViewById(R.id.mListViewDetails)
-        supportActionBarLayout = findViewById(R.id.supportActionBarLinearLayoutFromDetails)
-        shadowLayout = findViewById(R.id.shadowFromDetails)
-    }
-
     private fun clickListener(){
-        /******************************************************************************************/
-        goBackButton.setOnClickListener {
+        binding.goBackButtonDetails.setOnClickListener {
             finish()
         }
-        /******************************************************************************************/
+    }
+
+    private fun supportActionBarHider(){
+        binding.shadowFromDetails.visibility = View.GONE
+        binding.supportActionBarLinearLayoutFromDetails.visibility = View.GONE
     }
 }

@@ -15,6 +15,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 open class MainActivity : AppCompatActivity() {
 
+    companion object{
+        lateinit var BOTTOM_NAV : BottomNavigationView
+    }
+
     private val homeFragment = Home()
     private val aaaFragments = Aaaa()
     private val socialFragment = Social()
@@ -30,6 +34,8 @@ open class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+        BOTTOM_NAV = binding.bottomNav
 
         supportActionBar?.hide()
 

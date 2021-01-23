@@ -1,6 +1,7 @@
 package com.example.mygoaldiary.RecyclerView
 
-data class Model(
+data class ModelHome(
+        val id : String?,
         val title: String,
         val imgColor: Int,
         val yearDate: String,

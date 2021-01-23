@@ -26,23 +26,38 @@ class ManageSQL(private val context: Context?, private val activity: Activity?){
     fun tableCreator (sql : SQLiteDatabase?, tableName : String, variables : String){
         try {
             sql?.execSQL("CREATE TABLE IF NOT EXISTS $tableName ($variables)")
-            println("table created")
+            println("table created: $tableName")
         }catch (e : java.lang.Exception){
-            println("table could not be created")
+            println("table could not be created : $e")
         }
     }
 
     fun adder (sql : SQLiteDatabase?, tableName : String, variablesName : String, variables : String) : Boolean{
-        return try{
-            if (sql != null) {
+        return if (sql != null){
+            try {
                 sql.execSQL("INSERT INTO $tableName ($variablesName) VALUES ($variables)")
                 true
             }
-            else{
+            catch (e : Exception){
+                println("1. Hata ${e.localizedMessage}")
                 false
             }
-        }catch (e : Exception){
-            e.localizedMessage!!
+        }else{
+            false
+        }
+    }
+
+    fun updater (sql : SQLiteDatabase?, tableName : String, updateColumn : String, whereEqual : String) : Boolean{
+        return if (sql != null) {
+            try {
+                sql.execSQL("UPDATE $tableName SET $updateColumn $whereEqual")
+                true
+            } catch (e: Exception) {
+                println("2. Hata ${e.localizedMessage}")
+                false
+            }
+        }
+        else{
             false
         }
     }
@@ -52,25 +67,40 @@ class ManageSQL(private val context: Context?, private val activity: Activity?){
 
     }*/
 
-    fun get(sql : SQLiteDatabase, getColumnName : String, vararg columns : String): ArrayList<Any>{
+    /*fun get(sql : SQLiteDatabase, getColumnName : String, vararg columnIndex : String): ArrayList<ArrayList<Any>>{
         val cursor = sql.rawQuery("SELECT * FROM $getColumnName", null)
-        val variablesSize = columns.size
-        val returnArray = ArrayList<Any>(variablesSize - 1)
-        val arrayHere = ArrayList<Int>(variablesSize - 1)
-        var counter = 0
+        val variablesSize = columnIndex.size
+        val returnArray = ArrayList<ArrayList<Any>>(variablesSize - 1)
+        val arrayHere = ArrayList<Any>(variablesSize - 1)
         while (cursor.moveToNext()){
-            for (i in columns){
-                println("for'un içinde Bu kadar: ${cursor.count} Burada:$i")
-                println("Cursor index: $i")
-                arrayHere.add(cursor.getColumnIndex(i))
+
+            for (i in columnIndex) {
+                try {
+                    arrayHere.add(cursor.getString(cursor.getColumnIndex(i)))
+                } catch (e: Exception) {
+                    try {
+                        arrayHere.add(cursor.getInt(cursor.getColumnIndex(i)))
+                    } catch (e: Exception) {
+                        try {
+                            arrayHere.add(cursor.getFloat(cursor.getColumnIndex(i)))
+                        } catch (e: Exception) {
+                            throw e
+                        }
+                    }
+                }
             }
 
-            for (i in 0..columns.size){
-                println("for'un içinde Bu kadar: ${cursor.count} Burada:$i")
-                arrayHere.add(cursor.getColumnIndex("$i"))
+            for (i in arrayHere){
+                returnArray.add(arrayHere)
             }
 
-            returnArray.add(
+        }
+        cursor.close()
+        return returnArray
+    }*/
+}
+
+/*
                     try {
                         println("String aldı ${cursor.getString(arrayHere[counter])}")
                         SQLVariablesModel(cursor.getString(arrayHere[counter]))
@@ -83,14 +113,14 @@ class ManageSQL(private val context: Context?, private val activity: Activity?){
                             SQLVariablesModel(cursor.getFloat(arrayHere[counter]))
                         }
                     }
-            )
-            counter++
-        }
-        cursor.close()
-        return returnArray
-    }
+ */
 
-}
+/**
+ *                  val title = cursor.getString(cursor.getColumnIndex("title"))
+                    val projectColor = cursor.getInt(cursor.getColumnIndex("projectColor"))
+                    val yearDate = cursor.getString(cursor.getColumnIndex("yearDate"))
+                    val time = cursor.getString(cursor.getColumnIndex("time"))
+ */
 
 /*
 returnArray.add(

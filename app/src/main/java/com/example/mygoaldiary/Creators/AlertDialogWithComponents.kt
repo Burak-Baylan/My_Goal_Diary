@@ -37,7 +37,7 @@ class AlertDialogWithComponents (val context : Context, val activity : Activity)
         alert.setView(mLinearLayout)
 
         val dialog = alert.create()
-        dialog.window!!.setBackgroundDrawableResource(R.drawable.background_login_button_green);
+        dialog.window!!.setBackgroundDrawableResource(R.drawable.background_login_button_green)
 
         return dialog
     }

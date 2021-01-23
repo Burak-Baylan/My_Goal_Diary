@@ -10,10 +10,10 @@ import android.widget.TextView
 import android.widget.Toast
 import com.example.mygoaldiary.R
 
-class ShowAlert (val context : Context){
+class ShowAlert (private val context : Context){
 
     private var mCancelable = false
-    lateinit var mAlertDialog : AlertDialog
+    private lateinit var mAlertDialog : AlertDialog
 
     /**********************************************************************************************/
     fun infoAlert(title : String, message : String, cancelable : Boolean){

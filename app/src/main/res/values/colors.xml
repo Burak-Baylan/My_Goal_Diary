@@ -44,5 +44,7 @@
     <color name="sooDarkGreen">#39873D</color>
 
     <color name="goodRed">#F05454</color>
+    <color name="goodGreen">#32a852</color>
+    <color name="goodBlue">#4287f5</color>
 
 </resources>

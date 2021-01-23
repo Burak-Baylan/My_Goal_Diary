@@ -4,12 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Filter
-import android.widget.Filterable
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -20,7 +17,7 @@ import com.example.mygoaldiary.Details
 import com.example.mygoaldiary.R
 import kotlin.collections.ArrayList
 
-class HomeRecyclerViewAdapter (var items: ArrayList<Model>) : RecyclerView.Adapter<HomeRecyclerViewAdapter.Holder>(){
+class HomeRecyclerViewAdapter (var items: ArrayList<ModelHome>) : RecyclerView.Adapter<HomeRecyclerViewAdapter.Holder>(){
 
     class Holder (view : View) : RecyclerView.ViewHolder(view){
         var imageView : ImageView = view.findViewById(R.id.mImageViewFromListViewRow)
@@ -43,7 +40,7 @@ class HomeRecyclerViewAdapter (var items: ArrayList<Model>) : RecyclerView.Adapt
     }
 
 
-    lateinit var itemsFull : ArrayList<Model>
+    lateinit var itemsFull : ArrayList<ModelHome>
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(holder: Holder, position: Int) {
@@ -59,12 +56,21 @@ class HomeRecyclerViewAdapter (var items: ArrayList<Model>) : RecyclerView.Adapt
         holder.mMainLayout.setOnClickListener {
             val intent = Intent(context, Details::class.java)
             intent.putExtra("key", holder.nameTextView.text.toString())
+            intent.putExtra("id", items[position].id)
             context.startActivity(intent)
         }
 
-        holder.mMainLayout.setOnLongClickListener {
-            showAlert.errorAlert("Error", "dsadas", true)
-            true
+        if (position != 0 && position != 1 && position != 2 && position != items.size-1) {
+            holder.mMainLayout.setOnLongClickListener {
+                showAlert.errorAlert("Error", "Error", true)
+                true
+            }
+        }
+        else{
+            holder.mMainLayout.setOnLongClickListener {
+                // Do Nothing
+                true
+            }
         }
     }
 
@@ -76,8 +82,8 @@ class HomeRecyclerViewAdapter (var items: ArrayList<Model>) : RecyclerView.Adapt
         return items.size
     }
 
-    fun filteredList(filteredList : MutableList<Model>){
-        items = filteredList as ArrayList<Model>
+    fun filteredList(filteredList : MutableList<ModelHome>){
+        items = filteredList as ArrayList<ModelHome>
         notifyDataSetChanged()
     }
 }
