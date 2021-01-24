@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/warningLayoutContainer"
+    android:layout_margin="20dp"
+    android:padding="20dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/warningLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/backgorund_alert_dialog"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="20dp">
+
+        <TextView
+            android:id="@+id/deleteWarningTitleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="15dp"
+            android:fontFamily="@font/roboto_slab"
+            android:gravity="center"
+            android:maxLines="1"
+            android:padding="10dp"
+            android:text='You Deleting a Project'
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="23sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/deleteWarningMessageText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="15dp"
+            android:gravity="center"
+            android:text='If you delete this "Ödevlerim" project, you cannot get it back. Are you sure you want to delete?'
+            android:textColor="#434343"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/deleteWarningTitleText"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@id/deleteWarningTitleText"
+            app:layout_constraintTop_toBottomOf="@id/deleteWarningTitleText" />
+
+        <CheckBox
+            android:id="@+id/deleteInternetTooCheckBox"
+            style="@style/RoundedCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/allerta"
+            android:includeFontPadding="true"
+            android:paddingLeft="5dp"
+            android:text="Delete this project internet too."
+            android:textColor="#266785"
+            android:textStyle="bold"
+            android:theme="@style/custom_checkbox_for_new_project"
+            app:layout_constraintEnd_toEndOf="@+id/deleteWarningMessageText"
+            app:layout_constraintStart_toStartOf="@+id/deleteWarningMessageText"
+            app:layout_constraintTop_toBottomOf="@+id/deleteWarningMessageText" />
+
+        <Button
+            android:id="@+id/deleteWarningYesButton"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/darkGreen"
+            android:text="YES"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/deleteWarningMessageText"
+            app:layout_constraintStart_toEndOf="@+id/textView3"
+            app:layout_constraintTop_toBottomOf="@+id/deleteInternetTooCheckBox" />
+
+        <Button
+            android:id="@+id/deleteWarningNoButton"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/darkRed"
+            android:text="NO"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textView3"
+            app:layout_constraintStart_toStartOf="@+id/deleteWarningMessageText"
+            app:layout_constraintTop_toBottomOf="@+id/deleteInternetTooCheckBox" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            app:layout_constraintBottom_toBottomOf="@+id/deleteWarningNoButton"
+            app:layout_constraintEnd_toEndOf="@+id/deleteWarningMessageText"
+            app:layout_constraintStart_toStartOf="@+id/deleteWarningMessageText"
+            app:layout_constraintTop_toTopOf="@+id/deleteWarningNoButton" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/ic_warning"
+        app:layout_constraintBottom_toTopOf="@+id/warningLayout"
+        app:layout_constraintEnd_toEndOf="@+id/warningLayout"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="@+id/warningLayout"
+        app:layout_constraintTop_toTopOf="@+id/warningLayout" />
+</androidx.constraintlayout.widget.ConstraintLayout>

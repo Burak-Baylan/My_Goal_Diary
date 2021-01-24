@@ -14,13 +14,11 @@ import androidx.core.content.ContextCompat
 import com.example.mygoaldiary.Creators.AddProjectSheet
 import com.example.mygoaldiary.Creators.ParamsCreator
 import com.example.mygoaldiary.Creators.ShowAlert
-import com.example.mygoaldiary.Customizers.TextCustomizer.Companion.underlinedTextCreator
 import com.example.mygoaldiary.FirebaseManage.FirebaseSuperClass
 import com.example.mygoaldiary.LoadingDialog
 import com.example.mygoaldiary.R
 import com.example.mygoaldiary.SQL.ManageSQL
 import com.example.mygoaldiary.databinding.FragmentAddProjectBinding
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import de.hdodenhof.circleimageview.CircleImageView
 import java.text.SimpleDateFormat
@@ -143,10 +141,8 @@ class AddProject : Fragment() {
         }
     }
 
-
     private var saveInternetTooIsChecked = false
     private var projectName = ""
-
 
     private lateinit var alertCreator : ShowAlert
     private lateinit var sqlManage : ManageSQL

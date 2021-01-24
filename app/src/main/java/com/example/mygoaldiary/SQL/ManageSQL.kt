@@ -3,7 +3,6 @@ package com.example.mygoaldiary.SQL
 import android.app.Activity
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
-import androidx.recyclerview.widget.ItemTouchHelper
 
 class ManageSQL(private val context: Context?, private val activity: Activity?){
 
@@ -47,10 +46,10 @@ class ManageSQL(private val context: Context?, private val activity: Activity?){
         }
     }
 
-    fun updater (sql : SQLiteDatabase?, tableName : String, updateColumn : String, whereEqual : String) : Boolean{
-        return if (sql != null) {
+    fun manager (sqlDatabase : SQLiteDatabase?, sql : String) : Boolean{
+        return if (sqlDatabase != null) {
             try {
-                sql.execSQL("UPDATE $tableName SET $updateColumn $whereEqual")
+                sqlDatabase.execSQL(sql)
                 true
             } catch (e: Exception) {
                 println("2. Hata ${e.localizedMessage}")

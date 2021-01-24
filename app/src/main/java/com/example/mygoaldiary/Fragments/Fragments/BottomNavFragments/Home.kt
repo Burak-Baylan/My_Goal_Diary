@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mygoaldiary.Creators.ShowAlert
 import com.example.mygoaldiary.Helpers.MyHelpers
+import com.example.mygoaldiary.Helpers.WordShortener
 import com.example.mygoaldiary.LoginScreen
 import com.example.mygoaldiary.R
 import com.example.mygoaldiary.RecyclerView.HomeRecyclerViewAdapter
@@ -144,7 +145,6 @@ class Home : Fragment() {
     override fun onStart() {
         super.onStart()
         refresh()
-        println("On start çalıştı")
     }
 
     override fun onResume() {
@@ -155,55 +155,15 @@ class Home : Fragment() {
             username = currentUser!!.displayName!!
         }
         if (username != "Login") {
-            MyHelpers.wordShortener().shorten(
-                username,
-                "...",
-                5,
-                0,
-                5,
-                binding.showUsernameTextView
-            )
+            WordShortener.shorten(username, "...", 5, 0, 5, binding.showUsernameTextView)
         }
     }
 
     @SuppressLint("Recycle")
     private fun getProjects(items: ArrayList<ModelHome>){
-        items.add(
-            ModelHome(
-                null,
-                "Tasks",
-                R.drawable.ic_tasks,
-                "",
-                "",
-                "#000000",
-                Typeface.NORMAL,
-                50
-            )
-        )
-        items.add(
-            ModelHome(
-                null,
-                "Reports",
-                R.drawable.ic_notes_for_reports,
-                "",
-                "",
-                "#000000",
-                Typeface.NORMAL,
-                50
-            )
-        )
-        items.add(
-            ModelHome(
-                null,
-                "Diary",
-                R.drawable.ic_diary,
-                "",
-                "",
-                "#000000",
-                Typeface.NORMAL,
-                50
-            )
-        )
+        items.add(ModelHome(null, "Tasks", R.drawable.ic_tasks, "", "", "#000000", Typeface.NORMAL, 50))
+        items.add(ModelHome(null, "Reports", R.drawable.ic_notes_for_reports, "", "", "#000000", Typeface.NORMAL, 50))
+        items.add(ModelHome(null, "Diary", R.drawable.ic_diary, "", "", "#000000", Typeface.NORMAL, 50))
 
         val mSql = sqlManage.createSqlVariable("HomePage").apply {
             val sqlString = "id INTEGER PRIMARY KEY, title VARCHAR, projectColor INT, yearDate VARCHAR, time VARCHAR, lastInteraction, targetedDeadline"
@@ -214,40 +174,19 @@ class Home : Fragment() {
             val cursor = mSql?.rawQuery("SELECT * FROM allUserProjectDeneme3", null)
             while (cursor!!.moveToNext()) {
                 val id = cursor.getString(cursor.getColumnIndex("id"))
-                var title = cursor.getString(cursor.getColumnIndex("title"))
-                title = "$id / $title"
+                val title = cursor.getString(cursor.getColumnIndex("title"))
                 val projectColor = cursor.getInt(cursor.getColumnIndex("projectColor"))
                 val yearDate = cursor.getString(cursor.getColumnIndex("yearDate"))
                 val time = cursor.getString(cursor.getColumnIndex("time"))
                 items.add(
-                    ModelHome(
-                        id,
-                        title,
-                        projectColor,
-                        yearDate,
-                        time,
-                        "#000000",
-                        Typeface.NORMAL,
-                        40
-                    )
+                    ModelHome(id, title, projectColor, yearDate, time, "#000000", Typeface.NORMAL, 40)
                 )
             }
         }
         catch (e: Exception){
             e.localizedMessage!!
         }
-        items.add(
-            ModelHome(
-                null,
-                "Add Project",
-                R.drawable.ic_add,
-                "",
-                "",
-                "#F05454",
-                Typeface.BOLD,
-                50
-            )
-        )
+        items.add(ModelHome(null, "Add Project", R.drawable.ic_add, "", "", "#F05454", Typeface.BOLD, 50))
     }
 
     override fun onDestroy() {

@@ -9,6 +9,7 @@ import com.example.mygoaldiary.Fragments.Fragments.HomeMenuFragments.AddProject
 import com.example.mygoaldiary.Fragments.Fragments.HomeMenuFragments.Tasks
 import com.example.mygoaldiary.Fragments.Fragments.HomeMenuFragments.UserProjects
 import com.example.mygoaldiary.Helpers.MyHelpers
+import com.example.mygoaldiary.Helpers.WordShortener
 import com.example.mygoaldiary.SQL.ManageSQL
 import com.example.mygoaldiary.databinding.ActivityDetailsBinding
 
@@ -33,10 +34,8 @@ class Details : AppCompatActivity() {
         key = intent.getStringExtra("key")!!
         projectId = intent.getStringExtra("id")
 
-        println("Gelen id: $projectId")
-
         keyController(key)
-        MyHelpers.wordShortener().shorten(key, "...", 15, 0, 15, binding.titleTextView)
+        WordShortener.shorten(key, "...", 15, 0, 15, binding.titleTextView)
     }
 
     companion object{

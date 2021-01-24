@@ -4,19 +4,20 @@ import android.widget.TextView
 
 class WordShortener{
 
+    companion object {
 
         /** With TextView **/
         fun shorten(word: String, higherThan: Int, startIndex: Int, endIndex: Int, textView: TextView) {
-            textView.text = shortenHere(word, higherThan, startIndex, endIndex)
+            textView.text = WordShortener().shortenHere(word, higherThan, startIndex, endIndex)
         }
 
         // Put at end.
         fun shorten(word: String, putAtEnd: String, higherThan: Int, startIndex: Int, endIndex: Int, textView: TextView) {
-            val getText = shortenHere(word, higherThan, startIndex, endIndex)
+            val getText = WordShortener().shortenHere(word, higherThan, startIndex, endIndex)
 
-            textView.setText(if (getText.length >= higherThan){
+            textView.setText(if (getText.length >= higherThan) {
                 getText + putAtEnd
-            }else{
+            } else {
                 getText
             })
         }
@@ -24,13 +25,14 @@ class WordShortener{
 
         /** With Return **/
         fun shorten(word: String, higherThan: Int, startIndex: Int, endIndex: Int): String {
-            return shortenHere(word, higherThan, startIndex, endIndex)
+            return WordShortener().shortenHere(word, higherThan, startIndex, endIndex)
         }
 
         // Put at end.
-        fun shorten(word: String, putAtEnd: String, higherThan: Int, startIndex: Int, endIndex: Int): String {
-            return shortenHere(word, higherThan, startIndex, endIndex) + putAtEnd
+        fun shorten(word: String, higherThan: Int, startIndex: Int, endIndex: Int, putAtEnd: String): String {
+            return WordShortener().shortenHere(word, higherThan, startIndex, endIndex) + putAtEnd
         }
+    }
 
         /*******************/
         private fun shortenHere(word: String, higherThan: Int, startIndex: Int, endIndex: Int): String {

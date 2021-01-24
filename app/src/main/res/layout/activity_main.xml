@@ -69,7 +69,6 @@
         app:itemIconSize="28sp"
         app:itemRippleColor="#DF6D6D"
         app:itemTextColor="#F05454"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

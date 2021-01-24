@@ -33,9 +33,7 @@ class HomeRecyclerViewAdapter (var items: ArrayList<ModelHome>) : RecyclerView.A
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.projects_row, parent, false)
         showAlert = ShowAlert(context)
-
         itemsFull = ArrayList(items)
-
         return Holder(view)
     }
 
@@ -73,8 +71,6 @@ class HomeRecyclerViewAdapter (var items: ArrayList<ModelHome>) : RecyclerView.A
             }
         }
     }
-
-
 
     private lateinit var showAlert : ShowAlert
 

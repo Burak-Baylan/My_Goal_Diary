@@ -1,5 +1,6 @@
 package com.example.mygoaldiary.Fragments.Fragments.HomeMenuFragments
 
+import android.app.AlertDialog
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.os.Bundle
@@ -8,16 +9,17 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.Fragment
+import com.example.mygoaldiary.Creators.DeleteAlertDialog
 import com.example.mygoaldiary.Creators.MyDatePickerDialog
 import com.example.mygoaldiary.Creators.ShowAlert
+import com.example.mygoaldiary.Customizers.TextCustomizer.Companion.setDefaultFlag
+import com.example.mygoaldiary.Customizers.TextCustomizer.Companion.strikeThrough
 import com.example.mygoaldiary.Details
 import com.example.mygoaldiary.Details.Companion.key
 import com.example.mygoaldiary.Helpers.GetCurrentDate
+import com.example.mygoaldiary.Helpers.WordShortener
 import com.example.mygoaldiary.Models.TaskModel
 import com.example.mygoaldiary.R
 import com.example.mygoaldiary.SQL.ManageSQL
@@ -128,19 +130,74 @@ class UserProjects : Fragment() {
                 val isDone = cursor.getString(cursor.getColumnIndex("isDone"))
                 val yearDate = cursor.getString(cursor.getColumnIndex("yearDate"))
                 val time = cursor.getString(cursor.getColumnIndex("time"))
-
                 mItems.add(TaskModel(id, title, isDone, yearDate, time))
-
             }
 
             mItems.reverse()
-            for (i in mItems){
-                val viewHere = layoutInflater.inflate(R.layout.layout_for_project_tasks, null)
-                viewHere.findViewById<TextView>(R.id.taskNameText).text = i.title
 
-                viewHere.findViewById<LinearLayout>(R.id.taskLayout).setOnLongClickListener {
-                    var allowButton = showAlert.warningAlert("${i.id}", "${i.title}, ${i.yearDate}, ${i.time}", true)
+            val checkBoxArray = mutableListOf<Boolean>()
+            for ((position, taskModel) in mItems.withIndex()){
+                val viewHere = layoutInflater.inflate(R.layout.layout_for_project_tasks, null)
+                val taskNameTv = viewHere.findViewById<TextView>(R.id.taskNameText)
+                taskNameTv.text = taskModel.title
+
+                val taskLayout = viewHere.findViewById<LinearLayout>(R.id.taskLayout)
+                val myCb = viewHere.findViewById<CheckBox>(R.id.isTaskDoneCb)
+
+                taskLayout.setOnLongClickListener {
+
+                    val newTitle = WordShortener.shorten(taskModel.title, 15, 0, 15, "...")
+
+                    val deleteProjectView = DeleteAlertDialog.apply {
+                        create(requireContext(), requireActivity())
+                        titleText = "You Deleting a Task"
+                        messageText = "If you delete this \"$newTitle\" task, you cannot get it back. Are you sure you want to delete?"
+                    }.show()
+                    val alertDialogHere = DeleteAlertDialog.alertDialog
+
+                    deleteProjectView.findViewById<Button>(R.id.deleteWarningYesButton).setOnClickListener {
+                        val isChecked = deleteProjectView.findViewById<CheckBox>(R.id.deleteInternetTooCheckBox).isChecked
+
+                        if (isChecked){
+
+                        } else{
+                            val get = sqlManage.manager(mSql, "DELETE FROM '${Details.projectId}' WHERE id = ${taskModel.id}")
+                            if (get){
+                                println("Silme başarılı")
+                                alertDialogHere.cancel()
+                                refreshAllViewsFromTasksLayout()
+                            }else{
+                                println("Silme başarısız")
+                            }
+                        }
+                    }
+
                     true
+                }
+
+                val cbBool = false
+                checkBoxArray.add(cbBool)
+
+                taskLayout.setOnClickListener {
+                    val get = taskOverOrNot(checkBoxArray[position], taskNameTv, taskModel)
+                    myCb.isChecked = get
+                    checkBoxArray[position] = get
+                }
+
+                myCb.setOnClickListener {
+                    checkBoxArray[position] = taskOverOrNot(checkBoxArray[position], taskNameTv, taskModel)
+                }
+
+                if (taskModel.isDone == "true"){
+                    myCb.isChecked = true
+                    checkBoxArray[position] = true
+                    taskNameTv.setTextColor(Color.parseColor("#8B8B8B"))
+                    taskNameTv.strikeThrough()
+                }else if (taskModel.isDone == "false"){
+                    myCb.isChecked = false
+                    checkBoxArray[position] = false
+                    taskNameTv.setTextColor(Color.parseColor("#000000"))
+                    taskNameTv.setDefaultFlag()
                 }
 
                 layout.addView(viewHere)
@@ -150,7 +207,20 @@ class UserProjects : Fragment() {
         catch (e: Exception){
             e.localizedMessage!!
         }
+    }
 
+    private fun taskOverOrNot(isChecked : Boolean, textView : TextView, taskModel : TaskModel) : Boolean{
+        return if (!isChecked){
+            textView.strikeThrough()
+            sqlManage.manager(mSql, "UPDATE '${Details.projectId}' SET isDone = 'true' WHERE id = ${taskModel.id}")
+            textView.setTextColor(Color.parseColor("#8B8B8B"))
+            true
+        }else{
+            textView.setDefaultFlag()
+            sqlManage.manager(mSql, "UPDATE '${Details.projectId}' SET isDone = 'false' WHERE id = ${taskModel.id}")
+            textView.setTextColor(Color.parseColor("#000000"))
+            false
+        }
     }
 
     private fun showOrHide(controlBool: Boolean, hideOrShowResourceImageView: ImageView, vararg showOrHideTextView: View) : Boolean{
