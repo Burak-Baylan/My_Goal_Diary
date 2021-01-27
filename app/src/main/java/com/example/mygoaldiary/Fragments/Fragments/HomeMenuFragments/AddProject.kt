@@ -15,6 +15,8 @@ import com.example.mygoaldiary.Creators.AddProjectSheet
 import com.example.mygoaldiary.Creators.ParamsCreator
 import com.example.mygoaldiary.Creators.ShowAlert
 import com.example.mygoaldiary.FirebaseManage.FirebaseSuperClass
+import com.example.mygoaldiary.Helpers.GetCurrentDate
+import com.example.mygoaldiary.Helpers.MyHelpers
 import com.example.mygoaldiary.LoadingDialog
 import com.example.mygoaldiary.R
 import com.example.mygoaldiary.SQL.ManageSQL
@@ -152,7 +154,7 @@ class AddProject : Fragment() {
     private fun done(){
         projectName = binding.projectNameEditText.text.toString()
 
-        sqlManage.tableCreator(mSql, "allUserProjectDeneme3", "id INTEGER PRIMARY KEY, title TEXT, projectColor INTEGER, yearDate TEXT, time TEXT, lastInteraction, targetedDeadline")
+        sqlManage.tableCreator(mSql, "allUserProjectDeneme3", "id INTEGER PRIMARY KEY, projectUuid VARCHAR, title TEXT, projectColor INTEGER, yearDate TEXT, time TEXT, lastInteraction, targetedDeadline")
 
         val addProjectSheet = AddProjectSheet(requireContext(), requireActivity()).createSheet(projectName, selectedColor)
 
@@ -167,39 +169,36 @@ class AddProject : Fragment() {
 
     @SuppressLint("SimpleDateFormat")
     private fun saveProject() {
-        val uuid = UUID.randomUUID()
-
-        val yearDateSdf = SimpleDateFormat("yyyy-MM-dd")
-        val yearDateStfString = yearDateSdf.format(Date())
-
-        val timeSdf = SimpleDateFormat("HH:mm:ss")
-        val timeDateStfString = timeSdf.format(Date())
+        val projectUuidString = MyHelpers.getUuid()
+        val yearDateStfString = GetCurrentDate.getDate()
+        val timeDateStfString = GetCurrentDate.getTime()
 
         if (saveInternetTooIsChecked){ // Save internet too.
-            if (currentUser != null){// Loged in.
+            if (currentUser != null){// Logged in.
                 loadingDialog.startLoadingDialog()
                 val hashData : HashMap<String, Any> = hashMapOf(
                         "userId" to currentUser!!.uid,
                         "userName" to currentUser!!.displayName!!,
-                        "projectId" to projectName,
+                        "projectName" to projectName,
                         "projectColor" to selectedColor,
                         "yearDate" to yearDateStfString,
-                        "timeDate" to timeDateStfString
+                        "timeDate" to timeDateStfString,
+                        "projectId" to projectUuidString
                 )
                 FirebaseSuperClass(requireContext(), requireActivity()).fireStoreManage()
-                        .addData("Users", currentUser!!.uid, "Projects",uuid.toString(), hashData, {
-                            projectSaveSuccessFun(mSql, yearDateStfString, timeDateStfString)}, {projectSaveFailFun() })
+                        .addData("Users", currentUser!!.uid, "Projects",projectUuidString, hashData, {
+                            projectSaveSuccessFun(mSql, yearDateStfString, timeDateStfString, projectUuidString)}, {projectSaveFailFun() })
             }
             else{// Not logged in.
 
             }
         }else{ // Just save SQL.
-            saveProjectFromSql(mSql, yearDateStfString, timeDateStfString)
+            saveProjectFromSql(mSql, yearDateStfString, timeDateStfString, projectUuidString)
         }
     }
 
-    private fun projectSaveSuccessFun(mSql: SQLiteDatabase?, yearDateStfString: String, timeDateStfString: String) {
-        saveProjectFromSql(mSql, yearDateStfString, timeDateStfString)
+    private fun projectSaveSuccessFun(mSql: SQLiteDatabase?, yearDateStfString: String, timeDateStfString: String, projectUuid: String) {
+        saveProjectFromSql(mSql, yearDateStfString, timeDateStfString, projectUuid)
         loadingDialog.dismissDialog()
     }
 
@@ -208,11 +207,11 @@ class AddProject : Fragment() {
         loadingDialog.dismissDialog()
     }
 
-    private fun saveProjectFromSql(mSql: SQLiteDatabase?, yearDateStfString: String, timeDateStfString: String){
+    private fun saveProjectFromSql(mSql: SQLiteDatabase?, yearDateStfString: String, timeDateStfString: String, projectUuid : String){
         // Add Project From User Projects
         val getReason = sqlManage.adder(
-                mSql!!, "allUserProjectDeneme3", "title, projectColor, yearDate, time",
-                "'$projectName', $selectedColor, '$yearDateStfString', '$timeDateStfString'"
+                mSql!!, "allUserProjectDeneme3", "projectUuid, title, projectColor, yearDate, time",
+                "'$projectUuid', '$projectName', $selectedColor, '$yearDateStfString', '$timeDateStfString'"
         )
         if (getReason){
             requireActivity().finish()

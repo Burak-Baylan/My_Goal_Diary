@@ -10,7 +10,7 @@ import android.widget.Button
 import android.widget.TextView
 import com.example.mygoaldiary.R
 
-class DeleteAlertDialog () {
+class DeleteAlertDialog {
 
     private lateinit var mContext : Context
     private lateinit var mActivity : Activity

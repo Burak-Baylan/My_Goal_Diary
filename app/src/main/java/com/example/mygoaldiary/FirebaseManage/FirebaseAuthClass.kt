@@ -7,6 +7,7 @@ import com.example.mygoaldiary.Creators.ShowAlert
 import com.example.mygoaldiary.LoadingDialog
 import com.example.mygoaldiary.R
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 
 class FirebaseAuthClass (private val ctx : Context, private val act : Activity): FirebaseSuperClass() {
@@ -79,5 +80,9 @@ class FirebaseAuthClass (private val ctx : Context, private val act : Activity):
             showAlert.errorAlert(ctx.getString(R.string.error), it.localizedMessage!!, true)
             loadingDialog!!.dismissDialog()
         }
+    }
+
+    fun getCurrentUser(): FirebaseUser? {
+        return auth.currentUser
     }
 }

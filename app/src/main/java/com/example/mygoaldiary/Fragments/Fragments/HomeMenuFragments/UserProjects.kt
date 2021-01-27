@@ -1,6 +1,8 @@
 package com.example.mygoaldiary.Fragments.Fragments.HomeMenuFragments
 
-import android.app.AlertDialog
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.os.Bundle
@@ -18,42 +20,78 @@ import com.example.mygoaldiary.Customizers.TextCustomizer.Companion.setDefaultFl
 import com.example.mygoaldiary.Customizers.TextCustomizer.Companion.strikeThrough
 import com.example.mygoaldiary.Details
 import com.example.mygoaldiary.Details.Companion.key
-import com.example.mygoaldiary.Helpers.GetCurrentDate
-import com.example.mygoaldiary.Helpers.WordShortener
+import com.example.mygoaldiary.FirebaseManage.FirebaseSuperClass
+import com.example.mygoaldiary.Helpers.*
+import com.example.mygoaldiary.Helpers.UserTasksHelpers.AddTask
+import com.example.mygoaldiary.Helpers.UserTasksHelpers.DeleteTask
+import com.example.mygoaldiary.Helpers.UserTasksHelpers.GetTasks
+import com.example.mygoaldiary.Helpers.UserTasksHelpers.TasksHelper
+import com.example.mygoaldiary.LoadingDialog
 import com.example.mygoaldiary.Models.TaskModel
 import com.example.mygoaldiary.R
 import com.example.mygoaldiary.SQL.ManageSQL
 import com.example.mygoaldiary.databinding.FragmentUserProjectsBinding
-import net.yslibrary.android.keyboardvisibilityevent.util.UIUtil
+import com.google.firebase.firestore.FirebaseFirestore
 
 
-class UserProjects : Fragment() {
+open class UserProjects : Fragment() {
 
-
-    private var _binding : FragmentUserProjectsBinding? = null
-    private val binding get() = _binding!!
 
     private var lastInteractionTvtIsVisible = false
     private var deadlineTvIsVisible = false
-    private lateinit var layout : LinearLayout
-    private lateinit var showAlert : ShowAlert
+
+    companion object{
+        lateinit var firebaseSuperClass : FirebaseSuperClass
+        var firebase = FirebaseFirestore.getInstance()
+        lateinit var loadingDialog: LoadingDialog
+
+        var _binding : FragmentUserProjectsBinding? = null
+        val binding get() = _binding!!
+
+        lateinit var layout : LinearLayout
+        lateinit var showAlert : ShowAlert
+
+        lateinit var sqlManage : ManageSQL
+        var mSql: SQLiteDatabase? = null
+
+        lateinit var mInflater : LayoutInflater
+
+        private lateinit var mContext : Context
+        private lateinit var mActivity : Activity
+
+        var totalTasks = 0
+        var tasksDone = 0
+
+        private lateinit var taskHelper : TasksHelper.Companion
+    }
+
+    private val getTasks = GetTasks()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentUserProjectsBinding.inflate(inflater, container, false)
         val view = binding.root
+        taskHelper = TasksHelper.apply {
+            this.mContext = requireContext()
+            this.mActivity = requireActivity()
+        }
 
+        mContext = requireContext()
+        mActivity = requireActivity()
         layout = LinearLayout(requireContext())
         showAlert = ShowAlert(requireContext())
-
+        loadingDialog = LoadingDialog(requireActivity())
         sqlManage = ManageSQL(context, activity)
+        firebaseSuperClass = FirebaseSuperClass(requireContext(), requireActivity())
+        mInflater = LayoutInflater.from(requireContext())
 
         binding.goBackButtonUserProject.setOnClickListener { requireActivity().finish() }
         binding.titleTextViewUserProject.text = key
-        binding.showAndHideLastInteraction.setOnClickListener { lastInteractionTvtIsVisible = showOrHide(lastInteractionTvtIsVisible, binding.showAndHideLastInteraction, binding.showLastInteractionDateTv) }
-        binding.showAndHideTargetedDeadline.setOnClickListener { deadlineTvIsVisible = showOrHide(deadlineTvIsVisible, binding.showAndHideTargetedDeadline, binding.showDeadlineTv, binding.editDeadline) }
-        binding.editUserProject.setOnClickListener {
 
-        }
+        binding.showAndHideLastInteraction.setOnClickListener { lastInteractionTvtIsVisible = MyHelpers.showOrHide().showOrHide(lastInteractionTvtIsVisible, binding.showAndHideLastInteraction,R.drawable.ic_down_arrow, R.drawable.ic_up_arrow, binding.showLastInteractionDateTv,) }
+        binding.showAndHideTargetedDeadline.setOnClickListener { deadlineTvIsVisible = MyHelpers.showOrHide().showOrHide(deadlineTvIsVisible, binding.showAndHideTargetedDeadline, R.drawable.ic_down_arrow, R.drawable.ic_up_arrow, binding.editDeadline, binding.showDeadlineTv) }
+        binding.taskDoneButton.setOnClickListener { addTask(binding.newTaskEditText.text.toString()) }
+        binding.filterIc.setOnClickListener {  }
+
         binding.editDeadline.setOnClickListener {
             MyDatePickerDialog.apply {
                 putHere = binding.showDeadlineTv
@@ -61,181 +99,82 @@ class UserProjects : Fragment() {
             }.show()
         }
 
-        binding.taskDoneButton.setOnClickListener {
-            val title = binding.newTaskEditText.text.toString()
-            addTask(title)
-        }
-
         binding.newTaskEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                binding.taskDoneButton.visibility = if (count > 0) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
+                binding.taskDoneButton.visibility =
+                        if (count > 0) View.VISIBLE
+                        else View.GONE
             }
             override fun afterTextChanged(s: Editable?) {}
         })
 
         binding.tasksRefreshLayout.setColorSchemeColors(Color.parseColor("#FFFFFF"))
         binding.tasksRefreshLayout.setProgressBackgroundColorSchemeColor(Color.parseColor("#F05454"))
-
         binding.tasksRefreshLayout.setOnRefreshListener {
-            refreshAllViewsFromTasksLayout()
+            refreshAllViewsFromTasksLayout(requireContext(), requireActivity())
             binding.tasksRefreshLayout.isRefreshing = false
         }
 
-        getProjectDetail()
+        val currentUser = firebaseSuperClass.userAuthManage().getCurrentUser()
+        binding.saveTaskInternetTooCheckBox.visibility =
+                if (currentUser != null) View.VISIBLE
+                else View.GONE
+
+        getTasks.get()
 
         return view
     }
 
     private fun addTask(title : String) {
-        val date = GetCurrentDate.getDate()
-        val time = GetCurrentDate.getTime()
-        val getReason = sqlManage.adder(mSql, "'${Details.projectId}'", "title, isDone, yearDate, time", "'$title', 'false', '$date', '$time'")
-        if (getReason) {
-            refreshAllViewsFromTasksLayout()
-            binding.newTaskEditText.text.clear()
-            UIUtil.hideKeyboard(requireActivity())
-        }else{
-            showAlert.errorAlert("Error", "The task couldn't be added. Please try again.", true)
-        }
+        taskHelper.addTask().add(title)
     }
 
-    private fun refreshAllViewsFromTasksLayout(){
+
+    protected fun refreshAllViewsFromTasksLayout(context : Context, activity : Activity){
         layout.removeAllViews()
-        getProjectDetail()
+        mContext = context
+        mActivity = activity
+        getTasks.get()
     }
 
-    private lateinit var sqlManage : ManageSQL
-    private var mSql: SQLiteDatabase? = null
-    private fun getProjectDetail() {
-
-        mSql = sqlManage.createSqlVariable("HomePage").apply {
-            // TASKS
-            sqlManage.tableCreator(this, "'${Details.projectId}'", "id INTEGER PRIMARY KEY, title VARCHAR, isDone VARCHAR, yearDate VARCHAR, time VARCHAR")
-        }
-
-        try {
-            layout.orientation = LinearLayout.VERTICAL
-            val cursor = mSql?.rawQuery("SELECT * FROM '${Details.projectId}'", null)
-
-            val mItems = mutableListOf<TaskModel>()
-
-            while (cursor!!.moveToNext()) {
-                val id = cursor.getString(cursor.getColumnIndex("id"))
-                val title = cursor.getString(cursor.getColumnIndex("title"))
-                val isDone = cursor.getString(cursor.getColumnIndex("isDone"))
-                val yearDate = cursor.getString(cursor.getColumnIndex("yearDate"))
-                val time = cursor.getString(cursor.getColumnIndex("time"))
-                mItems.add(TaskModel(id, title, isDone, yearDate, time))
-            }
-
-            mItems.reverse()
-
-            val checkBoxArray = mutableListOf<Boolean>()
-            for ((position, taskModel) in mItems.withIndex()){
-                val viewHere = layoutInflater.inflate(R.layout.layout_for_project_tasks, null)
-                val taskNameTv = viewHere.findViewById<TextView>(R.id.taskNameText)
-                taskNameTv.text = taskModel.title
-
-                val taskLayout = viewHere.findViewById<LinearLayout>(R.id.taskLayout)
-                val myCb = viewHere.findViewById<CheckBox>(R.id.isTaskDoneCb)
-
-                taskLayout.setOnLongClickListener {
-
-                    val newTitle = WordShortener.shorten(taskModel.title, 15, 0, 15, "...")
-
-                    val deleteProjectView = DeleteAlertDialog.apply {
-                        create(requireContext(), requireActivity())
-                        titleText = "You Deleting a Task"
-                        messageText = "If you delete this \"$newTitle\" task, you cannot get it back. Are you sure you want to delete?"
-                    }.show()
-                    val alertDialogHere = DeleteAlertDialog.alertDialog
-
-                    deleteProjectView.findViewById<Button>(R.id.deleteWarningYesButton).setOnClickListener {
-                        val isChecked = deleteProjectView.findViewById<CheckBox>(R.id.deleteInternetTooCheckBox).isChecked
-
-                        if (isChecked){
-
-                        } else{
-                            val get = sqlManage.manager(mSql, "DELETE FROM '${Details.projectId}' WHERE id = ${taskModel.id}")
-                            if (get){
-                                println("Silme başarılı")
-                                alertDialogHere.cancel()
-                                refreshAllViewsFromTasksLayout()
-                            }else{
-                                println("Silme başarısız")
-                            }
-                        }
-                    }
-
-                    true
-                }
-
-                val cbBool = false
-                checkBoxArray.add(cbBool)
-
-                taskLayout.setOnClickListener {
-                    val get = taskOverOrNot(checkBoxArray[position], taskNameTv, taskModel)
-                    myCb.isChecked = get
-                    checkBoxArray[position] = get
-                }
-
-                myCb.setOnClickListener {
-                    checkBoxArray[position] = taskOverOrNot(checkBoxArray[position], taskNameTv, taskModel)
-                }
-
-                if (taskModel.isDone == "true"){
-                    myCb.isChecked = true
-                    checkBoxArray[position] = true
-                    taskNameTv.setTextColor(Color.parseColor("#8B8B8B"))
-                    taskNameTv.strikeThrough()
-                }else if (taskModel.isDone == "false"){
-                    myCb.isChecked = false
-                    checkBoxArray[position] = false
-                    taskNameTv.setTextColor(Color.parseColor("#000000"))
-                    taskNameTv.setDefaultFlag()
-                }
-
-                layout.addView(viewHere)
-            }
-            binding.tasksScrollView.addView(layout)
-        }
-        catch (e: Exception){
-            e.localizedMessage!!
+    protected fun taskNameTvCustomizer(trueOrFalse : String, taskNameTv : TextView){
+        if (trueOrFalse == "true"){
+            taskNameTv.setTextColor(Color.parseColor("#8B8B8B"))
+            taskNameTv.strikeThrough()
+        }else if (trueOrFalse == "false"){
+            taskNameTv.setTextColor(Color.parseColor("#000000"))
+            taskNameTv.setDefaultFlag()
         }
     }
 
-    private fun taskOverOrNot(isChecked : Boolean, textView : TextView, taskModel : TaskModel) : Boolean{
-        return if (!isChecked){
-            textView.strikeThrough()
+    @SuppressLint("SetTextI18n")
+    protected fun taskOverOrNot(isChecked : Boolean, textView : TextView, taskModel : TaskModel) : Boolean{
+        val returnBool = if (!isChecked){
+            tasksDone++
+            taskNameTvCustomizer("true", textView)
             sqlManage.manager(mSql, "UPDATE '${Details.projectId}' SET isDone = 'true' WHERE id = ${taskModel.id}")
-            textView.setTextColor(Color.parseColor("#8B8B8B"))
             true
         }else{
-            textView.setDefaultFlag()
+            tasksDone--
             sqlManage.manager(mSql, "UPDATE '${Details.projectId}' SET isDone = 'false' WHERE id = ${taskModel.id}")
-            textView.setTextColor(Color.parseColor("#000000"))
+            taskNameTvCustomizer("false", textView)
             false
         }
+        binding.tasksDone.text = "$tasksDone/$totalTasks"
+        return returnBool
     }
 
-    private fun showOrHide(controlBool: Boolean, hideOrShowResourceImageView: ImageView, vararg showOrHideTextView: View) : Boolean{
-        return if (controlBool){
-            for (i in showOrHideTextView){
-                i.visibility = View.GONE
-            }
-            hideOrShowResourceImageView.setImageResource(R.drawable.ic_down_arrow)
-            false
-        }else{
-            for (i in showOrHideTextView){
-                i.visibility = View.VISIBLE
-            }
-            hideOrShowResourceImageView.setImageResource(R.drawable.ic_up_arrow)
-            true
+    protected fun taskLongClickListener(taskModel: TaskModel) {
+        val newTitle = ShortenWord.shorten(taskModel.title, 15, 0, 15, "...")
+        val deleteProjectView = DeleteAlertDialog.apply {
+            create(mContext, mActivity)
+            titleText = "You Deleting a Task"
+            messageText = "If you delete this \"$newTitle\" task, you cannot get it back. Are you sure you want to delete?"
+        }.show()
+
+        deleteProjectView.findViewById<Button>(R.id.deleteWarningYesButton).setOnClickListener {
+            DeleteTask(mContext, mActivity).delete(deleteProjectView, taskModel.taskUuid, taskModel.id)
         }
     }
 }

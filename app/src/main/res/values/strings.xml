@@ -3,7 +3,7 @@
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <string name="learnDetailsAboutUploadInternet">If you enable this option, you will upload this project to both your phone memory and your account (internet) at the same time.</string>
+    <string name="learnDetailsAboutUploadInternet">If you enable this option, you will upload this project to both your phone memory and cloud (internet) at the same time.</string>
 
     <string name="error">Error</string>
 
@@ -34,5 +34,17 @@
     <string name="deadline">Deadline</string>
 
     <string name="tasks">Tasks</string>
+    
+    <string name="pleaseLoginToUploadCloud">You must be logged in to save to cloud.</string>
+
+    <string name="internetRequiredToCloudSave">Internet connection is required to save to cloud.</string>
+
+    <string name="addATask">Add a task…</string>
+
+    <string name="alsoUploadCloud">Also upload to cloud.</string>
+
+    <string name="addTaskFail">Task couldn\'t be uploaded. Please try again.</string>
+
+    <string name="deleteTaskFail">Task couldn\'t be deleted. Please try again.</string>
 
 </resources>

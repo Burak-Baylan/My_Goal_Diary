@@ -55,6 +55,8 @@ class HomeRecyclerViewAdapter (var items: ArrayList<ModelHome>) : RecyclerView.A
             val intent = Intent(context, Details::class.java)
             intent.putExtra("key", holder.nameTextView.text.toString())
             intent.putExtra("id", items[position].id)
+            intent.putExtra("projectUuid", items[position].projectUuid)
+
             context.startActivity(intent)
         }
 

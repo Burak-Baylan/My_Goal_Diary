@@ -8,8 +8,7 @@ import androidx.fragment.app.Fragment
 import com.example.mygoaldiary.Fragments.Fragments.HomeMenuFragments.AddProject
 import com.example.mygoaldiary.Fragments.Fragments.HomeMenuFragments.Tasks
 import com.example.mygoaldiary.Fragments.Fragments.HomeMenuFragments.UserProjects
-import com.example.mygoaldiary.Helpers.MyHelpers
-import com.example.mygoaldiary.Helpers.WordShortener
+import com.example.mygoaldiary.Helpers.ShortenWord
 import com.example.mygoaldiary.SQL.ManageSQL
 import com.example.mygoaldiary.databinding.ActivityDetailsBinding
 
@@ -33,34 +32,32 @@ class Details : AppCompatActivity() {
 
         key = intent.getStringExtra("key")!!
         projectId = intent.getStringExtra("id")
+        val getProjectUuid = intent.getStringExtra("projectUuid")
+
+        if (getProjectUuid != null){
+            projectUuid = getProjectUuid
+        }
 
         keyController(key)
-        WordShortener.shorten(key, "...", 15, 0, 15, binding.titleTextView)
+        ShortenWord.shorten(key, "...", 15, 0, 15, binding.titleTextView)
     }
 
     companion object{
         var key = ""
         var projectId : String? = null
+        var projectUuid : String = ""
     }
 
     private fun keyController (key : String){
-        if (key == "Diary" || key == "Add Project" || key == "Tasks" || key == "Reports")
+        if (projectId == "Diary" || projectId == "Add Project" || projectId == "Tasks" || projectId == "Reports")
         {
             when(key)
             {
-                "Tasks" -> {
-                    val tasksFragment = Tasks()
-                    makeCurrentFragment(tasksFragment)
-                }
-                "Reports" -> {
-
-                }
-                "Diary" -> {
-
-                }
+                "Tasks" -> { makeCurrentFragment(Tasks()) }
+                "Reports" -> {}
+                "Diary" -> { }
                 "Add Project" -> {
-                    val addProjectFragment = AddProject()
-                    makeCurrentFragment(addProjectFragment)
+                    makeCurrentFragment(AddProject())
                     supportActionBarHider()
                 }
             }

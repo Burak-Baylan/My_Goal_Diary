@@ -3,7 +3,6 @@ package com.example.mygoaldiary.Fragments.Fragments.BottomNavFragments
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.Paint
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Editable
@@ -15,8 +14,9 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mygoaldiary.Creators.ShowAlert
+import com.example.mygoaldiary.FirebaseManage.FirebaseAuthClass
 import com.example.mygoaldiary.Helpers.MyHelpers
-import com.example.mygoaldiary.Helpers.WordShortener
+import com.example.mygoaldiary.Helpers.ShortenWord
 import com.example.mygoaldiary.LoginScreen
 import com.example.mygoaldiary.R
 import com.example.mygoaldiary.RecyclerView.HomeRecyclerViewAdapter
@@ -35,7 +35,6 @@ class Home : Fragment() {
     private lateinit var adapter : HomeRecyclerViewAdapter
 
     private val auth = FirebaseAuth.getInstance()
-    private var currentUser = auth.currentUser
 
     private var _binding : FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -64,17 +63,11 @@ class Home : Fragment() {
         showAlert = ShowAlert(requireContext())
         items = ArrayList()
 
-        binding.searchImageView.setOnClickListener {
-            openSearchView()
-        }
+        binding.searchImageView.setOnClickListener { openSearchView() }
 
-        binding.backButtonFromSearch.setOnClickListener {
-            closeSearchView()
-        }
+        binding.backButtonFromSearch.setOnClickListener { closeSearchView() }
 
-        binding.loginLayout.setOnClickListener {
-            loginControl()
-        }
+        binding.loginLayout.setOnClickListener { loginControl() }
 
         getProjects(items)
 
@@ -90,7 +83,7 @@ class Home : Fragment() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
-                filter(s.toString())
+                MyHelpers.filter().homeSearchFilter(s.toString(), adapter, items)
             }
         })
 
@@ -115,18 +108,6 @@ class Home : Fragment() {
         binding.searchEditText.text.clear()
     }
 
-    private fun filter(text: String){
-        val filteredList : MutableList<ModelHome> = ArrayList()
-        for(item in items){
-            if (item.title.toLowerCase().contains(text.toLowerCase())){
-                filteredList.add(item)
-            }else if (item.yearDate.toLowerCase().contains(text.toLowerCase())){
-                filteredList.add(item)
-            }
-        }
-        adapter.filteredList(filteredList)
-    }
-
     private fun refreshLayout() {
         binding.homeRefreshLayout.setOnRefreshListener {
             refresh()
@@ -149,24 +130,25 @@ class Home : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        var username = getString(R.string.login)
-        currentUser = auth.currentUser
-        currentUser?.let {
-            username = currentUser!!.displayName!!
+        var username: String? = getString(R.string.login)
+        FirebaseAuthClass(requireContext(), requireActivity()).getCurrentUser().let {
+            username = it?.displayName
         }
         if (username != "Login") {
-            WordShortener.shorten(username, "...", 5, 0, 5, binding.showUsernameTextView)
+            if (username != null) {
+                ShortenWord.shorten(username!!, "...", 5, 0, 5, binding.showUsernameTextView)
+            }
         }
     }
 
     @SuppressLint("Recycle")
     private fun getProjects(items: ArrayList<ModelHome>){
-        items.add(ModelHome(null, "Tasks", R.drawable.ic_tasks, "", "", "#000000", Typeface.NORMAL, 50))
-        items.add(ModelHome(null, "Reports", R.drawable.ic_notes_for_reports, "", "", "#000000", Typeface.NORMAL, 50))
-        items.add(ModelHome(null, "Diary", R.drawable.ic_diary, "", "", "#000000", Typeface.NORMAL, 50))
+        items.add(ModelHome("Tasks", "Tasks", R.drawable.ic_tasks, "", "", "#000000", Typeface.NORMAL, 50, null))
+        items.add(ModelHome("Reports", "Reports", R.drawable.ic_notes_for_reports, "", "", "#000000", Typeface.NORMAL, 50, null))
+        items.add(ModelHome("Diary", "Diary", R.drawable.ic_diary, "", "", "#000000", Typeface.NORMAL, 50, null))
 
         val mSql = sqlManage.createSqlVariable("HomePage").apply {
-            val sqlString = "id INTEGER PRIMARY KEY, title VARCHAR, projectColor INT, yearDate VARCHAR, time VARCHAR, lastInteraction, targetedDeadline"
+            val sqlString = "id INTEGER PRIMARY KEY, projectUuid VARCHAR, title TEXT, projectColor INTEGER, yearDate TEXT, time TEXT, lastInteraction, targetedDeadline"
             sqlManage.tableCreator(this, "allUserProjectDeneme3", sqlString)
         }
 
@@ -178,15 +160,16 @@ class Home : Fragment() {
                 val projectColor = cursor.getInt(cursor.getColumnIndex("projectColor"))
                 val yearDate = cursor.getString(cursor.getColumnIndex("yearDate"))
                 val time = cursor.getString(cursor.getColumnIndex("time"))
+                val projectUuid = cursor.getString(cursor.getColumnIndex("projectUuid"))
                 items.add(
-                    ModelHome(id, title, projectColor, yearDate, time, "#000000", Typeface.NORMAL, 40)
+                    ModelHome(id, title, projectColor, yearDate, time, "#000000", Typeface.NORMAL, 40, projectUuid)
                 )
             }
         }
         catch (e: Exception){
             e.localizedMessage!!
         }
-        items.add(ModelHome(null, "Add Project", R.drawable.ic_add, "", "", "#F05454", Typeface.BOLD, 50))
+        items.add(ModelHome("Add Project", "Add Project", R.drawable.ic_add, "", "", "#F05454", Typeface.BOLD, 50, null))
     }
 
     override fun onDestroy() {

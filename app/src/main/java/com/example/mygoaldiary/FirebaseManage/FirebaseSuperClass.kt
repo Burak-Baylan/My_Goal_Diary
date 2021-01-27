@@ -2,8 +2,8 @@ package com.example.mygoaldiary.FirebaseManage
 
 import android.app.Activity
 import android.content.Context
+import com.example.mygoaldiary.FirebaseManage.Firestore.Firestore
 import com.example.mygoaldiary.LoadingDialog
-import com.example.mygoaldiary.LoginScreen
 
 open class FirebaseSuperClass{
 

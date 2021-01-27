@@ -35,8 +35,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/showColorFromSheet"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_gravity="center_vertical"
             android:src="#000000" />
 
@@ -64,8 +64,8 @@
         android:background="?attr/selectableItemBackground">
 
         <ImageView
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             app:srcCompat="@drawable/ic_edit_red" />
 
         <TextView
@@ -86,10 +86,7 @@
             android:textColor="@color/lightRed"
             android:layout_gravity="center_vertical"
             android:textStyle="bold"/>
-
-
     </LinearLayout>
-
 
     <CheckBox
         android:id="@+id/saveInternetTooCheckBox"
@@ -98,7 +95,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:theme="@style/custom_checkbox_for_new_project"
-        android:text="Upload this project internet too."
+        android:text="Also upload to cloud."
         android:textStyle="bold"
         android:fontFamily="@font/allerta"
         android:paddingLeft="5dp"

@@ -2,18 +2,18 @@ package com.example.mygoaldiary.Helpers
 
 import android.widget.TextView
 
-class WordShortener{
+class ShortenWord{
 
     companion object {
 
         /** With TextView **/
         fun shorten(word: String, higherThan: Int, startIndex: Int, endIndex: Int, textView: TextView) {
-            textView.text = WordShortener().shortenHere(word, higherThan, startIndex, endIndex)
+            textView.text = ShortenWord().shortenHere(word, higherThan, startIndex, endIndex)
         }
 
         // Put at end.
         fun shorten(word: String, putAtEnd: String, higherThan: Int, startIndex: Int, endIndex: Int, textView: TextView) {
-            val getText = WordShortener().shortenHere(word, higherThan, startIndex, endIndex)
+            val getText = ShortenWord().shortenHere(word, higherThan, startIndex, endIndex)
 
             textView.setText(if (getText.length >= higherThan) {
                 getText + putAtEnd
@@ -25,12 +25,12 @@ class WordShortener{
 
         /** With Return **/
         fun shorten(word: String, higherThan: Int, startIndex: Int, endIndex: Int): String {
-            return WordShortener().shortenHere(word, higherThan, startIndex, endIndex)
+            return ShortenWord().shortenHere(word, higherThan, startIndex, endIndex)
         }
 
         // Put at end.
         fun shorten(word: String, higherThan: Int, startIndex: Int, endIndex: Int, putAtEnd: String): String {
-            return WordShortener().shortenHere(word, higherThan, startIndex, endIndex) + putAtEnd
+            return ShortenWord().shortenHere(word, higherThan, startIndex, endIndex) + putAtEnd
         }
     }
 

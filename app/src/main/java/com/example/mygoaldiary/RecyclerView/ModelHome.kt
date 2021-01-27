@@ -8,5 +8,6 @@ data class ModelHome(
         val time: String,
         val textViewColor: String,
         val typeFace: Int,
-        val imageViewSize : Int
+        val imageViewSize : Int,
+        val projectUuid : String?
 )
