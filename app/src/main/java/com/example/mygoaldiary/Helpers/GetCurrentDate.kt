@@ -5,11 +5,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class GetCurrentDate {
-
     companion object {
         @SuppressLint("SimpleDateFormat")
         fun getDate(): String {
-            val yearDateSdf = SimpleDateFormat("yyyy-MM-dd")
+            val yearDateSdf = SimpleDateFormat("dd/MM/yyyy")
             return yearDateSdf.format(Date())
         }
 

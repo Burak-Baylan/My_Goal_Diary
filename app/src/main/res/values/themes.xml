@@ -46,6 +46,11 @@
         <item name="background">@drawable/background_login_button_green</item>
     </style>
 
+    <style name="CalenderViewCustom" parent="Theme.AppCompat">
+        <item name="colorAccent">@color/goodRed</item>
+        <item name="colorPrimary">@color/white</item>
+    </style>
+
 </resources>
 
 <!--

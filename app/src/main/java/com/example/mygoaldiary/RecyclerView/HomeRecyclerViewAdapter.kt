@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mygoaldiary.Creators.ParamsCreator
 import com.example.mygoaldiary.Creators.ShowAlert
 import com.example.mygoaldiary.Details
+import com.example.mygoaldiary.Models.ModelHome
 import com.example.mygoaldiary.R
 import kotlin.collections.ArrayList
 
@@ -56,7 +57,6 @@ class HomeRecyclerViewAdapter (var items: ArrayList<ModelHome>) : RecyclerView.A
             intent.putExtra("key", holder.nameTextView.text.toString())
             intent.putExtra("id", items[position].id)
             intent.putExtra("projectUuid", items[position].projectUuid)
-
             context.startActivity(intent)
         }
 
@@ -67,10 +67,7 @@ class HomeRecyclerViewAdapter (var items: ArrayList<ModelHome>) : RecyclerView.A
             }
         }
         else{
-            holder.mMainLayout.setOnLongClickListener {
-                // Do Nothing
-                true
-            }
+            holder.mMainLayout.setOnLongClickListener { /* Do Nothing */ true }
         }
     }
 

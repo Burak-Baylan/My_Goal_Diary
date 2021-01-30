@@ -1,4 +1,4 @@
-package com.example.mygoaldiary.RecyclerView
+package com.example.mygoaldiary.Models
 
 data class ModelHome(
         val id : String?,

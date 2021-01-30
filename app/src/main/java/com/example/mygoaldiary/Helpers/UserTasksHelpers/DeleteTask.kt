@@ -6,38 +6,48 @@ import android.content.Context
 import android.view.View
 import android.widget.CheckBox
 import com.example.mygoaldiary.Creators.DeleteAlertDialog
+import com.example.mygoaldiary.Creators.ShowAlert
 import com.example.mygoaldiary.Details
 import com.example.mygoaldiary.Fragments.Fragments.HomeMenuFragments.UserProjects
+import com.example.mygoaldiary.Helpers.InternetController
 import com.example.mygoaldiary.R
 
 class DeleteTask (private val mContext:  Context, private val mActivity : Activity): UserProjects(){
 
     private lateinit var alertDialogHere: AlertDialog
 
-    fun delete(deleteProjectView: View, taskUuid : String?, id : String?){
+    fun delete(deleteProjectView: View, taskUuid : String?, isHybrid : String){
         loadingDialog.startLoadingDialog()
         alertDialogHere = DeleteAlertDialog.alertDialog
-
         val isChecked = deleteProjectView.findViewById<CheckBox>(R.id.deleteInternetTooCheckBox).isChecked
 
-        if (isChecked){// Delete internet too.
-            deleteFromFirebase(taskUuid, id)
-        }else {// Just delete SQL.
+        if (isChecked) {
+            if (isHybrid == "true") {
+                if (InternetController.internetControl(mActivity)) {
+                    deleteFromFirebase(taskUuid)
+                }else{
+                    showAlert.errorAlert(mContext.getString(R.string.error), mContext.getString(R.string.internetRequiredToDeleteTask), true)
+                    loadingDialog.dismissDialog()
+                }
+            }else{
+                deleteFromSQL(taskUuid)
+            }
+        } else{
             deleteFromSQL(taskUuid)
         }
     }
 
-    private fun deleteFromFirebase(taskUuid: String?, id: String?) {
+    private fun deleteFromFirebase(taskUuid: String?) {
         firebaseSuperClass.userAuthManage().getCurrentUser()?.let {
             firebase.collection("Users").document(it.uid).collection("Projects").document(Details.projectUuid).collection("Tasks").document("$taskUuid").delete().addOnSuccessListener {
-                deleteSuccess(taskUuid, id)
+                deleteSuccess(taskUuid)
             }.addOnFailureListener {
                 deleteFail()
             }
         }
     }
 
-    private fun deleteSuccess(taskUuid: String?, id: String?){
+    private fun deleteSuccess(taskUuid: String?){
         deleteFromSQL(taskUuid)
     }
 

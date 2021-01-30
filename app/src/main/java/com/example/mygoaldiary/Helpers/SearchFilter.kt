@@ -1,7 +1,7 @@
 package com.example.mygoaldiary.Helpers
 
 import com.example.mygoaldiary.RecyclerView.HomeRecyclerViewAdapter
-import com.example.mygoaldiary.RecyclerView.ModelHome
+import com.example.mygoaldiary.Models.ModelHome
 import java.util.ArrayList
 
 class SearchFilter : MyHelpers() {

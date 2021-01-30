@@ -47,4 +47,6 @@
 
     <string name="deleteTaskFail">Task couldn\'t be deleted. Please try again.</string>
 
+    <string name="internetRequiredToDeleteTask">Internet connection is required to delete task from cloud.</string>
+
 </resources>

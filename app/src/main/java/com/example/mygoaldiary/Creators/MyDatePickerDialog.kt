@@ -36,22 +36,25 @@ class MyDatePickerDialog {
     @SuppressLint("SetTextI18n")
     fun create (){
 
-        val v = mActivity.layoutInflater.inflate(R.layout.layout_date_picker, null)
+        val view = mActivity.layoutInflater.inflate(R.layout.layout_date_picker, null)
 
-        val mDatePicker = v.findViewById<DatePicker>(R.id.datePicker)
+        val mDatePicker = view.findViewById<DatePicker>(R.id.datePicker)
 
         val mAlertDialog = AlertDialog.Builder(mContext)
-        mAlertDialog.setView(v)
+        mAlertDialog.setView(view)
 
-        mAlertDialog.setPositiveButton("Save") { _ : DialogInterface, _ : Int ->
+        view.findViewById<TextView>(R.id.datePickerSaveButton).setOnClickListener {
             val day = mDatePicker.dayOfMonth
             val month = mDatePicker.month
             val year = mDatePicker.year
 
             mTextView.text = "$day/${month+1}/$year"
+
+            mDialog.dismiss()
         }
-        mAlertDialog.setNegativeButton("Cancel") { dialog : DialogInterface, _ : Int ->
-            dialog.cancel()
+
+        view.findViewById<TextView>(R.id.datePickerCancelButton).setOnClickListener {
+            mDialog.cancel()
         }
 
         mDialog = mAlertDialog.create()

@@ -5,7 +5,6 @@ import android.widget.TextView
 class ShortenWord{
 
     companion object {
-
         /** With TextView **/
         fun shorten(word: String, higherThan: Int, startIndex: Int, endIndex: Int, textView: TextView) {
             textView.text = ShortenWord().shortenHere(word, higherThan, startIndex, endIndex)
@@ -14,7 +13,6 @@ class ShortenWord{
         // Put at end.
         fun shorten(word: String, putAtEnd: String, higherThan: Int, startIndex: Int, endIndex: Int, textView: TextView) {
             val getText = ShortenWord().shortenHere(word, higherThan, startIndex, endIndex)
-
             textView.setText(if (getText.length >= higherThan) {
                 getText + putAtEnd
             } else {
@@ -30,7 +28,12 @@ class ShortenWord{
 
         // Put at end.
         fun shorten(word: String, higherThan: Int, startIndex: Int, endIndex: Int, putAtEnd: String): String {
-            return ShortenWord().shortenHere(word, higherThan, startIndex, endIndex) + putAtEnd
+            val getText = ShortenWord().shortenHere(word, higherThan, startIndex, endIndex)
+            return if (getText.length >= higherThan) {
+                getText + putAtEnd
+            } else {
+                getText
+            }
         }
     }
 

@@ -1,8 +1,6 @@
 package com.example.mygoaldiary.Helpers
 
 import android.app.Activity
-import com.example.mygoaldiary.RecyclerView.HomeRecyclerViewAdapter
-import com.example.mygoaldiary.RecyclerView.ModelHome
 import java.util.*
 
 open class MyHelpers {

@@ -14,7 +14,6 @@ class DeleteAlertDialog {
 
     private lateinit var mContext : Context
     private lateinit var mActivity : Activity
-    private lateinit var view : View
 
 
     @SuppressLint("InflateParams")
@@ -26,6 +25,8 @@ class DeleteAlertDialog {
 
         private var mDeleteAlert = DeleteAlertDialog()
 
+        lateinit var view : View
+
         var cancelable = true
         lateinit var alertDialog : AlertDialog
 
@@ -35,12 +36,12 @@ class DeleteAlertDialog {
         fun create(context : Context, activity: Activity){
             mDeleteAlert.mContext = context
             mDeleteAlert.mActivity = activity
-            mDeleteAlert.view = mDeleteAlert.getView()
+            view = mDeleteAlert.getView()
         }
 
         fun show(): View {
             mDeleteAlert.alertCreator().show()
-            return mDeleteAlert.view
+            return view
         }
 
         lateinit var yesButton : Button
@@ -48,12 +49,12 @@ class DeleteAlertDialog {
 
     }
 
-    fun putTexts(){
+    private fun putTexts(){
         view.findViewById<TextView>(R.id.deleteWarningTitleText).text = titleText
         view.findViewById<TextView>(R.id.deleteWarningMessageText).text = messageText
     }
 
-    private fun createBuilder () : AlertDialog.Builder {
+    private fun createBuilder() : AlertDialog.Builder {
         val builder : AlertDialog.Builder = AlertDialog.Builder(mContext, R.style.AlertDialogTheme)
         builder.setView(view)
         builder.setCancelable(cancelable)

@@ -22,10 +22,7 @@ import com.example.mygoaldiary.Details
 import com.example.mygoaldiary.Details.Companion.key
 import com.example.mygoaldiary.FirebaseManage.FirebaseSuperClass
 import com.example.mygoaldiary.Helpers.*
-import com.example.mygoaldiary.Helpers.UserTasksHelpers.AddTask
-import com.example.mygoaldiary.Helpers.UserTasksHelpers.DeleteTask
-import com.example.mygoaldiary.Helpers.UserTasksHelpers.GetTasks
-import com.example.mygoaldiary.Helpers.UserTasksHelpers.TasksHelper
+import com.example.mygoaldiary.Helpers.UserTasksHelpers.*
 import com.example.mygoaldiary.LoadingDialog
 import com.example.mygoaldiary.Models.TaskModel
 import com.example.mygoaldiary.R
@@ -33,9 +30,12 @@ import com.example.mygoaldiary.SQL.ManageSQL
 import com.example.mygoaldiary.databinding.FragmentUserProjectsBinding
 import com.google.firebase.firestore.FirebaseFirestore
 
-
 open class UserProjects : Fragment() {
 
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 
     private var lastInteractionTvtIsVisible = false
     private var deadlineTvIsVisible = false
@@ -44,7 +44,6 @@ open class UserProjects : Fragment() {
         lateinit var firebaseSuperClass : FirebaseSuperClass
         var firebase = FirebaseFirestore.getInstance()
         lateinit var loadingDialog: LoadingDialog
-
         var _binding : FragmentUserProjectsBinding? = null
         val binding get() = _binding!!
 
@@ -56,16 +55,14 @@ open class UserProjects : Fragment() {
 
         lateinit var mInflater : LayoutInflater
 
-        private lateinit var mContext : Context
-        private lateinit var mActivity : Activity
+        lateinit var mContext : Context
+        lateinit var mActivity : Activity
 
         var totalTasks = 0
         var tasksDone = 0
 
         private lateinit var taskHelper : TasksHelper.Companion
     }
-
-    private val getTasks = GetTasks()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentUserProjectsBinding.inflate(inflater, container, false)
@@ -75,22 +72,15 @@ open class UserProjects : Fragment() {
             this.mActivity = requireActivity()
         }
 
-        mContext = requireContext()
-        mActivity = requireActivity()
-        layout = LinearLayout(requireContext())
-        showAlert = ShowAlert(requireContext())
-        loadingDialog = LoadingDialog(requireActivity())
-        sqlManage = ManageSQL(context, activity)
-        firebaseSuperClass = FirebaseSuperClass(requireContext(), requireActivity())
-        mInflater = LayoutInflater.from(requireContext())
+        initializeView()
 
         binding.goBackButtonUserProject.setOnClickListener { requireActivity().finish() }
         binding.titleTextViewUserProject.text = key
-
-        binding.showAndHideLastInteraction.setOnClickListener { lastInteractionTvtIsVisible = MyHelpers.showOrHide().showOrHide(lastInteractionTvtIsVisible, binding.showAndHideLastInteraction,R.drawable.ic_down_arrow, R.drawable.ic_up_arrow, binding.showLastInteractionDateTv,) }
+        binding.showAndHideLastInteraction.setOnClickListener { lastInteractionTvtIsVisible = MyHelpers.showOrHide().showOrHide(lastInteractionTvtIsVisible, binding.showAndHideLastInteraction,R.drawable.ic_down_arrow, R.drawable.ic_up_arrow, binding.showLastInteractionDateTv) }
         binding.showAndHideTargetedDeadline.setOnClickListener { deadlineTvIsVisible = MyHelpers.showOrHide().showOrHide(deadlineTvIsVisible, binding.showAndHideTargetedDeadline, R.drawable.ic_down_arrow, R.drawable.ic_up_arrow, binding.editDeadline, binding.showDeadlineTv) }
         binding.taskDoneButton.setOnClickListener { addTask(binding.newTaskEditText.text.toString()) }
-        binding.filterIc.setOnClickListener {  }
+
+        binding.filterIc.setOnClickListener { TaskFilter().selectFilter(requireContext(), requireActivity()) }
 
         binding.editDeadline.setOnClickListener {
             MyDatePickerDialog.apply {
@@ -121,21 +111,30 @@ open class UserProjects : Fragment() {
                 if (currentUser != null) View.VISIBLE
                 else View.GONE
 
-        getTasks.get()
-
+        GetTasks(requireActivity()).get()
         return view
+    }
+
+    private fun initializeView() {
+        mContext = requireContext()
+        mActivity = requireActivity()
+        layout = LinearLayout(requireContext())
+        showAlert = ShowAlert(requireContext())
+        loadingDialog = LoadingDialog(requireActivity())
+        sqlManage = ManageSQL(context, activity)
+        firebaseSuperClass = FirebaseSuperClass(requireContext(), requireActivity())
+        mInflater = LayoutInflater.from(requireContext())
     }
 
     private fun addTask(title : String) {
         taskHelper.addTask().add(title)
     }
 
-
     protected fun refreshAllViewsFromTasksLayout(context : Context, activity : Activity){
         layout.removeAllViews()
         mContext = context
         mActivity = activity
-        getTasks.get()
+        GetTasks(mActivity).get()
     }
 
     protected fun taskNameTvCustomizer(trueOrFalse : String, taskNameTv : TextView){
@@ -171,10 +170,20 @@ open class UserProjects : Fragment() {
             create(mContext, mActivity)
             titleText = "You Deleting a Task"
             messageText = "If you delete this \"$newTitle\" task, you cannot get it back. Are you sure you want to delete?"
+            this.view.findViewById<CheckBox>(R.id.deleteInternetTooCheckBox).visibility = if (taskModel.isHybrid == "false"){
+                View.GONE
+            }else{
+                View.VISIBLE
+            }
         }.show()
-
+        val ctxHere = mContext
         deleteProjectView.findViewById<Button>(R.id.deleteWarningYesButton).setOnClickListener {
-            DeleteTask(mContext, mActivity).delete(deleteProjectView, taskModel.taskUuid, taskModel.id)
+            DeleteTask(ctxHere, mActivity).delete(deleteProjectView, taskModel.taskUuid, taskModel.isHybrid)
         }
+    }
+
+    fun internetErrorFun(ctx : Context){
+        showAlert = ShowAlert(ctx)
+        showAlert.errorAlert("error", ctx.getString(R.string.project_id), true)
     }
 }

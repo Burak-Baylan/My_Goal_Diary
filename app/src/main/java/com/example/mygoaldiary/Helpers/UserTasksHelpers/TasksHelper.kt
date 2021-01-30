@@ -11,7 +11,7 @@ open class TasksHelper : UserProjects(){
        lateinit var mActivity: Activity
 
         fun addTask(): AddTask {
-            return AddTask(mContext, mActivity)
+            return AddTask()
         }
 
     }

@@ -13,8 +13,9 @@ class PutTasks : UserProjects(){
 
     @SuppressLint("InflateParams")
     fun putViews(mItems : MutableList<TaskModel>) {
+        layout.removeAllViews()
         for ((position, taskModel) in mItems.withIndex()){
-            val viewHere = mInflater.inflate(R.layout.layout_for_project_tasks, null)
+            val viewHere = mInflater.inflate(R.layout.user_tasks_row, null)
             val taskLayout = viewHere.findViewById<LinearLayout>(R.id.taskLayout)
             val taskNameTv = viewHere.findViewById<TextView>(R.id.taskNameText)
             val myCb = viewHere.findViewById<CheckBox>(R.id.isTaskDoneCb)

@@ -20,7 +20,7 @@ import com.example.mygoaldiary.Helpers.ShortenWord
 import com.example.mygoaldiary.LoginScreen
 import com.example.mygoaldiary.R
 import com.example.mygoaldiary.RecyclerView.HomeRecyclerViewAdapter
-import com.example.mygoaldiary.RecyclerView.ModelHome
+import com.example.mygoaldiary.Models.ModelHome
 import com.example.mygoaldiary.SQL.ManageSQL
 import com.example.mygoaldiary.databinding.FragmentHomeBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -45,7 +45,6 @@ class Home : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val view = binding.root
 

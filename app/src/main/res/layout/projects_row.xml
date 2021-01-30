@@ -34,16 +34,44 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="10dp"
-            android:includeFontPadding="false"
             android:layout_marginEnd="5dp"
+            android:includeFontPadding="false"
             android:singleLine="true"
             android:text="Lorem Ipsum"
             android:textColor="#000000"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@+id/mImageViewFromListViewRow"
-            app:layout_constraintEnd_toStartOf="@+id/dateTextViewFromListView"
+            app:layout_constraintEnd_toStartOf="@+id/linearLayout"
             app:layout_constraintStart_toEndOf="@+id/mImageViewFromListViewRow"
             app:layout_constraintTop_toTopOf="@+id/mImageViewFromListViewRow" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/dateTextViewFromListView"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/cloudImage"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="5dp"
+                android:src="@drawable/ic_cloud_database" />
+
+            <ImageView
+                android:id="@+id/sqlImage"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="5dp"
+                android:src="@drawable/ic_database" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/dateTextViewFromListView"
