@@ -3,9 +3,11 @@ package com.example.mygoaldiary.Helpers.UserTasksHelpers
 import android.annotation.SuppressLint
 import android.view.View
 import android.widget.*
-import com.example.mygoaldiary.Fragments.Fragments.HomeMenuFragments.UserProjects
+import com.example.mygoaldiary.Creators.ShowAlert
+import com.example.mygoaldiary.Views.HomeMenuFragments.UserProjects.UserProjects
 import com.example.mygoaldiary.Models.TaskModel
 import com.example.mygoaldiary.R
+import com.example.mygoaldiary.Views.Details
 
 class PutTasks : UserProjects(){
 
@@ -27,7 +29,7 @@ class PutTasks : UserProjects(){
             }
 
             taskLayout.setOnClickListener {
-                val get = taskOverOrNot(checkBoxArray[position], taskNameTv, taskModel)
+                val get = taskOverOrNot2(checkBoxArray[position], taskNameTv, taskModel)
                 myCb.isChecked = get
                 checkBoxArray[position] = get
             }
@@ -35,7 +37,7 @@ class PutTasks : UserProjects(){
             val cbBool = false
             checkBoxArray.add(cbBool)
 
-            myCb.setOnClickListener { checkBoxArray[position] = taskOverOrNot(checkBoxArray[position], taskNameTv, taskModel) }
+            myCb.setOnClickListener { checkBoxArray[position] = taskOverOrNot2(checkBoxArray[position], taskNameTv, taskModel) }
             totalTasks++
 
             doneController(taskModel, position, myCb, taskNameTv)
@@ -60,6 +62,64 @@ class PutTasks : UserProjects(){
             myCb.isChecked = false
             checkBoxArray[position] = false
             taskNameTvCustomizer("false", taskNameTv)
+        }
+    }
+
+    private fun taskOverOrNot2(isChecked : Boolean, textView : TextView, taskModel : TaskModel) : Boolean{
+
+        val isHybrid = taskModel.isHybrid
+
+        fun save () : Boolean{
+            return if (!isChecked){
+                tasksDone++
+                taskNameTvCustomizer("true", textView)
+                sqlManage.manager(mSql, "UPDATE '${Details.projectUuid}' SET isDone = 'true' WHERE id = ${taskModel.id}")
+                true
+            }else{
+                tasksDone--
+                sqlManage.manager(mSql, "UPDATE '${Details.projectUuid}' SET isDone = 'false' WHERE id = ${taskModel.id}")
+                taskNameTvCustomizer("false", textView)
+                false
+            }
+        }
+
+        val returnBool : Boolean
+
+        if (isHybrid == "true"){
+            returnBool = save()
+            showAlert.warningAlert("Update from cloud", "Do you want to update from the cloud at the same time?", false).apply {
+                this.setOnClickListener {
+                    ShowAlert.mAlertDialog.dismiss()
+                    updateFromFb(taskModel, returnBool)
+                }
+            }
+        }else{
+            returnBool = save()
+        }
+
+        binding.tasksDone.text = "$tasksDone/$totalTasks"
+        return returnBool
+    }
+
+    private fun updateFromFb(taskModel: TaskModel, returnBool: Boolean) {
+        if (currentUser != null) {
+            loadingDialog.startLoadingDialog()
+            firebase.collection("Users")
+                    .document(currentUser.uid)
+                    .collection("Projects")
+                    .document(Details.projectUuid)
+                    .collection("Tasks")
+                    .document(taskModel.taskUuid)
+                    .update("isDone", "$returnBool")
+                    .addOnSuccessListener {
+                        showAlert.successAlert("Success", "Update success.", true)
+                        loadingDialog.dismissDialog()
+                    }.addOnFailureListener {
+                        showAlert.errorAlert("Error", "Update fail.", true)
+                        loadingDialog.dismissDialog()
+                    }
+        }else{
+            showAlert.infoAlert("Please", "Please", true)
         }
     }
 }

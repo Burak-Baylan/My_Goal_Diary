@@ -4,9 +4,11 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
+import android.view.View
 import android.widget.LinearLayout
-import com.example.mygoaldiary.Details
-import com.example.mygoaldiary.Fragments.Fragments.HomeMenuFragments.UserProjects
+import com.example.mygoaldiary.ConstantValues
+import com.example.mygoaldiary.Views.Details
+import com.example.mygoaldiary.Views.HomeMenuFragments.UserProjects.UserProjects
 import com.example.mygoaldiary.Models.TaskModel
 
 open class GetTasks (private val mActivity : Activity): UserProjects(){
@@ -14,24 +16,35 @@ open class GetTasks (private val mActivity : Activity): UserProjects(){
     private lateinit var sharedPref : SharedPreferences
 
     @SuppressLint("Recycle", "SetTextI18n")
-    fun get() {
+    private fun get() : MutableList<TaskModel>? {
+        layout.orientation = LinearLayout.VERTICAL
         createShared()
         mSql = sqlManage.createSqlVariable("HomePage").apply {
             // TASKS
-            sqlManage.tableCreator(this, "'${Details.projectId}'", "id INTEGER PRIMARY KEY, taskUuid VARCHAR, title VARCHAR, isDone VARCHAR, isHybridTask VARCHAR, yearDate VARCHAR, time VARCHAR")
+            sqlManage.tableCreator(this, "'${Details.projectUuid}'", ConstantValues.TASK_VARIABLES_STRING)
         }
-        layout.orientation = LinearLayout.VERTICAL
-        try {
-            tasksDone = 0
-            totalTasks = 0
-            val items = putItemsFromModel()
-            PutTasks().putViews(items)
+        return try {
+            putItemsFromModel()
+        }
+        catch (e: Exception){
+            println("GetTasks 'putItems' error: ${e.localizedMessage}")
+            null
+        }
+    }
+
+    fun justGet(): MutableList<TaskModel>? {
+        return get()
+    }
+
+    fun getAndPut(){
+        tasksDone = 0
+        totalTasks = 0
+        get()?.let {
+            PutTasks().putViews(it)
             binding.tasksDone.text = "$tasksDone/$totalTasks"
             binding.tasksScrollView.removeAllViews()
             binding.tasksScrollView.addView(layout)
-        }
-        catch (e: Exception){
-            println("New Error: ${e.localizedMessage}")
+            return
         }
     }
 
@@ -39,9 +52,11 @@ open class GetTasks (private val mActivity : Activity): UserProjects(){
 
     @SuppressLint("Recycle")
     private fun putItemsFromModel(): MutableList<TaskModel> {
-        val cursor = mSql?.rawQuery("SELECT * FROM '${Details.projectId}'", null)
+        val cursor = mSql?.rawQuery("SELECT * FROM '${Details.projectUuid}'", null)
+        println("zaptirikrrikrir: ${Details.projectUuid}")
 
         val filterHere = getCurrentFilter()
+        var hybridCounter = 0
 
         while (cursor!!.moveToNext()) {
             val id = cursor.getString(cursor.getColumnIndex("id"))
@@ -59,7 +74,11 @@ open class GetTasks (private val mActivity : Activity): UserProjects(){
             }else if (filterHere == 2){// BOTH
                 mItems.add(TaskModel(id, taskUuid, title, isDone, isHybrid, yearDate, time))
             }
+
+            if (isHybrid == "false") hybridCounter++
         }
+        if (currentUser != null) binding.uploadToCloudIc.visibility = View.VISIBLE
+        else binding.uploadToCloudIc.visibility = View.GONE
         mItems.reverse()
         return mItems
     }

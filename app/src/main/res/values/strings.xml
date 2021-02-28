@@ -34,19 +34,52 @@
     <string name="deadline">Deadline</string>
 
     <string name="tasks">Tasks</string>
-    
+
     <string name="pleaseLoginToUploadCloud">You must be logged in to save to cloud.</string>
 
     <string name="internetRequiredToCloudSave">Internet connection is required to save to cloud.</string>
 
+    <string name="youMustBeLoggedInToMoveProject">You must be logged in to move the project to the cloud.</string>
+
+    <string name="moveSuccess">Move successful</string>
+
     <string name="addATask">Add a task…</string>
 
     <string name="alsoUploadCloud">Also upload to cloud.</string>
+
+    <string name="numberOfCouldntUploadedTask">Number of tasks that cannot be uploaded</string>
 
     <string name="addTaskFail">Task couldn\'t be uploaded. Please try again.</string>
 
     <string name="deleteTaskFail">Task couldn\'t be deleted. Please try again.</string>
 
     <string name="internetRequiredToDeleteTask">Internet connection is required to delete task from cloud.</string>
+
+    <string name="seeFromLocalDb">View From the Local Database Only</string>
+
+    <string name="seeFromCloudDb">View from the Cloud Only</string>
+
+    <string name="seeFromBoth">View From Both Local Database and Cloud</string>
+
+    <string name="youDeletingAProject">You Deleting a Project</string>
+
+    <string name="ifYouDeleteThis">If you delete this</string>
+
+    <string name="ifYouDeleteYouCantGetBackProject">project, you cannot get it back. Are you sure you want to delete?</string>
+
+    <string name="info">Info</string>
+
+    <string name="warning">Warning</string>
+
+    <string name="taskNotCloud">If you want to save the task in the cloud, your current project must be uploaded the cloud. You can upload it from above.</string>
+
+    <string name="youUploadingYourProjectToTheCloud">You updating your current project with its content in the cloud. Do you want to continue.</string>
+
+    <string name="projectMovingInternetError">Internet connection is required to move the project to the cloud.</string>
+
+    <string name="remindProjectInternet">If you do something without being connected to the internet, the event does not apply to your account.</string>
+    <string name="title_activity_dnm">dnm</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
 
 </resources>

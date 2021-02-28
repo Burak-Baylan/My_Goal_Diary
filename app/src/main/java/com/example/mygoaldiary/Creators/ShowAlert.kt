@@ -7,13 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import com.example.mygoaldiary.R
 
 class ShowAlert (private val context : Context){
 
     private var mCancelable = false
-    private lateinit var mAlertDialog : AlertDialog
+
+    companion object {
+        lateinit var mAlertDialog: AlertDialog
+    }
 
     /**********************************************************************************************/
     fun infoAlert(title : String, message : String, cancelable : Boolean){
@@ -77,35 +79,7 @@ class ShowAlert (private val context : Context){
         if (alertDialog.window != null){
             alertDialog.window!!.setBackgroundDrawable(ColorDrawable(0))
         }
-        this.mAlertDialog = alertDialog
+        mAlertDialog = alertDialog
         return view
-    }
-
-    /**********************************************************************************************/
-
-    fun successToast(toastMessage : String){
-
-    }
-
-    fun errorToast(toastMessage : String){
-
-    }
-
-    fun infoToast(toastMessage : String){
-
-    }
-
-    fun warningToast(toastMessage : String){
-
-    }
-
-    private fun getToast(drawable : Int, message : String, imageViewBackground : Int, textViewBackground : Int){
-        val view = LayoutInflater.from(context).inflate(drawable, null)
-        toast = Toast(context)
-
-    }
-
-    companion object{
-        lateinit var toast : Toast
     }
 }

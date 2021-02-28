@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#EFEFEF"
+    android:foreground="?attr/selectableItemBackground"
+    android:id="@+id/mainLayout">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/backgorund_alert_dialog"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+        <TextView
+            android:id="@+id/categoryTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Category: "
+            android:textColor="#C6C6C6"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/ppIv"
+            app:layout_constraintStart_toStartOf="@+id/usernameTv" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/ppIv"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:src="#EFEFEF"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/usernameTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:textColor="#5A5A5A"
+            android:textSize="12sp"
+            tools:text="Username"
+            app:layout_constraintStart_toEndOf="@+id/ppIv"
+            app:layout_constraintTop_toTopOf="@+id/ppIv" />
+
+        <TextView
+            android:id="@+id/emailTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:textColor="#A3A3A3"
+            android:textSize="12sp"
+            tools:text="\@usrnm"
+            app:layout_constraintBottom_toBottomOf="@+id/usernameTv"
+            app:layout_constraintStart_toEndOf="@+id/usernameTv"
+            app:layout_constraintTop_toTopOf="@+id/usernameTv" />
+
+        <ImageView
+            android:id="@+id/optionsMenu"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_3_point_menu"
+            app:layout_constraintBottom_toBottomOf="@+id/ppIv"
+            app:layout_constraintEnd_toEndOf="@+id/bookmarkIc"
+            app:layout_constraintTop_toTopOf="@+id/ppIv" />
+
+        <TextView
+            android:id="@+id/commentTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:layout_marginEnd="15dp"
+            android:textSize="13sp"
+            tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum imperdiet molestie consequat. Vivamus ut justo nisl. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Maecenas sed nunc venenatis tellus."
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/categoryTv"
+            app:layout_constraintTop_toBottomOf="@id/ppIv" />
+
+        <!--
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/sharedImageIv"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="15dp"
+            android:background="#EFEFEF"
+            android:scaleType="fitCenter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ppIv"
+            app:layout_constraintTop_toBottomOf="@+id/commentTv"
+            app:riv_border_color="#0032A852"
+            app:riv_border_width="1dp"
+            app:riv_corner_radius="5dp"
+            app:riv_mutate_background="true"
+            app:riv_oval="false"
+            app:riv_tile_mode="repeat" />
+-->
+
+        <ImageView
+            android:id="@+id/likeIc"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
+            android:src="@drawable/ic_like"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toTopOf="@+id/dateTv"
+            app:layout_constraintStart_toStartOf="@+id/commentTv"
+            app:layout_constraintTop_toBottomOf="@+id/commentTv" />
+
+        <TextView
+            android:id="@+id/likeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textSize="11sp"
+            android:textColor="#A5A5A5"
+            android:layout_marginStart="2dp"
+            app:layout_constraintTop_toTopOf="@id/likeIc"
+            app:layout_constraintBottom_toBottomOf="@id/likeIc"
+            app:layout_constraintLeft_toRightOf="@id/likeIc"/>
+
+        <ImageView
+            android:id="@+id/commentIc"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/ic_comment"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toBottomOf="@+id/likeIc"
+            app:layout_constraintStart_toEndOf="@+id/likeTextView"
+            app:layout_constraintTop_toTopOf="@+id/likeIc" />
+
+        <TextView
+            android:id="@+id/commentsTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textSize="11sp"
+            android:textColor="#A5A5A5"
+            android:layout_marginStart="2dp"
+            app:layout_constraintTop_toTopOf="@id/commentIc"
+            app:layout_constraintBottom_toBottomOf="@id/commentIc"
+            app:layout_constraintLeft_toRightOf="@id/commentIc"/>
+
+        <ImageView
+            android:id="@+id/shareIc"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:visibility="gone"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/ic_share"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toBottomOf="@+id/commentIc"
+            app:layout_constraintStart_toEndOf="@+id/commentsTv"
+            app:layout_constraintTop_toTopOf="@+id/commentIc" />
+
+        <ImageView
+            android:id="@+id/bookmarkIc"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="50dp"
+            android:src="@drawable/ic_bookmark"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toBottomOf="@+id/likeIc"
+            app:layout_constraintEnd_toEndOf="@+id/commentTv"
+            app:layout_constraintTop_toTopOf="@+id/likeIc" />
+
+        <TextView
+            android:id="@+id/dateTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:textColor="#A3A3A3"
+            android:textSize="12sp"
+            tools:text="Tarih"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/likeIc" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

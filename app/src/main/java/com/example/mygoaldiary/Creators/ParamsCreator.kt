@@ -9,17 +9,17 @@ class ParamsCreator {
             startMargin : Int?, endMargin : Int?, marginBottom : Int?, marginTop : Int?
     ) : LinearLayout.LayoutParams{
         return LinearLayout.LayoutParams(width,height).apply {
-            if (startMargin != null) {
-                marginStart = startMargin
+            startMargin?.let {
+                marginStart = it
             }
-            if (endMargin != null) {
-                marginEnd = endMargin
+            endMargin?.let {
+                marginEnd = it
             }
-            if (marginBottom != null) {
-                bottomMargin = marginBottom
+            marginBottom?.let{
+                bottomMargin = it
             }
-            if (marginTop != null) {
-                topMargin = marginTop
+            marginTop?.let{
+                topMargin = it
             }
         }
     }

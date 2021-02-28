@@ -43,10 +43,6 @@ class DeleteAlertDialog {
             mDeleteAlert.alertCreator().show()
             return view
         }
-
-        lateinit var yesButton : Button
-        lateinit var noButton : Button
-
     }
 
     private fun putTexts(){

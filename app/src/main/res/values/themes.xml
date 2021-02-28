@@ -51,9 +51,22 @@
         <item name="colorPrimary">@color/white</item>
     </style>
 
+    <style name="Theme.MyGoalDiary.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.MyGoalDiary.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.MyGoalDiary.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="PopupMenu" parent="@android:style/Widget.PopupMenu">
+        <item name="android:popupBackground">@color/goodBlue</item>
+    </style>
+
 </resources>
 
-<!--
+    <!--
 <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
 
 <item name="colorPrimary">@color/colorPrimary</item>

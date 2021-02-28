@@ -5,17 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#EFEFEF"
-    tools:context=".Details">
+    tools:context=".Views.Details">
 
-    <View
-        android:id="@+id/shadowFromDetails"
-        android:layout_width="match_parent"
-        android:layout_height="57dp"
-        android:background="@drawable/shadow"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/supportActionBarLinearLayoutFromDetails"
@@ -54,7 +45,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/shadowFromDetails">
+        app:layout_constraintTop_toBottomOf="@+id/supportActionBarLinearLayoutFromDetails">
 
         <FrameLayout
             android:id="@+id/fl_wrapper_details"

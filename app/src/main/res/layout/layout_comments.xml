@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#EFEFEF">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/backgorund_alert_dialog"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/ppIvComment"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:src="#EFEFEF"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/usernameTvComment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:textColor="#5A5A5A"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/ppIvComment"
+            app:layout_constraintStart_toEndOf="@+id/ppIvComment"
+            app:layout_constraintTop_toTopOf="@+id/ppIvComment"
+            tools:text="Username" />
+
+        <TextView
+            android:id="@+id/emailTvComment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:textColor="#A3A3A3"
+            android:textSize="12sp"
+            tools:text="\@usrnm"
+            app:layout_constraintBottom_toBottomOf="@+id/usernameTvComment"
+            app:layout_constraintStart_toEndOf="@+id/usernameTvComment"
+            app:layout_constraintTop_toTopOf="@+id/usernameTvComment" />
+
+        <TextView
+            android:id="@+id/commentTvComment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:layout_marginEnd="15dp"
+            android:textSize="11sp"
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc nec tempus magna, nec aliquet nibh. Suspendisse sagittis aliquam elit id vulputate. Sed consequat metus quis ipsum dapibus consequat. Nunc cursus ex augue, dictum efficitur tortor viverra."
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/usernameTvComment"
+            app:layout_constraintTop_toBottomOf="@id/ppIvComment" />
+
+        <!--
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/sharedImageIv"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="15dp"
+            android:background="#EFEFEF"
+            android:scaleType="fitCenter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ppIv"
+            app:layout_constraintTop_toBottomOf="@+id/commentTv"
+            app:riv_border_color="#0032A852"
+            app:riv_border_width="1dp"
+            app:riv_corner_radius="5dp"
+            app:riv_mutate_background="true"
+            app:riv_oval="false"
+            app:riv_tile_mode="repeat" />
+-->
+
+        <ImageView
+            android:id="@+id/likeIcComment"
+            android:layout_width="17dp"
+            android:layout_height="17dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_like"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/commentTvComment"
+            app:layout_constraintTop_toBottomOf="@+id/commentTvComment" />
+
+        <TextView
+            android:id="@+id/likeTextViewCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textSize="11sp"
+            android:textColor="#A5A5A5"
+            android:layout_marginStart="2dp"
+            app:layout_constraintTop_toTopOf="@id/likeIcComment"
+            app:layout_constraintBottom_toBottomOf="@id/likeIcComment"
+            app:layout_constraintLeft_toRightOf="@id/likeIcComment"/>
+
+        <ImageView
+            android:id="@+id/shareIcComment"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/ic_share"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toBottomOf="@+id/likeIcComment"
+            app:layout_constraintStart_toEndOf="@+id/likeTextViewCount"
+            app:layout_constraintTop_toTopOf="@+id/likeIcComment" />
+
+        <TextView
+            android:id="@+id/dateTvComment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:text="12/5/2029 15:38:41"
+            android:textColor="#A3A3A3"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/shareIcComment" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

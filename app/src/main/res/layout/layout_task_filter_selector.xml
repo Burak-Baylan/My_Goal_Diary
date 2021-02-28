@@ -27,7 +27,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="5dp"
                 android:buttonTint="#FFFFFF"
-                android:text="Just see local databse"
+                android:text="@string/seeFromLocalDb"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
 
@@ -38,7 +38,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:buttonTint="#FFFFFF"
-                android:text="Just see cloud"
+                android:text="@string/seeFromCloudDb"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
 
@@ -50,7 +50,7 @@
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="10dp"
                 android:buttonTint="#FFFFFF"
-                android:text="See Both"
+                android:text="@string/seeFromBoth"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
         </RadioGroup>

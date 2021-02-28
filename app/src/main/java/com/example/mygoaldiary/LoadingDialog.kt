@@ -32,6 +32,7 @@ class LoadingDialog (private val activity : Activity){
     }
 
     fun dismissDialog(){
+        println("DİSMİSID")
         dialog.dismiss()
     }
 }

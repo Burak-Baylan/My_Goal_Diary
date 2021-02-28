@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginScreen"
+    tools:context=".Views.LoginScreen"
     android:background="#EFEFEF">
 
     <!--TextView
@@ -81,8 +81,8 @@
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/signUpButton"
         android:layout_width="0dp"
+        android:id="@+id/signUpButton"
         android:layout_height="wrap_content"
         android:background="@drawable/background_sign_up_stroke_green"
         android:text="SIGN UP"

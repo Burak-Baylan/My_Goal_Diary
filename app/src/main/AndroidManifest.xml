@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.mygoaldiary">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,10 +14,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyGoalDiary">
-        <activity android:name=".SignUpScreen"></activity>
-        <activity android:name=".LoginScreen" />
-        <activity android:name=".Details" />
-        <activity android:name=".MainActivity">
+
+        <service android:name=".Notification.FirebaseService"
+            android:permission="com.google.android.c2dm.permission.SEND">
+
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+            </intent-filter>
+
+        </service>
+
+        <activity
+            android:name=".Creators.dnm"
+            android:label="@string/title_activity_dnm"
+            android:theme="@style/Theme.MyGoalDiary.NoActionBar"></activity>
+        <activity android:name=".Views.EditUserProfile" />
+        <activity android:name=".Views.ProfileActivity" />
+        <activity android:name=".Views.AddPost" />
+        <activity android:name=".Views.SignUpScreen" />
+        <activity android:name=".Views.LoginScreen" />
+        <activity android:name=".Views.Details" />
+        <activity android:name=".Views.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

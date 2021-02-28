@@ -4,11 +4,14 @@ import android.app.Activity
 import android.content.Context
 import android.widget.Toast
 import com.example.mygoaldiary.Creators.ShowAlert
-import com.example.mygoaldiary.LoadingDialog
+import com.example.mygoaldiary.Notification.FirebaseService
+import com.example.mygoaldiary.Notification.SaveTokenToFirebase
 import com.example.mygoaldiary.R
+import com.example.mygoaldiary.Views.EditUserProfile
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.userProfileChangeRequest
+import com.google.firebase.iid.FirebaseInstanceId
 
 class FirebaseAuthClass (private val ctx : Context, private val act : Activity): FirebaseSuperClass() {
 
@@ -31,7 +34,8 @@ class FirebaseAuthClass (private val ctx : Context, private val act : Activity):
                                 "userName" to userName,
                                 "userEmail" to userEmail,
                                 "userPassword" to userPassword,
-                                "userId" to currentId
+                                "userId" to currentId,
+                                "pushNotify" to true
                         )
                         fireStoreManage().addData("Users", currentId, hashData, { authSuccessFunc() }, { authFailFunc() })
                     }
@@ -48,6 +52,13 @@ class FirebaseAuthClass (private val ctx : Context, private val act : Activity):
 
     private fun authSuccessFunc(){
         Toast.makeText(ctx, "successFunc", Toast.LENGTH_SHORT).show()
+
+        FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener {
+            SaveTokenToFirebase().save(it.token)
+            FirebaseService.token = it.token
+        }
+
+        act.finish()
         loadingDialog!!.dismissDialog()
     }
 

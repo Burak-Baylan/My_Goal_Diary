@@ -9,5 +9,8 @@ data class ModelHome(
         val textViewColor: String,
         val typeFace: Int,
         val imageViewSize : Int,
-        val projectUuid : String?
+        val isHybrid : String?,
+        val projectUuid : String?,
+        val lastInteraction : String?,
+        val targetedDeadline : String?,
 )

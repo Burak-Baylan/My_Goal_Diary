@@ -1,6 +1,7 @@
 package com.example.mygoaldiary.Helpers.UserTasksHelpers
 
-import com.example.mygoaldiary.Details
+import com.example.mygoaldiary.ConstantValues
+import com.example.mygoaldiary.Views.Details
 import com.example.mygoaldiary.Helpers.GetCurrentDate
 import com.example.mygoaldiary.Helpers.MyHelpers
 import com.example.mygoaldiary.R
@@ -42,10 +43,6 @@ class AddTask  : TasksHelper() {
         val currentUser = firebaseSuperClass.userAuthManage().getCurrentUser()
         val userId = currentUser!!.uid
 
-        val putController = hashMapOf(
-                "task" to "task"
-        )
-
         val putMap = hashMapOf(
                 "title" to mTitle,
                 "isDone" to "false",
@@ -57,24 +54,18 @@ class AddTask  : TasksHelper() {
 
         val documentReference = firebase.collection("Users").document(userId).collection("Projects").document(projectUuid)
 
-        documentReference.set(putController).addOnSuccessListener {
-            documentReference.collection("Tasks").document(taskUuidString).set(putMap).addOnSuccessListener {
-                saveTaskToSql(taskUuidString)
-            }.addOnFailureListener {
-                documentReference.delete().addOnSuccessListener {
-                    showAlert.errorAlert(mContext.getString(R.string.error), mContext.getString(R.string.addTaskFail), true)
-                    loadingDialog.dismissDialog()
-                }
-            }
+        documentReference.collection("Tasks").document(taskUuidString).set(putMap).addOnSuccessListener {
+            saveTaskToSql(taskUuidString)
         }.addOnFailureListener {
-            /** Hata **/
-            showAlert.errorAlert(getString(R.string.error), it.localizedMessage!!, true)
-            loadingDialog.dismissDialog()
+            documentReference.delete().addOnSuccessListener {
+                showAlert.errorAlert(mContext.getString(R.string.error), mContext.getString(R.string.addTaskFail), true)
+                loadingDialog.dismissDialog()
+            }
         }
     }
 
     private fun saveTaskToSql(taskUuidString : String){
-        val getReason = sqlManage.adder(mSql, "'${Details.projectId}'", "taskUuid, title, isDone, isHybridTask, yearDate, time", "'${taskUuidString}', '$mTitle', 'false', '$isHybridTask', '$date', '$time'")
+        val getReason = sqlManage.adder(mSql, "'${Details.projectUuid}'", ConstantValues.TASK_VARIABLES_NAME_STRING, "'${taskUuidString}', '$mTitle', 'false', '$isHybridTask', '$date', '$time'")
         if (getReason) {
             refreshAllViewsFromTasksLayout(mContext, mActivity)
             binding.newTaskEditText.text.clear()

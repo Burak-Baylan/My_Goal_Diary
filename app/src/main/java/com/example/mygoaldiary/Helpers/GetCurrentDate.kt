@@ -6,16 +6,19 @@ import java.util.*
 
 class GetCurrentDate {
     companion object {
+
+        private lateinit var sdf : SimpleDateFormat
+
         @SuppressLint("SimpleDateFormat")
         fun getDate(): String {
-            val yearDateSdf = SimpleDateFormat("dd/MM/yyyy")
-            return yearDateSdf.format(Date())
+            sdf = SimpleDateFormat("dd/MM/yyyy")
+            return sdf.format(Date())
         }
 
         @SuppressLint("SimpleDateFormat")
         fun getTime(): String {
-            val timeSdf = SimpleDateFormat("HH:mm:ss")
-            return timeSdf.format(Date())
+            sdf = SimpleDateFormat("HH:mm:ss")
+            return sdf.format(Date())
         }
     }
 }

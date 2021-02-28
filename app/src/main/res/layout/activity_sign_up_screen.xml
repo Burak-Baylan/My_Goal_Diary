@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginScreen"
+    tools:context=".Views.LoginScreen"
     android:background="#EFEFEF">
 
     <!--TextView
@@ -40,6 +40,7 @@
         android:background="@drawable/background_edit_text_login"
         android:drawableStart="@drawable/ic_person"
         android:drawablePadding="10dp"
+        android:paddingEnd="10dp"
         android:ems="10"
         android:hint="Username"
         android:maxLength="17"
@@ -56,6 +57,7 @@
         android:background="@drawable/background_edit_text_login"
         android:drawableStart="@drawable/ic_email"
         android:drawablePadding="10dp"
+        android:paddingEnd="10dp"
         android:ems="10"
         android:hint="E-Mail"
         android:inputType="textEmailAddress"
@@ -76,6 +78,7 @@
         android:hint="Password"
         android:inputType="textPersonName"
         android:paddingStart="15dp"
+        android:paddingEnd="10dp"
         android:password="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -90,7 +93,7 @@
         android:layout_marginStart="25dp"
         android:layout_marginTop="25dp"
         android:layout_marginEnd="25dp"
-        android:text="REGISTER"
+        android:text="SIGN UP"
         android:gravity="center"
         android:textSize="16sp"
         android:background="@drawable/background_login_button_green"
