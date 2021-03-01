@@ -10,16 +10,15 @@ import com.example.mygoaldiary.LoadingDialog
 import com.example.mygoaldiary.Models.TaskModel
 import com.example.mygoaldiary.R
 import com.example.mygoaldiary.SQL.ManageSQL
+import com.example.mygoaldiary.SQL.UpdateLastInteraction
 import com.example.mygoaldiary.Views.Details
 import com.example.mygoaldiary.Views.HomeMenuFragments.UserProjects.UserProjects
 import com.google.firebase.Timestamp
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class MoveFromLocalToCloud (private val contextHere : Context, private val activity : Activity) : UserProjects(){
-    private val auth = FirebaseAuth.getInstance()
-    private val showAlert = ShowAlert(mContext)
 
+    private val showAlert = ShowAlert(mContext)
     private val loadingDialog = LoadingDialog(mActivity)
 
     fun startMovingTasks() {
@@ -32,7 +31,7 @@ class MoveFromLocalToCloud (private val contextHere : Context, private val activ
         loadingDialog.startLoadingDialog()
         if (currentUser != null) {
             moveProject()
-        } else { // Show error message
+        } else {
             loadingDialog.dismissDialog()
             showAlert.errorAlert(getString(R.string.error), getString(R.string.youMustBeLoggedInToMoveProject), true)
         }
@@ -40,7 +39,7 @@ class MoveFromLocalToCloud (private val contextHere : Context, private val activ
     private fun createProjectHashData() : HashMap<String, Any> =
         hashMapOf(
                 "userId" to currentUser!!.uid,
-                "userName" to currentUser!!.displayName!!,
+                "userName" to currentUser.displayName!!,
                 "projectName" to Details.key,
                 "projectColor" to Details.projectColor!!.toLong(),
                 "yearDate" to Details.date!!,
@@ -55,15 +54,15 @@ class MoveFromLocalToCloud (private val contextHere : Context, private val activ
     private fun moveProject() {
         firebaseUserProjectReference.set(createProjectHashData()).addOnSuccessListener {
             moveTasks()
+            UpdateLastInteraction.update()
         }.addOnFailureListener {
-            showAlert.errorAlert("Başarısız1", "Aktarma Başarısız.1", true)
             loadingDialog.dismissDialog()
         }
     }
 
-    var itemsSize = 0
-    var counter = 0
-    var manageSQL = ManageSQL(mContext, mActivity)
+    private var itemsSize = 0
+    private var counter = 0
+    private var manageSQL = ManageSQL(mContext, mActivity)
     private fun moveTasks(){
         val taskMovingFailArray = ArrayList<String>()
         GetTasks(mActivity).justGet()?.let {

@@ -13,6 +13,7 @@ import com.example.mygoaldiary.Helpers.UserTasksHelpers.MoveFromLocalToCloud
 import com.example.mygoaldiary.Helpers.UserTasksHelpers.TaskFilter
 import com.example.mygoaldiary.Helpers.UserTasksHelpers.TasksHelper
 import com.example.mygoaldiary.R
+import com.example.mygoaldiary.SQL.UpdateLastInteraction
 import com.example.mygoaldiary.Views.Details
 import com.google.firebase.auth.FirebaseAuth
 
@@ -44,7 +45,7 @@ class UserProjectsClickListeners : UserProjects() {
 
             this.getInfoForDeadline.setOnClickListener { showAlert.infoAlert("Info", "If you want to select a deadline, please upload your current project to cloud.", true) }
 
-            this.infoForCantUploadCloud.setOnClickListener { showAlert.infoAlert(getString(R.string.info), getString(R.string.taskNotCloud), true) }
+            this.infoForCantUploadCloud.setOnClickListener { showAlert.infoAlert(mActivity.getString(R.string.info), getString(R.string.taskNotCloud), true) }
 
             this.infoUserNull.setOnClickListener { showAlert.infoAlert("Info", "If you are logged in, you can upload your projects and tasks to the cloud.",true) }
 
@@ -66,7 +67,7 @@ class UserProjectsClickListeners : UserProjects() {
             }
 
             this.uploadToCloudIc.setOnClickListener {
-                showAlert.warningAlert(getString(R.string.warning), getString(R.string.youUploadingYourProjectToTheCloud), true).apply {
+                showAlert.warningAlert(mActivity.getString(R.string.warning), mActivity.getString(R.string.youUploadingYourProjectToTheCloud), true).apply {
                     // This button is positive button
                     this.setOnClickListener {
                         ShowAlert.mAlertDialog.dismiss()
@@ -94,6 +95,7 @@ class UserProjectsClickListeners : UserProjects() {
                         .document(Details.projectUuid)
                         .update("deadline", MyDatePickerDialog.targetedTimeStamp).addOnSuccessListener {
                             showAlert.successAlert("Success", "Deadline update successful.", true)
+                            UpdateLastInteraction.update()
                             loadingDialog.dismissDialog()
                         }.addOnFailureListener { e ->
                             showAlert.errorAlert("Error", e.localizedMessage!!, true)

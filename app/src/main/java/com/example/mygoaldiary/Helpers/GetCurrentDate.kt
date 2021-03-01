@@ -20,5 +20,9 @@ class GetCurrentDate {
             sdf = SimpleDateFormat("HH:mm:ss")
             return sdf.format(Date())
         }
+        
+        fun getDateAndTime() : String{
+            return "${getDate()} ${getTime()}"
+        }
     }
 }

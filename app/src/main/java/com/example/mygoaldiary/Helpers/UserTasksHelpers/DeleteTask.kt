@@ -10,6 +10,7 @@ import com.example.mygoaldiary.Views.Details
 import com.example.mygoaldiary.Views.HomeMenuFragments.UserProjects.UserProjects
 import com.example.mygoaldiary.Helpers.InternetController
 import com.example.mygoaldiary.R
+import com.example.mygoaldiary.SQL.UpdateLastInteraction
 
 class DeleteTask (private val mContext:  Context, private val mActivity : Activity): UserProjects(){
 
@@ -47,15 +48,11 @@ class DeleteTask (private val mContext:  Context, private val mActivity : Activi
     private fun deleteFromFirebase(taskUuid: String?) {
         firebaseSuperClass.userAuthManage().getCurrentUser()?.let {
             firebase.collection("Users").document(it.uid).collection("Projects").document(Details.projectUuid).collection("Tasks").document("$taskUuid").delete().addOnSuccessListener {
-                deleteSuccess(taskUuid)
+                deleteFromSQL(taskUuid)
             }.addOnFailureListener {
                 deleteFail()
             }
         }
-    }
-
-    private fun deleteSuccess(taskUuid: String?){
-        deleteFromSQL(taskUuid)
     }
 
     private fun deleteFail(){
@@ -68,6 +65,7 @@ class DeleteTask (private val mContext:  Context, private val mActivity : Activi
         if (get){
             alertDialogHere.cancel()
             refreshAllViewsFromTasksLayout(mContext, mActivity)
+            UpdateLastInteraction.update()
         }else{
             alertDialogHere.cancel()
             showAlert.errorAlert(mContext.getString(R.string.error), mContext.getString(R.string.deleteTaskFail), true)

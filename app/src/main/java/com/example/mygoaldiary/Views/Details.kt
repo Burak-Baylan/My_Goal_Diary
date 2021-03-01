@@ -96,7 +96,7 @@ class Details : AppCompatActivity() {
                     supportActionBarHider()
                 }
             }
-        } else{// Sql'deki kayıtlara göre göster
+        } else{
             makeCurrentFragment(UserProjects())
             supportActionBarHider()
         }

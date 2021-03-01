@@ -4,15 +4,11 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
-import android.content.SharedPreferences
 import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.widget.RadioButton
-import com.example.mygoaldiary.Helpers.UserTasksHelpers.GetTasks
-import com.example.mygoaldiary.Helpers.UserTasksHelpers.TaskFilterVariables
 import com.example.mygoaldiary.LoadingDialog
 import com.example.mygoaldiary.R
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 
 class FilterNotification {
@@ -44,7 +40,7 @@ class FilterNotification {
     }
 
     @SuppressLint("InflateParams")
-    fun getFilterView() : View {
+    private fun getFilterView() : View {
         filterView = mActivity.layoutInflater.inflate(R.layout.layout_notifications_filter_selector, null)
         return filterView
     }

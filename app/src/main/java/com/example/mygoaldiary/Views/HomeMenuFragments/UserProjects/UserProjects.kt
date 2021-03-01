@@ -46,7 +46,6 @@ open class UserProjects : Fragment() {
         lateinit var mContext : Context
         lateinit var mActivity : Activity
         lateinit var sqlManage : ManageSQL
-
         var _binding : FragmentUserProjectsBinding? = null
         val binding get() = _binding!!
         var firebase = FirebaseFirestore.getInstance()
@@ -70,19 +69,19 @@ open class UserProjects : Fragment() {
             this.titleTextViewUserProject.text = key
 
             if (Details.projectIsHybrid == "false"){
-                this.saveTaskInternetTooCheckBox.strikeThrough()
-                this.saveTaskInternetTooCheckBox.isEnabled = false
                 this.infoForCantUploadCloud.visibility = View.VISIBLE
                 this.uploadToCloudIc.visibility = View.VISIBLE
                 this.getInfoForDeadline.visibility = View.VISIBLE
+                this.saveTaskInternetTooCheckBox.strikeThrough()
                 this.targetedDeadlineTv.strikeThrough()
+                this.saveTaskInternetTooCheckBox.isEnabled = false
                 this.showAndHideTargetedDeadline.isEnabled = false
             }else {
                 if (!InternetController.internetControl(requireActivity())) this.internetOffIc.visibility = View.VISIBLE
-                this.saveTaskInternetTooCheckBox.isEnabled = true
-                this.targetedDeadlineTv.setDefaultFlag()
-                this.showAndHideTargetedDeadline.isEnabled = true
                 this.getInfoForDeadline.visibility = View.GONE
+                this.targetedDeadlineTv.setDefaultFlag()
+                this.saveTaskInternetTooCheckBox.isEnabled = true
+                this.showAndHideTargetedDeadline.isEnabled = true
             }
         }
 
@@ -130,23 +129,6 @@ open class UserProjects : Fragment() {
             taskNameTv.setTextColor(Color.parseColor("#000000"))
             taskNameTv.setDefaultFlag()
         }
-    }
-
-    @SuppressLint("SetTextI18n")
-    protected fun taskOverOrNot(isChecked : Boolean, textView : TextView, taskModel : TaskModel) : Boolean{
-        val returnBool = if (!isChecked){
-            tasksDone++
-            taskNameTvCustomizer("true", textView)
-            sqlManage.manager(mSql, "UPDATE '${Details.projectId}' SET isDone = 'true' WHERE id = ${taskModel.id}")
-            true
-        }else{
-            tasksDone--
-            sqlManage.manager(mSql, "UPDATE '${Details.projectId}' SET isDone = 'false' WHERE id = ${taskModel.id}")
-            taskNameTvCustomizer("false", textView)
-            false
-        }
-        binding.tasksDone.text = "$tasksDone/$totalTasks"
-        return returnBool
     }
 
     protected fun taskLongClickListener(taskModel: TaskModel) {

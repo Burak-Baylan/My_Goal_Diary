@@ -21,10 +21,8 @@ import com.example.mygoaldiary.RecyclerView.SocialCommentsAdapter
 import com.example.mygoaldiary.Views.BottomNavFragments.Social
 import com.github.ybq.android.spinkit.SpinKitView
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
-
 
 open class CommentSheet(private val contextHere: Context, private val activity: Activity) : Social(){
 
@@ -53,8 +51,6 @@ open class CommentSheet(private val contextHere: Context, private val activity: 
 
     private lateinit var ownerId : String
     private var comment : String? = null
-
-    private val firebase = FirebaseFirestore.getInstance()
 
     private fun <T : View> findViewById(@IdRes id : Int): T = bottomSheetView.findViewById(id)
 

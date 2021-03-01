@@ -4,9 +4,11 @@ import android.annotation.SuppressLint
 import android.view.View
 import android.widget.*
 import com.example.mygoaldiary.Creators.ShowAlert
+import com.example.mygoaldiary.Helpers.GetCurrentDate
 import com.example.mygoaldiary.Views.HomeMenuFragments.UserProjects.UserProjects
 import com.example.mygoaldiary.Models.TaskModel
 import com.example.mygoaldiary.R
+import com.example.mygoaldiary.SQL.UpdateLastInteraction
 import com.example.mygoaldiary.Views.Details
 
 class PutTasks : UserProjects(){
@@ -65,12 +67,13 @@ class PutTasks : UserProjects(){
         }
     }
 
+    private lateinit var currentDateAndTime : String
     private fun taskOverOrNot2(isChecked : Boolean, textView : TextView, taskModel : TaskModel) : Boolean{
 
         val isHybrid = taskModel.isHybrid
 
         fun save () : Boolean{
-            return if (!isChecked){
+            val returnThis = if (!isChecked){
                 tasksDone++
                 taskNameTvCustomizer("true", textView)
                 sqlManage.manager(mSql, "UPDATE '${Details.projectUuid}' SET isDone = 'true' WHERE id = ${taskModel.id}")
@@ -81,6 +84,8 @@ class PutTasks : UserProjects(){
                 taskNameTvCustomizer("false", textView)
                 false
             }
+            UpdateLastInteraction.update()
+            return returnThis
         }
 
         val returnBool : Boolean
@@ -98,6 +103,7 @@ class PutTasks : UserProjects(){
         }
 
         binding.tasksDone.text = "$tasksDone/$totalTasks"
+        //binding.showLastInteractionDateTv.text = GetCurrentDate.getDateAndTime()
         return returnBool
     }
 

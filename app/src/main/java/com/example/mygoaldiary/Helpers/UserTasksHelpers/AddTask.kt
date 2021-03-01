@@ -5,6 +5,7 @@ import com.example.mygoaldiary.Views.Details
 import com.example.mygoaldiary.Helpers.GetCurrentDate
 import com.example.mygoaldiary.Helpers.MyHelpers
 import com.example.mygoaldiary.R
+import com.example.mygoaldiary.SQL.UpdateLastInteraction
 import com.google.firebase.firestore.FirebaseFirestore
 import net.yslibrary.android.keyboardvisibilityevent.util.UIUtil
 
@@ -14,8 +15,6 @@ class AddTask  : TasksHelper() {
     private val time = GetCurrentDate.getTime()
     private val taskUuidString = MyHelpers.getUuid()
     private lateinit var mTitle : String
-
-    private val projectUuid = Details.projectUuid
 
     private var isHybridTask =
             if (binding.saveTaskInternetTooCheckBox.isChecked) "true"
@@ -52,7 +51,7 @@ class AddTask  : TasksHelper() {
                 "taskUuid" to taskUuidString
         )
 
-        val documentReference = firebase.collection("Users").document(userId).collection("Projects").document(projectUuid)
+        val documentReference = firebase.collection("Users").document(userId).collection("Projects").document(Details.projectUuid)
 
         documentReference.collection("Tasks").document(taskUuidString).set(putMap).addOnSuccessListener {
             saveTaskToSql(taskUuidString)
@@ -70,6 +69,7 @@ class AddTask  : TasksHelper() {
             refreshAllViewsFromTasksLayout(mContext, mActivity)
             binding.newTaskEditText.text.clear()
             UIUtil.hideKeyboard(mActivity)
+            UpdateLastInteraction.update()
         }else{
             showAlert.errorAlert("Error", "The task couldn't be added. Please try again.", true)
         }

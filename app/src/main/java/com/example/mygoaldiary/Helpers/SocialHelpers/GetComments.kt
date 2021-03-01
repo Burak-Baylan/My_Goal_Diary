@@ -8,14 +8,10 @@ import com.example.mygoaldiary.Models.SocialCommentsModel
 import com.example.mygoaldiary.Views.BottomNavFragments.Social
 import com.github.ybq.android.spinkit.SpinKitView
 import com.google.firebase.Timestamp
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 
 class GetComments: Social(){
 
-    val firebase = FirebaseFirestore.getInstance()
-    private val auth = FirebaseAuth.getInstance()
 
     lateinit var loadingView : SpinKitView
     lateinit var recyclerView : RecyclerView
