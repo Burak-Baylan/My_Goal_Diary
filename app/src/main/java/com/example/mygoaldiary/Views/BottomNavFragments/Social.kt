@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import androidx.activity.OnBackPressedCallback
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.chivorn.smartmaterialspinner.SmartMaterialSpinner
 import com.example.mygoaldiary.Creators.BottomSheets.AddPostSheet
 import com.example.mygoaldiary.FirebaseManage.FirebaseAuthClass
@@ -23,7 +22,6 @@ import com.example.mygoaldiary.Views.MainActivity
 import com.example.mygoaldiary.R
 import com.example.mygoaldiary.RecyclerView.SocialRecyclerViewAdapter
 import com.example.mygoaldiary.databinding.FragmentSocialBinding
-import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore

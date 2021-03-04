@@ -204,7 +204,6 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/sendCommentButton"
-                android:visibility="gone"
                 android:layout_width="70dp"
                 android:layout_height="30dp"
                 android:layout_marginBottom="5dp"
@@ -270,9 +269,7 @@
                     android:id="@+id/postCommentsRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
-                    android:layout_marginTop="5dp"
                     android:visibility="invisible"
-                    android:layout_marginBottom="2dp"
                     android:nestedScrollingEnabled="false"
                     app:layout_constraintBottom_toTopOf="@+id/cizgi2"
                     app:layout_constraintEnd_toEndOf="parent"

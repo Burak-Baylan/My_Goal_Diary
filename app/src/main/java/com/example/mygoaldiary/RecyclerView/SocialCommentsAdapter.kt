@@ -15,6 +15,7 @@ import com.example.mygoaldiary.Models.SocialCommentsModel
 import com.example.mygoaldiary.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 
@@ -48,18 +49,25 @@ class SocialCommentsAdapter (var items: ArrayList<SocialCommentsModel>, val acti
         holder.dateTv.text = "${date.day}/${date.month}/${date.year+1900} ${date.hours}:${date.minutes}:${date.seconds}"
 
         getLikeCount(holder, position)
+        getUserProperties(items[position].userUuid, holder, position)
+        getAvatar(holder, position)
 
         with(holder.likeButton){
             setOnClickListener {
-                if (currentUser != null) CommentLiker().askLike(currentUser, items[position].postId, items[position].commentId, this)
+                if (currentUser != null) {
+                    firebase.collection("Posts").document(items[position].postId).get().addOnSuccessListener {
+                        if (it.exists() && it != null) {
+                            CommentLiker().askLike(currentUser, items[position].userUuid, items[position].postId, items[position].commentId, this, it["comment"] as String)
+                        }
+                    }.addOnFailureListener {}
+                }
             }
         }
-        getUserProperties(items[position].userUuid, holder, position)
 
-        getAvatar(holder, position)
-
+        currentUser?.let {
+            checkIfLikeExists(holder, position)
+        }
     }
-
 
     private var link : String? = null
     private fun getAvatar(holder: Holder, position: Int) {
@@ -116,5 +124,21 @@ class SocialCommentsAdapter (var items: ArrayList<SocialCommentsModel>, val acti
 
     override fun getItemCount(): Int {
         return items.size
+    }
+
+    private fun checkIfLikeExists(holder: Holder, position: Int) {
+        val reference = firebase.collection("Posts").document(items[position].postId).collection("Comments").document(items[position].commentId).collection("Likes").whereEqualTo("ownerId", currentUser!!.uid)
+        checkIfExists(holder.likeButton, reference)
+    }
+
+    private fun checkIfExists(imageView : ImageView, query : Query){
+        query.get().addOnSuccessListener {
+            imageView.setColorFilter(Color.parseColor(
+                    if (!it.isEmpty) "#32A852"
+                    else "#D1D1D1"
+            ))
+        }.addOnFailureListener {
+
+        }
     }
 }

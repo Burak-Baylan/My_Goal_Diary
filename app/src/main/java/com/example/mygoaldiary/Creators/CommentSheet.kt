@@ -20,6 +20,7 @@ import com.example.mygoaldiary.R
 import com.example.mygoaldiary.RecyclerView.SocialCommentsAdapter
 import com.example.mygoaldiary.Views.BottomNavFragments.Social
 import com.github.ybq.android.spinkit.SpinKitView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
@@ -28,15 +29,15 @@ open class CommentSheet(private val contextHere: Context, private val activity: 
 
     private lateinit var alertCreator : ShowAlert
     private lateinit var bottomSheetView : View
-
     private lateinit var sendButton : Button
     private lateinit var commentText : TextView
     private lateinit var usernameText : TextView
     private lateinit var emailText : TextView
     private lateinit var ppIv : CircleImageView
     private lateinit var userPropLayout : ConstraintLayout
-
     private lateinit var userPropProgress : SpinKitView
+    private lateinit var ownerId : String
+    private var comment : String? = null
 
     companion object {
         lateinit var adapter : SocialCommentsAdapter
@@ -49,9 +50,6 @@ open class CommentSheet(private val contextHere: Context, private val activity: 
         private lateinit var commentsRefreshLayout : SwipeRefreshLayout
     }
 
-    private lateinit var ownerId : String
-    private var comment : String? = null
-
     private fun <T : View> findViewById(@IdRes id : Int): T = bottomSheetView.findViewById(id)
 
     fun createSheet(postIdHere: String, ownerId: String, comment: String?) : View {
@@ -60,11 +58,9 @@ open class CommentSheet(private val contextHere: Context, private val activity: 
         postId = postIdHere
 
         create()
-
         getUserProps()
 
         commentText.text = comment
-
         return bottomSheetView
     }
 
@@ -73,7 +69,6 @@ open class CommentSheet(private val contextHere: Context, private val activity: 
             if (it.exists() && it != null){
                 usernameText.text = it["userName"] as String
                 emailText.text = it["userEmail"] as String
-
                 it["avatarLink"]?.let { link ->
                     Picasso.get().load(link as String).into(ppIv)
                 }
@@ -118,6 +113,13 @@ open class CommentSheet(private val contextHere: Context, private val activity: 
         ppIv = findViewById(R.id.ppIvComments)
         userPropLayout = findViewById(R.id.userPropLayout)
         userPropProgress = findViewById(R.id.userPropLoadingProgress)
+
+        sheetDialog.setOnShowListener {dialog ->
+            val d = dialog as BottomSheetDialog
+            val bottomSheet = d.findViewById<View>(R.id.design_bottom_sheet) as FrameLayout
+            val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        }
 
         with(commentsRefreshLayout){
             this.setColorSchemeColors(Color.parseColor("#FFFFFF"))
@@ -184,7 +186,8 @@ open class CommentSheet(private val contextHere: Context, private val activity: 
     private fun sendComment(){
         with(commentPostEditText.text){
             if (this.isNotEmpty()) {
-                AddComment(contextHere, activity).add(postId, this.trim().toString(), ownerId)
+                println(commentText.text.toString())
+                AddComment(contextHere, activity).add(postId, this.trim().toString(), ownerId, commentText.text.toString())
             }
         }
     }

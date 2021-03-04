@@ -1,10 +1,10 @@
 package com.example.mygoaldiary.Views
 
-import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.CompoundButton
+import android.widget.Switch
 import com.example.mygoaldiary.Creators.BottomSheets.ChooseAvatarSheet
 import com.example.mygoaldiary.Creators.ShowAlert
 import com.example.mygoaldiary.Helpers.EditUserProfile.DeleteAccount
@@ -22,6 +22,12 @@ open class EditUserProfile : AppCompatActivity() {
 
 
     private lateinit var showAlert : ShowAlert
+    private val firebase = FirebaseFirestore.getInstance()
+    private val auth = FirebaseAuth.getInstance()
+    private val currentUser = auth.currentUser!!
+
+    private lateinit var profileVisibilitySwitch : Switch
+    private lateinit var notificationVisibilitySwitch : Switch
 
     companion object {
         val currentUser = ProfileActivity.auth.currentUser!!
@@ -46,6 +52,9 @@ open class EditUserProfile : AppCompatActivity() {
 
         fillUserProperties()
 
+        notificationVisibilitySwitch = binding.notificationVisibilitySwitch
+        profileVisibilitySwitch = binding.profileVisibilitySwitch
+
         binding.changePpIv.setOnClickListener {
             ChooseAvatarSheet( this, this).createSheet()
         }
@@ -63,6 +72,48 @@ open class EditUserProfile : AppCompatActivity() {
         }
         binding.deleteButton.setOnClickListener{
             DeleteAccount().delete(this, this)
+        }
+        notificationVisibilitySwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked){
+                updater("pushNotify", false, buttonView)
+            }else{
+                updater("pushNotify", true, buttonView)
+            }
+        }
+        profileVisibilitySwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked){
+                updater("profileVisibility", false, buttonView)
+            }else{
+                updater("profileVisibility", true, buttonView)
+            }
+        }
+        getSettings()
+    }
+
+    private fun getSettings() {
+        firebase.collection("Users").document(currentUser.uid).get().addOnSuccessListener {
+            if (it.exists() && it != null){
+                val pushNotify = it["pushNotify"] as Boolean
+                val profileVisibility = it["profileVisibility"] as Boolean
+                controller(pushNotify, profileVisibility)
+            }
+        }.addOnFailureListener {
+            notificationVisibilitySwitch.isEnabled = false
+            profileVisibilitySwitch.isEnabled = false
+        }
+    }
+
+    private fun controller(pushNotify : Boolean, profileVisibility : Boolean) {
+        notificationVisibilitySwitch.isChecked = !pushNotify
+        profileVisibilitySwitch.isChecked = !profileVisibility
+    }
+
+    private fun updater(updateThis : String, isChecked : Boolean, switch : CompoundButton){
+        firebase.collection("Users").document(currentUser.uid).update(updateThis, isChecked).addOnSuccessListener {
+            // DO NOTHING
+        }.addOnFailureListener {
+            switch.isChecked = !isChecked
+            showAlert.errorAlert("Error", "The setting could not be updated. Please try again later.", true)
         }
     }
 

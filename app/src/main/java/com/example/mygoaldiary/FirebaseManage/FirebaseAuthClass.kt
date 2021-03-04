@@ -7,7 +7,6 @@ import com.example.mygoaldiary.Creators.ShowAlert
 import com.example.mygoaldiary.Notification.FirebaseService
 import com.example.mygoaldiary.Notification.SaveTokenToFirebase
 import com.example.mygoaldiary.R
-import com.example.mygoaldiary.Views.EditUserProfile
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.userProfileChangeRequest
@@ -35,7 +34,8 @@ class FirebaseAuthClass (private val ctx : Context, private val act : Activity):
                                 "userEmail" to userEmail,
                                 "userPassword" to userPassword,
                                 "userId" to currentId,
-                                "pushNotify" to true
+                                "pushNotify" to true,
+                                "profileVisibility" to true
                         )
                         fireStoreManage().addData("Users", currentId, hashData, { authSuccessFunc() }, { authFailFunc() })
                     }

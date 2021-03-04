@@ -7,7 +7,6 @@ import com.example.mygoaldiary.Creators.ShowAlert
 import com.example.mygoaldiary.Helpers.GetCurrentDate
 import com.example.mygoaldiary.Helpers.MyHelpers
 import com.example.mygoaldiary.Helpers.ShortenWord
-import com.example.mygoaldiary.Notification.FirebaseService
 import com.example.mygoaldiary.Notification.PushNotification
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
@@ -25,12 +24,15 @@ class AddComment (private val context : Context, private val activity : Activity
     private lateinit var postId : String
     private lateinit var ownerId : String
 
+    private lateinit var postComment : String
+
     val currentUser = FirebaseAuth.getInstance().currentUser!!
 
-    fun add(postId : String, comment : String, ownerId : String){
+    fun add(postId : String, comment : String, ownerId : String, postComment : String){
         this.comment = comment
         this.postId = postId
         this.ownerId = ownerId
+        this.postComment = postComment
 
         uuid = MyHelpers.getUuid()
 
@@ -47,8 +49,7 @@ class AddComment (private val context : Context, private val activity : Activity
             val title = "\"${currentUser.displayName}\" Commented on Your Post."
             val message = ShortenWord.shorten(comment, 50, 0, 50, "...")
 
-
-            PushNotification.normalPush(title, message, ownerId, postId, comment)
+            PushNotification.normalPush(title, message, ownerId, postId, postComment)
         }.addOnFailureListener {
             showAlert.errorAlert("Error", it.localizedMessage!!, true)
         }

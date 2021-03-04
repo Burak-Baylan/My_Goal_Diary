@@ -16,20 +16,20 @@ class PushNotification {
         private lateinit var message : String
         private lateinit var postOwnerId : String
         private lateinit var postId : String
-        private lateinit var comment : String
+        private var comment : String? = null
         private lateinit var likeReference: DocumentReference
 
         //*******//
-        fun commentPush(title: String, message: String, postOwnerId : String, postId : String, commentId : String){
+        fun commentPush(title: String, message: String, commentOwnerId : String, postId : String, commentId : String, commentText : String){
 
             this.title = title
             this.message = message
-            this.postOwnerId = postOwnerId
-
+            this.postOwnerId = commentOwnerId
+            this.postId = postId
+            this.comment = commentText
             likeReference = firebase.collection("Posts").document(postId).collection("Comments").document(commentId)
 
             userNotifyControl()
-
         }
 
         fun normalPush(title: String, message: String, postOwnerId : String, postId : String, comment : String){
@@ -45,6 +45,7 @@ class PushNotification {
         }
 
         private fun userNotifyControl() {
+            println("POSTİNG: $postOwnerId")
             firebase.collection("Users").document(postOwnerId).get().addOnSuccessListener {
                 if (it.exists() && it != null){
                     val pushNotify = it["pushNotify"] as Boolean
@@ -53,13 +54,12 @@ class PushNotification {
                         if (recipientToken != null) {
                             postNotifyControl(recipientToken)
                         }
-                    }// Else do nothing
+                    }
                 }
             }
         }
 
         private fun postNotifyControl(recipientToken : String){
-
             likeReference.get().addOnSuccessListener {
                 if (it.exists() && it != null){
                     val pushNotify = it["pushNotify"] as Boolean

@@ -113,16 +113,6 @@
             app:layout_constraintBottom_toBottomOf="@id/likeIcComment"
             app:layout_constraintLeft_toRightOf="@id/likeIcComment"/>
 
-        <ImageView
-            android:id="@+id/shareIcComment"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginStart="10dp"
-            android:src="@drawable/ic_share"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            app:layout_constraintBottom_toBottomOf="@+id/likeIcComment"
-            app:layout_constraintStart_toEndOf="@+id/likeTextViewCount"
-            app:layout_constraintTop_toTopOf="@+id/likeIcComment" />
 
         <TextView
             android:id="@+id/dateTvComment"
@@ -132,8 +122,9 @@
             android:text="12/5/2029 15:38:41"
             android:textColor="#A3A3A3"
             android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/likeIcComment"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/shareIcComment" />
+            app:layout_constraintTop_toTopOf="@+id/likeIcComment" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
