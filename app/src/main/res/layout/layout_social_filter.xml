@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/background_good_red"
-        android:backgroundTint="#5594FA"
+        android:backgroundTint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,32 +26,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
-                android:buttonTint="#FFFFFF"
+                android:buttonTint="#000000"
                 android:text="All"
-                android:textColor="@color/white"
+                android:textColor="#000000"
                 android:textStyle="bold" />
-
-            <!--<RadioButton
-                android:id="@+id/popular"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                android:buttonTint="#FFFFFF"
-                android:text="Popular"
-                android:textColor="@color/white"
-                android:textStyle="bold" />
-
-            <RadioButton
-                android:id="@+id/trend"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                android:buttonTint="#FFFFFF"
-                android:text="Trend"
-                android:textColor="@color/white"
-                android:textStyle="bold" />-->
 
             <RadioButton
                 android:id="@+id/general"
@@ -59,9 +37,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
-                android:buttonTint="#FFFFFF"
+                android:buttonTint="#000000"
                 android:text="General"
-                android:textColor="@color/white"
+                android:textColor="#000000"
                 android:textStyle="bold" />
 
             <RadioButton
@@ -70,9 +48,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
-                android:buttonTint="#FFFFFF"
+                android:buttonTint="#000000"
                 android:text="Advices"
-                android:textColor="@color/white"
+                android:textColor="#000000"
                 android:textStyle="bold" />
 
             <RadioButton
@@ -81,9 +59,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
-                android:buttonTint="#FFFFFF"
+                android:buttonTint="#000000"
                 android:text="Goals"
-                android:textColor="@color/white"
+                android:textColor="#000000"
                 android:textStyle="bold" />
 
             <RadioButton
@@ -92,9 +70,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
-                android:buttonTint="#FFFFFF"
+                android:buttonTint="#000000"
                 android:text="Technology"
-                android:textColor="@color/white"
+                android:textColor="#000000"
                 android:textStyle="bold" />
 
             <RadioButton
@@ -103,9 +81,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
-                android:buttonTint="#FFFFFF"
+                android:buttonTint="#000000"
                 android:text="Games"
-                android:textColor="@color/white"
+                android:textColor="#000000"
                 android:textStyle="bold" />
         </RadioGroup>
 

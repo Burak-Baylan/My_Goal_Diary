@@ -17,7 +17,11 @@ class PostDelete {
             this.context = context
             this.postId = postId
             showAlert = ShowAlert(context)
-            mDelete()
+            showAlert.warningAlert("Warning", "If you delete this post, you can't get it back. Are you sure?", true).apply {
+                this.setOnClickListener {
+                    mDelete()
+                }
+            }
         }
 
         private var firebase = FirebaseFirestore.getInstance()

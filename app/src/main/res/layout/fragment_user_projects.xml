@@ -44,14 +44,13 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
                 android:singleLine="true"
                 android:text="Title"
                 android:textColor="#555555"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/editUserProject"
+                app:layout_constraintEnd_toStartOf="@+id/uploadToCloudIc"
                 app:layout_constraintStart_toEndOf="@+id/goBackButtonUserProject"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -66,7 +65,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
+            <!--<ImageView
                 android:id="@+id/editUserProject"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
@@ -76,7 +75,7 @@
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/uploadToCloudIc"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent" />-->
 
             <ImageView
                 android:id="@+id/uploadToCloudIc"

@@ -16,7 +16,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-class MyPosts : Fragment() {
+class SharedPosts : Fragment() {
 
 
     var _binding : FragmentMyPostsBinding? = null
@@ -26,6 +26,8 @@ class MyPosts : Fragment() {
     private lateinit var adapter : SocialRecyclerViewAdapter
 
     private val getPosts = GetPosts()
+
+    var userUuid : String? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentMyPostsBinding.inflate(inflater, container, false)
@@ -51,7 +53,7 @@ class MyPosts : Fragment() {
         return view
     }
 
-    private fun get() = getPosts.get(items, firebase.collection("Posts").whereEqualTo("ownerUuid", currentUser!!.uid))
+    private fun get() = getPosts.get(items, firebase.collection("Posts").whereEqualTo("ownerUuid", userUuid))
 
     private val firebase = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()

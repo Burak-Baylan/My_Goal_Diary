@@ -52,7 +52,7 @@ class ChooseAvatarSelectorCreator (val contextHere : Context, val activityHere :
         var marginBottomInt : Int
 
         for ((counter, i) in (0..11).withIndex()){
-            val avatarImageView = CircleImageView(context)
+            val avatarImageView = CircleImageView(contextHere)
 
             Picasso.get().load(avatarsArray[i])
 

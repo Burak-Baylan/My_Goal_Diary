@@ -26,6 +26,8 @@ class Marks : Fragment() {
     private lateinit var items: ArrayList<SocialModel>
     private lateinit var adapter: SocialRecyclerViewAdapter
 
+    var userUuid : String? = null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentMarksBinding.inflate(inflater, container, false)
         val view = binding.root
@@ -56,7 +58,7 @@ class Marks : Fragment() {
         binding.marksLoadingProgress.visibility = View.VISIBLE
         binding.noMarksTv.visibility = View.INVISIBLE
 
-        firebase.collection("Users").document(currentUser!!.uid).collection("Marks").orderBy("timeStamp", Query.Direction.DESCENDING).get().addOnSuccessListener { value1 ->
+        firebase.collection("Users").document(userUuid!!).collection("Marks").orderBy("timeStamp", Query.Direction.DESCENDING).get().addOnSuccessListener { value1 ->
             if (value1 != null && !value1.isEmpty) {
                 val documents1 = value1.documents
 

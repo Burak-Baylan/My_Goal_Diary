@@ -67,8 +67,20 @@ class FilterSocialPosts : Social(){
         technologyRb = filterView.findViewById(R.id.technologhy)
         gamesRb = filterView.findViewById(R.id.games)
 
+        getCurrentFilter()
         selector()
 
+    }
+
+    private fun getCurrentFilter(){
+        when(sharedPref!!.getString("socialFilter", "All")){
+            "All" -> allRb.isChecked = true
+            "General" -> generalRb.isChecked = true
+            "Advices" -> advicesRb.isChecked = true
+            "Goals" -> goalsRb.isChecked = true
+            "Technology" -> technologyRb.isChecked = true
+            "Games" -> gamesRb.isChecked = true
+        }
     }
 
     private fun selector (){

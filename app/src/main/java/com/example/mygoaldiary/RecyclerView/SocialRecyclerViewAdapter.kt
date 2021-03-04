@@ -2,6 +2,7 @@ package com.example.mygoaldiary.RecyclerView
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import com.example.mygoaldiary.Helpers.SocialHelpers.PostLiker
 import com.example.mygoaldiary.Helpers.SocialHelpers.PostMarker
 import com.example.mygoaldiary.Models.SocialModel
 import com.example.mygoaldiary.R
+import com.example.mygoaldiary.Views.ProfileActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -125,7 +127,18 @@ class SocialRecyclerViewAdapter(var items: ArrayList<SocialModel>, val activity:
                 if (value != null && value.exists()){
                     val userEmail = value["userEmail"] as String
                     val userName = value["userName"] as String
+                    val ppUrl = value["avatarLink"] as String
                     putUserProperties(holder, position, userEmail, userName)
+
+                    holder.ppImageView.setOnClickListener{
+                        val intent = Intent(context, ProfileActivity::class.java)
+                        intent.putExtra("accountControl", false)
+                        intent.putExtra("userUuid", items[position].userUuid)
+                        intent.putExtra("ppUrl", ppUrl)
+                        intent.putExtra("username", userName)
+                        activity.startActivity(intent)
+                    }
+
                 }else{
                     println("Adapter içindeki value boş ya da boş")
                 }
@@ -200,7 +213,6 @@ class SocialRecyclerViewAdapter(var items: ArrayList<SocialModel>, val activity:
             else
                 if (value != null)
                     holder.commentsCountTv.text = value.count().toString()
-
         }
     }
 

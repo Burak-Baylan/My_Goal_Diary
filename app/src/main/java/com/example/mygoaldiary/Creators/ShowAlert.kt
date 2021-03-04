@@ -12,7 +12,6 @@ import com.example.mygoaldiary.R
 class ShowAlert (private val context : Context){
 
     private var mCancelable = false
-
     companion object {
         lateinit var mAlertDialog: AlertDialog
     }
@@ -21,10 +20,8 @@ class ShowAlert (private val context : Context){
     fun infoAlert(title : String, message : String, cancelable : Boolean){
         this.mCancelable = cancelable
         val view = alertCreator(R.layout.alert_info_layout)
-
         view.findViewById<TextView>(R.id.infoTitleText).setText(title)
         view.findViewById<TextView>(R.id.infoMessageText).setText(message)
-
         view.findViewById<Button>(R.id.infoOkayButton).setOnClickListener {
             mAlertDialog.dismiss()
         }
@@ -32,16 +29,17 @@ class ShowAlert (private val context : Context){
     }
     /**********************************************************************************************/
 
-    fun successAlert (title : String, message : String, cancelable : Boolean){
+    fun successAlert (title : String, message : String, cancelable : Boolean) : Button{
         this.mCancelable = cancelable
         val view = alertCreator(R.layout.alert_success_layout)
+        val successOkayButton = view.findViewById<Button>(R.id.successOkayButton)
         view.findViewById<TextView>(R.id.successTitleText).setText(title)
         view.findViewById<TextView>(R.id.successMessageText).setText(message)
-
-        view.findViewById<TextView>(R.id.successOkayButton).setOnClickListener {
+        successOkayButton.setOnClickListener {
             mAlertDialog.dismiss()
         }
         mAlertDialog.show()
+        return successOkayButton
     }
 
     fun warningAlert (title : String, message : String, cancelable : Boolean) : Button{
@@ -49,7 +47,6 @@ class ShowAlert (private val context : Context){
         val view = alertCreator(R.layout.alert_warning_layout)
         view.findViewById<TextView>(R.id.warningTitleText).setText(title)
         view.findViewById<TextView>(R.id.warningMessageText).setText(message)
-
         view.findViewById<Button>(R.id.warningNoButton).setOnClickListener {
             mAlertDialog.dismiss()
         }

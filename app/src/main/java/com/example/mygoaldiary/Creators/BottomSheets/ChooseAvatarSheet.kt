@@ -18,7 +18,7 @@ import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 
 
-open class ChooseAvatarSheet(val context: Context, val activity: Activity) : EditUserProfile(){
+open class ChooseAvatarSheet(val context : Context, val activity: Activity) : EditUserProfile(){
 
     companion object {
         lateinit var alertCreator: ShowAlert

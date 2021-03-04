@@ -106,8 +106,8 @@ class OptionsMenu (private val context : Context, private val activity : Activit
 
     private fun ownerIsMe(menuItem : Int){
 
-        val menu = popupMenu.menu
-        menu.getItem(1).title = "s"
+        /*val menu = popupMenu.menu
+        menu.getItem(1).title = "s"*/
 
         when(menuItem) {
             R.id.notify -> FilterNotification().selectFilter(context, activity, items!![position!!].postId)

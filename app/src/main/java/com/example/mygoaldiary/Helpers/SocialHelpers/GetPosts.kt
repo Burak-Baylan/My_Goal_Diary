@@ -1,20 +1,13 @@
 package com.example.mygoaldiary.Helpers.SocialHelpers
 
-import android.os.DropBoxManager
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.example.mygoaldiary.Models.ModelHome
 import com.example.mygoaldiary.Models.SocialModel
-import com.example.mygoaldiary.Views.BottomNavFragments.Social
-import com.example.mygoaldiary.Views.ProfileViewPager.MyPosts
 import com.github.ybq.android.spinkit.SpinKitView
 import com.google.firebase.Timestamp
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import java.lang.ref.Reference
 
 class GetPosts{
 

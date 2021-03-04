@@ -25,17 +25,13 @@
 
         </service>
 
-        <activity
-            android:name=".Creators.dnm"
-            android:label="@string/title_activity_dnm"
-            android:theme="@style/Theme.MyGoalDiary.NoActionBar"></activity>
-        <activity android:name=".Views.EditUserProfile" />
-        <activity android:name=".Views.ProfileActivity" />
-        <activity android:name=".Views.AddPost" />
-        <activity android:name=".Views.SignUpScreen" />
-        <activity android:name=".Views.LoginScreen" />
-        <activity android:name=".Views.Details" />
-        <activity android:name=".Views.MainActivity">
+
+        <activity android:name=".Views.EditUserProfile" android:screenOrientation="portrait" />
+        <activity android:name=".Views.ProfileActivity" android:screenOrientation="portrait" />
+        <activity android:name=".Views.SignUpScreen" android:screenOrientation="portrait" />
+        <activity android:name=".Views.LoginScreen" android:screenOrientation="portrait" />
+        <activity android:name=".Views.Details" android:screenOrientation="portrait" />
+        <activity android:name=".Views.MainActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/warningLayoutContainer"
+    android:padding="15dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/backgorund_alert_dialog"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingBottom="15dp"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/goBackButtonEditUsername"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/goodRed" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Update Username"
+            android:textColor="@color/goodBlue"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/goBackButtonEditUsername"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/newUsernameEditText"
+            app:layout_constraintTop_toTopOf="@+id/goBackButtonEditUsername" />
+
+        <ImageView
+            android:id="@+id/imageView7"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/ic_big_person"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/imageView4"
+            app:layout_constraintStart_toEndOf="@+id/changePpIv"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/goBackButtonEditUsername"
+            app:tint="@color/goodGreen" />
+
+        <EditText
+            android:id="@+id/newUsernameEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/background_edit_user_props_edit_texts"
+            android:ems="10"
+            android:maxLength="17"
+            android:hint="Username"
+            android:inputType="textPersonName"
+            android:paddingStart="7dp"
+            android:paddingTop="9dp"
+            android:paddingEnd="7dp"
+            android:paddingBottom="9dp"
+            android:textColor="#3A3A3A"
+            android:textColorHint="#8E8E8E"
+            android:layout_marginTop="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/goBackButtonEditUsername" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/saveUsernameButton"
+            android:layout_width="90dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/background_cancel_button_red"
+            android:backgroundTint="@color/goodGreen"
+            android:text="Apply"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="@+id/newUsernameEditText"
+            app:layout_constraintStart_toStartOf="@+id/newUsernameEditText"
+            app:layout_constraintTop_toBottomOf="@+id/newUsernameEditText" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

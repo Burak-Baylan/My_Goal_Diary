@@ -13,6 +13,8 @@ import com.example.mygoaldiary.LoadingDialog
 import com.example.mygoaldiary.Notification.FirebaseService
 import com.example.mygoaldiary.Notification.SaveTokenToFirebase
 import com.example.mygoaldiary.R
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.iid.FirebaseInstanceId
 
 class LoginScreen : AppCompatActivity() {
@@ -24,6 +26,9 @@ class LoginScreen : AppCompatActivity() {
     private lateinit var signUpButton : Button
     private lateinit var forgotPasswordTv : TextView
     private lateinit var goBackButton : ImageView
+
+    private var firebase = FirebaseFirestore.getInstance()
+    private var auth = FirebaseAuth.getInstance()
 
     private lateinit var loadingDialog: LoadingDialog
     private lateinit var alert : android.app.AlertDialog.Builder
@@ -111,6 +116,15 @@ class LoginScreen : AppCompatActivity() {
     }
 
     private fun loginSuccess(){
+        val currentUser = auth.currentUser
+        firebase.collection("Users").document(currentUser!!.uid).update("userPassword", passwordEditText.text.toString()).addOnSuccessListener {
+            login()
+        }.addOnFailureListener {
+            showAlert.errorAlert("Error", "An error occurred. Please try again.", true)
+        }
+    }
+
+    private fun login (){
         val i = Intent(this, MainActivity::class.java)
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener {

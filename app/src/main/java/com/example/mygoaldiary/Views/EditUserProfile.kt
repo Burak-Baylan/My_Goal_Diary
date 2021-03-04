@@ -1,26 +1,27 @@
 package com.example.mygoaldiary.Views
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.EditText
 import com.example.mygoaldiary.Creators.BottomSheets.ChooseAvatarSheet
-import com.example.mygoaldiary.Notification.*
+import com.example.mygoaldiary.Creators.ShowAlert
+import com.example.mygoaldiary.Helpers.EditUserProfile.DeleteAccount
+import com.example.mygoaldiary.Helpers.EditUserProfile.UpdateEmail
+import com.example.mygoaldiary.Helpers.EditUserProfile.UpdatePassword
+import com.example.mygoaldiary.Helpers.EditUserProfile.UpdateUsername
 import com.example.mygoaldiary.databinding.ActivityEditUserProfileBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.iid.FirebaseInstanceId
-import com.google.firebase.messaging.FirebaseMessaging
-import com.google.gson.Gson
 import com.squareup.picasso.Picasso
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 const val TOPIC = "/topics/myTopic"
 
 open class EditUserProfile : AppCompatActivity() {
+
+
+    private lateinit var showAlert : ShowAlert
 
     companion object {
         val currentUser = ProfileActivity.auth.currentUser!!
@@ -34,9 +35,6 @@ open class EditUserProfile : AppCompatActivity() {
         super.onResume()
     }
 
-    private lateinit var usernameEditText : EditText
-    private lateinit var emailEditText : EditText
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEditUserProfileBinding.inflate(layoutInflater)
@@ -44,61 +42,36 @@ open class EditUserProfile : AppCompatActivity() {
         setContentView(view)
         supportActionBar?.hide()
         window.statusBarColor = Color.parseColor("#B8B8B8")
+        showAlert = ShowAlert(this)
 
         fillUserProperties()
 
         binding.changePpIv.setOnClickListener {
-            ChooseAvatarSheet(this, this).createSheet()
+            ChooseAvatarSheet( this, this).createSheet()
         }
 
         binding.goBackButtonEditUser.setOnClickListener {finish()}
 
-
-        usernameEditText = binding.usernameEditText
-        emailEditText = binding.emailEditText
-
-
+        binding.editUsername.setOnClickListener {
+            UpdateUsername().show(this, this)
+        }
+        binding.editEmail.setOnClickListener {
+            UpdateEmail().show(this, this)
+        }
+        binding.editPassword.setOnClickListener {
+            UpdatePassword().sendMail(this, this)
+        }
         binding.deleteButton.setOnClickListener{
-            val currentUser = FirebaseAuth.getInstance().currentUser!!
-            currentUser.delete().addOnSuccessListener {
-                FirebaseFirestore.getInstance().collection("Users").document(currentUser.uid).delete().addOnSuccessListener {
-                    println("silindi")
-                    Intent(this, MainActivity::class.java).also {
-                        it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                        startActivity(it)
-                    }
-
-                }.addOnFailureListener {
-                    println("silinemedi2: ${it.localizedMessage!!}")
-                }
-            }.addOnFailureListener {
-                println("silinemedi1: ${it.localizedMessage!!}")
-            }
-
+            DeleteAccount().delete(this, this)
         }
-
-        FirebaseService.sharedPref = getSharedPreferences("sharedPref", MODE_PRIVATE)
-        FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener {
-            SaveTokenToFirebase().save(it.token)
-            FirebaseService.token = it.token
-            binding.passwordEditText.setText(it.token)
-        }
-
-
-        FirebaseMessaging.getInstance().subscribeToTopic(TOPIC)
-
-        binding.applyButton.setOnClickListener{
-
-        }
-
     }
 
     private fun fillUserProperties() {
         currentUser.email?.let {
-            binding.emailEditText.setText(it)
+            binding.emailTextView.setText(it)
         }
         currentUser.displayName?.let{
-            binding.usernameEditText.setText(it)
+            binding.usernameTextView.setText(it)
         }
     }
 }
