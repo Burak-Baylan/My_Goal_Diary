@@ -33,7 +33,7 @@ open class UpdateUsername : EditUserProfile() {
     protected lateinit var showAlert : ShowAlert
     private lateinit var oldUsername : String
     protected lateinit var loadingDialog : LoadingDialog
-    protected lateinit var alertDialog : AlertDialog
+    lateinit var alertDialog : AlertDialog
 
     open fun show(context : Context, activity : Activity){
         view = createView(context, R.layout.layout_update_username)
@@ -44,7 +44,7 @@ open class UpdateUsername : EditUserProfile() {
         listener()
     }
 
-    protected fun createView(context : Context, layout : Int) : View {
+    fun createView(context : Context, layout : Int) : View {
         val builder : AlertDialog.Builder = AlertDialog.Builder(context, R.style.AlertDialogTheme)
         val view = LayoutInflater.from(context).inflate(layout, null)
         builder.setView(view)

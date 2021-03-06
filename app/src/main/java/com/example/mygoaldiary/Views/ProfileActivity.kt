@@ -7,23 +7,23 @@ import android.os.Bundle
 import android.view.View
 import com.example.mygoaldiary.Creators.ShowAlert
 import com.example.mygoaldiary.Helpers.InternetController
+import com.example.mygoaldiary.Helpers.SendFeedback
 import com.example.mygoaldiary.LoadingDialog
 import com.example.mygoaldiary.Views.ProfileViewPager.Marks
 import com.example.mygoaldiary.Views.ProfileViewPager.SharedPosts
 import com.example.mygoaldiary.Views.ProfileViewPager.MyViewPagerAdapter
 import com.example.mygoaldiary.databinding.ActivityProfileBinding
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
 
-class ProfileActivity : AppCompatActivity() {
-    private lateinit var binding : ActivityProfileBinding
+open class ProfileActivity : AppCompatActivity() {
 
     companion object {
         var auth = FirebaseAuth.getInstance()
     }
-
+    private lateinit var binding : ActivityProfileBinding
+    private lateinit var sendFeedback: SendFeedback
     val currentUser = auth.currentUser!!
     var userUuid : String? = null
 
@@ -39,13 +39,14 @@ class ProfileActivity : AppCompatActivity() {
         userUuid = getUserUuid ?: currentUser.uid
 
         createTabs()
+        sendFeedback = SendFeedback()
 
         binding.tabs.setupWithViewPager(binding.viewPager)
         binding.goBackButtonProfile.setOnClickListener {finish()}
+        binding.feedbackLayout.setOnClickListener { sendFeedback.show(this, this) }
     }
 
     private fun createTabs() {
-
         val sharedPosts = SharedPosts()
         sharedPosts.userUuid = userUuid
 
@@ -75,16 +76,15 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun notMyAccount(){
-        println("ZOBORİİİİK: ${intent.getStringExtra("username")} / ${intent.getStringExtra("ppUrl")}")
         binding.editProfileBtn.visibility = View.INVISIBLE
         binding.logoutLayout.visibility = View.INVISIBLE
         binding.usernameTexView.text = intent.getStringExtra("username")
         Picasso.get().load(intent.getStringExtra("ppUrl")).into(binding.ppIvProfile)
     }
 
-    private val loadingDialog = LoadingDialog(this)
-    private val showAlert = ShowAlert(this)
-    private var firebase = FirebaseFirestore.getInstance()
+    protected var loadingDialog = LoadingDialog(this)
+    protected var showAlert = ShowAlert(this)
+    protected var firebase = FirebaseFirestore.getInstance()
 
     private fun logout() {
         // Kullanıcı hesabından çıkarken 'token'ı null'a çevirmemizin nedeni. Hesabında değilken veya başka hesaptayken önceki hesabından bildirim almamasını istememiz.

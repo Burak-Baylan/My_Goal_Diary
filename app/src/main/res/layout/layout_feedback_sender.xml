@@ -8,7 +8,7 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/goBackButtonDestroyAccount"
+        android:id="@+id/goBackButtonSendFeedback"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:src="@drawable/ic_back"
@@ -17,40 +17,40 @@
         android:layout_marginTop="15dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/goodRed" />
+        app:tint="@color/blue" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Destroy Account"
+        android:text="Send Feedback"
         android:textSize="19dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/goBackButtonDestroyAccount"
-        app:layout_constraintEnd_toEndOf="@+id/currentPasswordEditText"
-        app:layout_constraintStart_toStartOf="@+id/currentPasswordEditText"
-        app:layout_constraintTop_toTopOf="@+id/goBackButtonDestroyAccount" />
+        app:layout_constraintBottom_toBottomOf="@+id/goBackButtonSendFeedback"
+        app:layout_constraintEnd_toEndOf="@+id/feedbackEditText"
+        app:layout_constraintStart_toStartOf="@+id/feedbackEditText"
+        app:layout_constraintTop_toTopOf="@+id/goBackButtonSendFeedback" />
 
     <EditText
-        android:id="@+id/currentPasswordEditText"
+        android:id="@+id/feedbackEditText"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:background="@drawable/background_edit_text_login"
-        android:drawableStart="@drawable/ic_password"
+        android:drawableStart="@drawable/ic_message"
         android:drawablePadding="10dp"
         android:ems="10"
         android:layout_marginTop="20dp"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
-        android:hint="Current Password"
-        android:inputType="textPassword"
+        android:hint="Feedback..."
+        android:inputType="text"
         android:paddingStart="15dp"
         android:paddingEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/goBackButtonDestroyAccount" />
+        app:layout_constraintTop_toBottomOf="@+id/goBackButtonSendFeedback" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/destroyAccountBtn"
+        android:id="@+id/sendFeedbackBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -58,14 +58,14 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="15dp"
         android:background="@drawable/background_login_button_green"
-        android:backgroundTint="@color/goodRed"
+        android:backgroundTint="@color/blue"
         android:gravity="center"
-        android:text="Destroy"
+        android:text="Send"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/currentPasswordEditText"
-        app:layout_constraintStart_toStartOf="@+id/currentPasswordEditText"
-        app:layout_constraintTop_toBottomOf="@+id/currentPasswordEditText" />
+        app:layout_constraintEnd_toEndOf="@+id/feedbackEditText"
+        app:layout_constraintStart_toStartOf="@+id/feedbackEditText"
+        app:layout_constraintTop_toBottomOf="@+id/feedbackEditText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
