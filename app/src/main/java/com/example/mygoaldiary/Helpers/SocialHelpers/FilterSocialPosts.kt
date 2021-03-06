@@ -116,6 +116,6 @@ class FilterSocialPosts : Social(){
     private fun saveFilter(saveValue : String){
         sharedPref!!.edit().putString("socialFilter", saveValue).apply()
         alertDialog.dismiss()
-        getAllPosts()
+        getAllPosts(true)
     }
 }

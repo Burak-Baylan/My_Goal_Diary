@@ -10,7 +10,8 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mygoaldiary.Creators.CommentSheet
+import com.example.mygoaldiary.Creators.CommentSheet.CommentSheet
+import com.example.mygoaldiary.Creators.CommentSheet.LikeManager
 import com.example.mygoaldiary.Creators.ShowAlert
 import com.example.mygoaldiary.FirebaseManage.GetAvatar
 import com.example.mygoaldiary.Helpers.SocialHelpers.OptionsMenu
@@ -53,16 +54,16 @@ class SocialRecyclerViewAdapter(var items: ArrayList<SocialModel>, val activity:
         showAlert = ShowAlert(context)
         optionsMenu = OptionsMenu(context, activity)
         commentSheet = CommentSheet(context, activity)
+        likeManager = LikeManager(context, activity)
         return Holder(view)
     }
+
     private val auth = FirebaseAuth.getInstance()
     private var currentUser = auth.currentUser
-
     private lateinit var optionsMenu : OptionsMenu
-
     private val postMarker = PostMarker()
-
     private lateinit var commentSheet : CommentSheet
+    private lateinit var likeManager : LikeManager
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
 
@@ -185,24 +186,15 @@ class SocialRecyclerViewAdapter(var items: ArrayList<SocialModel>, val activity:
         }
     }
 
-    private fun checkIfExists(imageView : ImageView, query : Query, trueColor : String){
-        query.get().addOnSuccessListener {
-            imageView.setColorFilter(Color.parseColor(
-                    if (!it.isEmpty) trueColor
-                    else "#D1D1D1"
-            ))
-        }.addOnFailureListener {}
-    }
-
     private fun checkIfLikeExists(holder: Holder, position: Int) {
         val reference = firebase.collection("Posts").document(items[position].postId).collection("Likes").whereEqualTo("userId", currentUser!!.uid)
-        checkIfExists(holder.likeButton, reference, "#32A852")
+        likeManager.checkIfExists(holder.likeButton, reference, "#32A852")
         
     }
 
     private fun checkIfMarkExists(holder: Holder) {
         val reference = firebase.collection("Users").document(currentUser!!.uid).collection("Marks").whereEqualTo("markedPost", postId)
-        checkIfExists(holder.bookmarkIc, reference, "#4287F5")
+        likeManager.checkIfExists(holder.bookmarkIc, reference, "#4287F5")
     }
 
     private fun getCommentsCount(holder: Holder){

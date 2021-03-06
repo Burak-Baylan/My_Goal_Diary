@@ -75,11 +75,11 @@ class ReportPostSheet (val context : Context, val activity : Activity){
     private fun report() {
         firebase.collection("Reports").document().set(getHashData(reason!!)).addOnSuccessListener {
             loadingDialog.dismissDialog()
-            showAlert.successAlert("Success", "Thank for your report.", true)
+            showAlert.successAlert("Success", "Thanks for your report.", true)
             bottomSheet.dismiss()
         }.addOnFailureListener {
             loadingDialog.dismissDialog()
-            showAlert.errorAlert("Error", "Raporlanamadı ${it.localizedMessage!!}", true)
+            showAlert.errorAlert("Error", "Couldn't report: ${it.localizedMessage!!}", true)
             bottomSheet.dismiss()
         }
     }
@@ -94,13 +94,3 @@ class ReportPostSheet (val context : Context, val activity : Activity){
             "timeStamp" to Timestamp.now()
     )
 }
-
-
-
-
-
-
-
-
-
-

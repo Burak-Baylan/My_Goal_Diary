@@ -6,6 +6,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/noPostsTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No Post Here"
+        android:layout_marginTop="25dp"
+        android:textColor="@color/goodRed"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/myPostsRefreshLayout"
         android:layout_width="match_parent"
@@ -21,19 +35,6 @@
             android:layout_height="match_parent" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-    <TextView
-        android:id="@+id/noPostsTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="No Post Here"
-        android:layout_marginTop="25dp"
-        android:textColor="@color/goodRed"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <com.github.ybq.android.spinkit.SpinKitView
         android:id="@+id/myPostsLoadingProgress"

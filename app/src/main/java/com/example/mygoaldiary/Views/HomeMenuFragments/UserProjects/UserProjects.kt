@@ -84,9 +84,7 @@ open class UserProjects : Fragment() {
                 this.showAndHideTargetedDeadline.isEnabled = true
             }
         }
-
         userControl()
-
         GetTasks(requireActivity()).getAndPut()
         return view
     }

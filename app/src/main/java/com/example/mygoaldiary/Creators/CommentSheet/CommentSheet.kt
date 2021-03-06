@@ -1,9 +1,11 @@
-package com.example.mygoaldiary.Creators
+package com.example.mygoaldiary.Creators.CommentSheet
 
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -13,7 +15,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.example.mygoaldiary.Creators.ShowAlert
 import com.example.mygoaldiary.Helpers.SocialHelpers.AddComment
+import com.example.mygoaldiary.Helpers.SocialHelpers.EditTextSizeListener
 import com.example.mygoaldiary.Helpers.SocialHelpers.GetComments
 import com.example.mygoaldiary.Models.SocialCommentsModel
 import com.example.mygoaldiary.R
@@ -36,43 +40,52 @@ open class CommentSheet(private val contextHere: Context, private val activity: 
     private lateinit var ppIv : CircleImageView
     private lateinit var userPropLayout : ConstraintLayout
     private lateinit var userPropProgress : SpinKitView
-    private lateinit var ownerId : String
-    private var comment : String? = null
+    private lateinit var likeManager : LikeManager
+    private lateinit var addCommentSizeTv : TextView
+    private lateinit var commentSizeProgressBar : ProgressBar
 
     companion object {
         lateinit var adapter : SocialCommentsAdapter
         lateinit var commentsRecyclerView : RecyclerView
         lateinit var commentPostEditText : EditText
-        private lateinit var spinKitLoadingView : SpinKitView
-        private lateinit var noComments : TextView
-        private var items : ArrayList<SocialCommentsModel> = ArrayList()
-        private lateinit var postId : String
-        private lateinit var commentsRefreshLayout : SwipeRefreshLayout
+        lateinit var spinKitLoadingView : SpinKitView
+        lateinit var noComments : TextView
+        var items : ArrayList<SocialCommentsModel> = ArrayList()
+        lateinit var postId : String
+        lateinit var commentsRefreshLayout : SwipeRefreshLayout
+        lateinit var mOwnerId : String
+        var mComment : String? = null
+        lateinit var likeButton : ImageView
+        lateinit var likeTextView : TextView
     }
 
     private fun <T : View> findViewById(@IdRes id : Int): T = bottomSheetView.findViewById(id)
 
     fun createSheet(postIdHere: String, ownerId: String, comment: String?) : View {
-        this.ownerId = ownerId
-        this.comment = comment
+        mOwnerId = ownerId
+        mComment = comment
         postId = postIdHere
 
         create()
         getUserProps()
 
         commentText.text = comment
+
+        likeManager = LikeManager(contextHere, activity)
+        likeManager.listenLikeCount()
+        likeManager.checkIfExists(likeButton, null, "#32A852")
+
         return bottomSheetView
     }
 
     private fun getUserProps() {
-        firebase.collection("Users").document(ownerId).get().addOnSuccessListener {
+        firebase.collection("Users").document(mOwnerId).get().addOnSuccessListener {
             if (it.exists() && it != null){
                 usernameText.text = it["userName"] as String
                 emailText.text = it["userEmail"] as String
                 it["avatarLink"]?.let { link ->
                     Picasso.get().load(link as String).into(ppIv)
                 }
-
                 userPropProgress.visibility = View.INVISIBLE
                 userPropLayout.visibility = View.VISIBLE
                 getComment()
@@ -84,13 +97,10 @@ open class CommentSheet(private val contextHere: Context, private val activity: 
 
     private fun getComment(){
         commentPostEditTextListeners()
-
         sendButton.setOnClickListener { sendComment() }
-
         initializeRecyclerView()
         getComments()
         adapter.notifyDataSetChanged()
-
         sheetDialog.setContentView(bottomSheetView)
         sheetDialog.show()
     }
@@ -113,6 +123,10 @@ open class CommentSheet(private val contextHere: Context, private val activity: 
         ppIv = findViewById(R.id.ppIvComments)
         userPropLayout = findViewById(R.id.userPropLayout)
         userPropProgress = findViewById(R.id.userPropLoadingProgress)
+        likeButton = findViewById(R.id.commentSheetLikeIc)
+        likeTextView = findViewById(R.id.commentSheetLikeTextView)
+        addCommentSizeTv = findViewById(R.id.addCommentCounterText)
+        commentSizeProgressBar = findViewById(R.id.comment_counter_progress_bar)
 
         sheetDialog.setOnShowListener {dialog ->
             val d = dialog as BottomSheetDialog
@@ -135,6 +149,11 @@ open class CommentSheet(private val contextHere: Context, private val activity: 
         }
 
         findViewById<ImageView>(R.id.closeCommentPostIc).setOnClickListener { sheetDialog.dismiss() }
+
+        likeButton.setOnClickListener {
+            likeManager.like()
+        }
+
     }
 
     fun getComments() =
@@ -175,6 +194,21 @@ open class CommentSheet(private val contextHere: Context, private val activity: 
                 true
             }
         }
+
+        var progressCount : Int
+        commentSizeProgressBar.max = 250
+        commentPostEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                with(addCommentSizeTv){
+                    this.text = "${s!!.length}"
+                    progressCount = s.length
+                    this.setTextColor(EditTextSizeListener.control(s.length))
+                    commentSizeProgressBar.progress = progressCount
+                }
+            }
+            override fun afterTextChanged(s: Editable?) {}
+        })
     }
 
     private fun initializeRecyclerView(){
@@ -187,7 +221,7 @@ open class CommentSheet(private val contextHere: Context, private val activity: 
         with(commentPostEditText.text){
             if (this.isNotEmpty()) {
                 println(commentText.text.toString())
-                AddComment(contextHere, activity).add(postId, this.trim().toString(), ownerId, commentText.text.toString())
+                AddComment(contextHere, activity).add(postId, this.trim().toString(), mOwnerId, commentText.text.toString())
             }
         }
     }

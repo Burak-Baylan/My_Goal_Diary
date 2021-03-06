@@ -316,7 +316,7 @@
             android:padding="10dp"
             android:text="Hide Profile"
             android:textColor="#266785"
-            android:textSize="17sp"
+            android:textSize="15sp"
             android:textStyle="bold"
             tools:ignore="UseSwitchCompatOrMaterialXml" />
 
@@ -338,7 +338,7 @@
             android:padding="10dp"
             android:text="Hide Notifications"
             android:textColor="#266785"
-            android:textSize="17sp"
+            android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/constraintLayoutdsa6"
             app:layout_constraintStart_toStartOf="@+id/constraintLayoutdsa6"

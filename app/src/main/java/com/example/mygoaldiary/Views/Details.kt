@@ -75,12 +75,10 @@ class Details : AppCompatActivity() {
         var key = ""
         var projectId : String? = null
         var projectUuid : String = ""
-
         var lastInteraction : String? = null
         var targetedDeadline : String? = null
         var projectIsHybrid : String? = null
         var projectColor : String? = null
-
         var time : String? = null
         var date : String? = null
     }
@@ -89,8 +87,6 @@ class Details : AppCompatActivity() {
         if (projectId == "Diary" || projectId == "Add Project" || projectId == "Tasks" || projectId == "Reports") {
             when(key) {
                 "Tasks" -> { makeCurrentFragment(Tasks()) }
-                "Reports" -> {}
-                "Diary" -> {}
                 "Add Project" -> {
                     makeCurrentFragment(AddProject())
                     supportActionBarHider()

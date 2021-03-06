@@ -2,7 +2,7 @@ package com.example.mygoaldiary.Helpers.SocialHelpers
 
 import android.app.Activity
 import android.content.Context
-import com.example.mygoaldiary.Creators.CommentSheet
+import com.example.mygoaldiary.Creators.CommentSheet.CommentSheet
 import com.example.mygoaldiary.Creators.ShowAlert
 import com.example.mygoaldiary.Helpers.GetCurrentDate
 import com.example.mygoaldiary.Helpers.MyHelpers

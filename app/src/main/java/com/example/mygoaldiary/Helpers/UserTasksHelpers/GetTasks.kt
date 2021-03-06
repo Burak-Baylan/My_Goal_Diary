@@ -53,7 +53,6 @@ open class GetTasks (private val mActivity : Activity): UserProjects(){
     @SuppressLint("Recycle")
     private fun putItemsFromModel(): MutableList<TaskModel> {
         val cursor = mSql?.rawQuery("SELECT * FROM '${Details.projectUuid}'", null)
-        println("zaptirikrrikrir: ${Details.projectUuid}")
 
         val filterHere = getCurrentFilter()
         var hybridCounter = 0

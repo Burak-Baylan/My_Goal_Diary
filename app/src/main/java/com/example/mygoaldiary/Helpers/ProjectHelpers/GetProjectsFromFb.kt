@@ -24,7 +24,6 @@ class GetProjectsFromFb (private var context : Context, private var activity : A
     private var saveProjectToSql : SaveProjectToSql = SaveProjectToSql(context, activity)
     private val loadingDialog = LoadingDialog(activity)
 
-
     init {
         mSql = sqlManage.createSqlVariable("HomePage")
     }
@@ -50,9 +49,9 @@ class GetProjectsFromFb (private var context : Context, private var activity : A
                     saveProjectToSql(yearDate, timeDate, projectUuid, deadline, projectName)
                     getTasks(docs, projectUuid, yearDate)
                     if (i == projectIt.documents.size-1){
+                        GetProjects.getProjects(sqlManage, HomeRecyclerViewAdapter.homeItems, Home.homeRecyclerView)
                         loadingDialog.dismissDialog()
                         showAlert.successAlert("Success", "Projects received.", true)
-                        GetProjects.getProjects(sqlManage, HomeRecyclerViewAdapter.homeItems, Home.homeRecyclerView)
                     }
                 }
             }else{
@@ -76,8 +75,8 @@ class GetProjectsFromFb (private var context : Context, private var activity : A
     private fun getTasks(docs: DocumentSnapshot, projectUuid: String, yearDate: String) {
         docs.reference.collection("Tasks").get().addOnSuccessListener { taskIt ->
             if (taskIt != null){
-                for (docs in taskIt.documents){
-                    getTaskItems(docs)
+                for (docs2 in taskIt.documents){
+                    getTaskItems(docs2)
                     saveTaskToSql(taskUuid, projectUuid, yearDate, taskTitle, isHybridTask, taskTime)
                 }
             }else{
@@ -106,7 +105,9 @@ class GetProjectsFromFb (private var context : Context, private var activity : A
     }
 
     private fun saveTaskToSql(taskUuidString : String, projectUuid : String, yearDate : String, taskTitle : String, isHybridTask : String, taskTime : String){
-        sqlManage.adder(mSql, "'$projectUuid'", ConstantValues.TASK_VARIABLES_NAME_STRING, "'${taskUuidString}', '$taskTitle', '$isDone', '$isHybridTask', '$yearDate', '$taskTime'")
+        val id = "'$projectUuid'"
+        sqlManage.tableCreator(mSql, id, ConstantValues.TASK_VARIABLES_STRING)
+        sqlManage.adder(mSql, id, ConstantValues.TASK_VARIABLES_NAME_STRING, "'${taskUuidString}', '$taskTitle', '$isDone', '$isHybridTask', '$yearDate', '$taskTime'")
     }
 
     private fun deleteAllProjectRecords(){

@@ -4,7 +4,7 @@ import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.example.mygoaldiary.Creators.CommentSheet
+import com.example.mygoaldiary.Creators.CommentSheet.CommentSheet
 import com.example.mygoaldiary.Views.BottomNavFragments.Home
 import com.example.mygoaldiary.Views.BottomNavFragments.Social
 import com.example.mygoaldiary.R

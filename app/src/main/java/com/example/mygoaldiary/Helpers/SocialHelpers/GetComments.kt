@@ -3,7 +3,7 @@ package com.example.mygoaldiary.Helpers.SocialHelpers
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mygoaldiary.Creators.CommentSheet
+import com.example.mygoaldiary.Creators.CommentSheet.CommentSheet
 import com.example.mygoaldiary.Models.SocialCommentsModel
 import com.example.mygoaldiary.Views.BottomNavFragments.Social
 import com.github.ybq.android.spinkit.SpinKitView

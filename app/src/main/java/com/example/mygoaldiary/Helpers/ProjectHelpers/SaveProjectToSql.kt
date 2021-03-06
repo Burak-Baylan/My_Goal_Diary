@@ -31,11 +31,9 @@ class SaveProjectToSql (private var context : Context, private var activity : Ac
     }
 
     fun save(yearDateStfString: String, timeDateStfString: String, projectUuid : String){
-        val projectColorHere : Int = if (projectColor != null){
-            projectColor!!.toInt()
-        }else{
-            AddProject.selectedColor
-        }
+        val projectColorHere : Int =
+                if (projectColor != null) projectColor!!.toInt()
+                else AddProject.selectedColor
         try {
             mSql?.execSQL("INSERT INTO allUserProjectDeneme3 (${ConstantValues.PROJECT_VARIABLES_NAME_STRING}) VALUES ('$projectUuid', '$projectName', $projectColorHere, '$yearDateStfString', '$timeDateStfString', '$saveInternetToo', '$currentDate ${GetCurrentDate.getTime()}', '$deadline')")
             if (finishActivityWhenSaveProject)

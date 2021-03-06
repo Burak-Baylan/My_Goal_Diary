@@ -63,7 +63,6 @@ class FirebaseService : FirebaseMessagingService(){
             .setContentText(message.data["message"])
             .setSmallIcon(R.drawable.ic_checkmark_white)
             .setAutoCancel(true)
-            .addAction(R.drawable.ic_back, "Like", pendingIntent)
             .setContentIntent(pendingIntent)
             .build()
 

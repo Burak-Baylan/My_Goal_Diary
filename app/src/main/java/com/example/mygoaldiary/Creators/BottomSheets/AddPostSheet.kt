@@ -2,7 +2,6 @@ package com.example.mygoaldiary.Creators.BottomSheets
 
 import android.app.Activity
 import android.content.Context
-import android.graphics.Color
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -13,6 +12,7 @@ import com.example.mygoaldiary.Creators.ShowAlert
 import com.example.mygoaldiary.FirebaseManage.FirebaseAuthClass
 import com.example.mygoaldiary.Helpers.GetCurrentDate
 import com.example.mygoaldiary.Helpers.MyHelpers
+import com.example.mygoaldiary.Helpers.SocialHelpers.EditTextSizeListener
 import com.example.mygoaldiary.LoadingDialog
 import com.example.mygoaldiary.R
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -131,14 +131,10 @@ class AddPostSheet (val context : Context, val activity : Activity){
         bottomSheetView.findViewById<EditText>(R.id.commentEditText).addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                with(bottomSheetView.findViewById<TextView>(R.id.counterText2)){
+                with(bottomSheetView.findViewById<TextView>(R.id.addPostCounterText)){
                     this.text = "${s!!.length}"
                     progr = s.length
-                    when {
-                        s.length == 250 -> this.setTextColor(Color.parseColor("#F05454"))
-                        s.length > 230 -> this.setTextColor(Color.parseColor("#E07d14"))
-                        else -> this.setTextColor(Color.parseColor("#1BA1D1"))
-                    }
+                    this.setTextColor(EditTextSizeListener.control(s.length))
                     counterProgressBar.progress = progr
                 }
             }

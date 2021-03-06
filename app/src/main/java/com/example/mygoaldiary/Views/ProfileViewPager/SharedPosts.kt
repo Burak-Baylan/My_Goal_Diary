@@ -10,9 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mygoaldiary.Helpers.SocialHelpers.GetPosts
 import com.example.mygoaldiary.Models.SocialModel
 import com.example.mygoaldiary.RecyclerView.SocialRecyclerViewAdapter
-import com.example.mygoaldiary.Views.BottomNavFragments.Social
 import com.example.mygoaldiary.databinding.FragmentMyPostsBinding
-import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -33,6 +31,8 @@ class SharedPosts : Fragment() {
         _binding = FragmentMyPostsBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        GetPosts.lastTimeStamp = null
+
         initializeRecyclerView()
 
         binding.myPostsRefreshLayout.setColorSchemeColors(Color.parseColor("#FFFFFF"))
@@ -40,6 +40,9 @@ class SharedPosts : Fragment() {
 
         with(binding.myPostsRefreshLayout) {
             this.setOnRefreshListener {
+                GetPosts.lastTimeStamp = null
+                items.clear()
+                binding.myPostsRecyclerView.removeAllViews()
                 get()
                 this.isRefreshing = false
             }
@@ -47,6 +50,7 @@ class SharedPosts : Fragment() {
         getPosts.recyclerView = binding.myPostsRecyclerView
         getPosts.loadingProgress = binding.myPostsLoadingProgress
         getPosts.noTextView = binding.noPostsTv
+        getPosts.adapter = adapter
 
         get()
 
@@ -57,7 +61,6 @@ class SharedPosts : Fragment() {
 
     private val firebase = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
-    private val currentUser = auth.currentUser
 
     private fun initializeRecyclerView() {
         items = ArrayList()

@@ -67,7 +67,6 @@ class PutTasks : UserProjects(){
         }
     }
 
-    private lateinit var currentDateAndTime : String
     private fun taskOverOrNot2(isChecked : Boolean, textView : TextView, taskModel : TaskModel) : Boolean{
 
         val isHybrid = taskModel.isHybrid
@@ -103,7 +102,6 @@ class PutTasks : UserProjects(){
         }
 
         binding.tasksDone.text = "$tasksDone/$totalTasks"
-        //binding.showLastInteractionDateTv.text = GetCurrentDate.getDateAndTime()
         return returnBool
     }
 

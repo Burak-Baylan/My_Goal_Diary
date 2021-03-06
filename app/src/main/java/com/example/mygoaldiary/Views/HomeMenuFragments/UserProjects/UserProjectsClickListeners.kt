@@ -19,7 +19,6 @@ import com.google.firebase.auth.FirebaseAuth
 
 class UserProjectsClickListeners : UserProjects() {
 
-
     private var taskHelper : TasksHelper.Companion
 
     init {
@@ -35,18 +34,10 @@ class UserProjectsClickListeners : UserProjects() {
             this.taskDoneButton.setOnClickListener { taskHelper.addTask().add(this.newTaskEditText.text.toString()) }
             this.filterIc.setOnClickListener { TaskFilter().selectFilter(mContext, mActivity) }
             this.editDeadline.setOnClickListener { editDeadline() }
-
-            this.showAndHideLastInteraction.setOnClickListener {
-                lastInteractionTvtIsVisible = ShowOrHide.showOrHide(lastInteractionTvtIsVisible, this.showAndHideLastInteraction, this.showLastInteractionDateTv)
-            }
-            this.showAndHideTargetedDeadline.setOnClickListener {
-                deadlineTvIsVisible = ShowOrHide.showOrHide(deadlineTvIsVisible, this.showAndHideTargetedDeadline, this.editDeadline, this.showDeadlineTv)
-            }
-
+            this.showAndHideLastInteraction.setOnClickListener { lastInteractionTvtIsVisible = ShowOrHide.showOrHide(lastInteractionTvtIsVisible, this.showAndHideLastInteraction, this.showLastInteractionDateTv) }
+            this.showAndHideTargetedDeadline.setOnClickListener { deadlineTvIsVisible = ShowOrHide.showOrHide(deadlineTvIsVisible, this.showAndHideTargetedDeadline, this.editDeadline, this.showDeadlineTv) }
             this.getInfoForDeadline.setOnClickListener { showAlert.infoAlert("Info", "If you want to select a deadline, please upload your current project to cloud.", true) }
-
-            this.infoForCantUploadCloud.setOnClickListener { showAlert.infoAlert(mActivity.getString(R.string.info), getString(R.string.taskNotCloud), true) }
-
+            this.infoForCantUploadCloud.setOnClickListener { showAlert.infoAlert(mActivity.getString(R.string.info), mActivity.getString(R.string.taskNotCloud), true) }
             this.infoUserNull.setOnClickListener { showAlert.infoAlert("Info", "If you are logged in, you can upload your projects and tasks to the cloud.",true) }
 
             this.newTaskEditText.addTextChangedListener(object : TextWatcher {
