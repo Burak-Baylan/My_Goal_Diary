@@ -75,7 +75,6 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun notMyAccount(){
-        println("ZOBORİİİİK: ${intent.getStringExtra("username")} / ${intent.getStringExtra("ppUrl")}")
         binding.editProfileBtn.visibility = View.INVISIBLE
         binding.logoutLayout.visibility = View.INVISIBLE
         binding.usernameTexView.text = intent.getStringExtra("username")
