@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.mygoaldiary">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
@@ -14,28 +13,39 @@
         android:roundIcon="@mipmap/app_new_new_icon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyGoalDiary">
-
-        <service android:name=".Notification.FirebaseService"
+        <service
+            android:name=".Notification.FirebaseService"
             android:permission="com.google.android.c2dm.permission.SEND">
-
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
-
         </service>
-
-        <activity android:name=".Views.EditUserProfile" android:screenOrientation="portrait" />
-        <activity android:name=".Views.ProfileActivity" android:screenOrientation="portrait" />
-        <activity android:name=".Views.SignUpScreen" android:screenOrientation="portrait" />
-        <activity android:name=".Views.LoginScreen" android:screenOrientation="portrait" />
-        <activity android:name=".Views.Details" android:screenOrientation="portrait" />
-        <activity android:name=".Views.MainActivity" android:screenOrientation="portrait">
+        <activity android:name=".Views.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".Views.EditUserProfile"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Views.ProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Views.SignUpScreen"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Views.LoginScreen"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Views.Details"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Views.MainActivity"
+            android:screenOrientation="portrait">
         </activity>
 
         <meta-data

@@ -79,12 +79,8 @@ class SocialRecyclerViewAdapter(var items: ArrayList<SocialModel>, val activity:
 
         holder.likeButton.setOnClickListener {
             currentUser = auth.currentUser
-            if (currentUser != null)
-                PostLiker(activity).askLike(currentUser!!, items[position].postId, items[position].userUuid, items[position].comment, holder.likeButton)
-
-            else
-                showAlert.infoAlert(activity.getString(R.string.info), activity.getString(R.string.loggedInToLikePost), true)
-
+            if (currentUser != null) PostLiker(activity).askLike(currentUser!!, items[position].postId, items[position].userUuid, items[position].comment, holder.likeButton)
+            else showAlert.infoAlert(activity.getString(R.string.info), activity.getString(R.string.loggedInToLikePost), true)
         }
 
         holder.commentButton.setOnClickListener { openComments(position) }
@@ -92,11 +88,8 @@ class SocialRecyclerViewAdapter(var items: ArrayList<SocialModel>, val activity:
         with(holder.bookmarkIc) {
             this.visibility = View.VISIBLE
             this.setOnClickListener {
-                if (currentUser != null)
-                    postMarker.mark(items, position, holder)
-                else
-                    showAlert.infoAlert(activity.getString(R.string.info), activity.getString(R.string.loggedInToMarkPost), true)
-
+                if (currentUser != null) postMarker.mark(items, position, holder)
+                else showAlert.infoAlert(activity.getString(R.string.info), activity.getString(R.string.loggedInToMarkPost), true)
             }
         }
 
@@ -116,18 +109,15 @@ class SocialRecyclerViewAdapter(var items: ArrayList<SocialModel>, val activity:
 
     private fun openComments(position: Int){
         currentUser = auth.currentUser
-        if (currentUser != null){
-            commentSheet.createSheet(items[position].postId, items[position].userUuid, items[position].comment)
-        }else{
-            showAlert.infoAlert(activity.getString(R.string.info), activity.getString(R.string.loggedInToJoinChat), true)
-        }
+        if (currentUser != null) commentSheet.createSheet(items[position].postId, items[position].userUuid, items[position].comment)
+        else showAlert.infoAlert(activity.getString(R.string.info), activity.getString(R.string.loggedInToJoinChat), true)
     }
 
     private val firebase = FirebaseFirestore.getInstance()
     private fun getPostOwnerProperties(userId: String, holder: Holder, position: Int) {
         firebase.collection("Users").document(userId).addSnapshotListener { value, error ->
             if (error != null){
-                /** HATA **/
+                putUserProperties(holder, position, "...", "...")
             }else{
                 if (value != null && value.exists()){
                     val userEmail = value["userEmail"] as String
@@ -138,7 +128,7 @@ class SocialRecyclerViewAdapter(var items: ArrayList<SocialModel>, val activity:
                         profileVisibilityController(items[position].userUuid, ppUrl, username)
                     }
                 }else{
-                    println("Adapter içindeki value boş ya da boş")
+                    putUserProperties(holder, position, "...", "...")
                 }
             }
         }

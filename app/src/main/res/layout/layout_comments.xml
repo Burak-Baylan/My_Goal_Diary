@@ -44,7 +44,6 @@
             android:src="@drawable/ic_report_flag"
             android:visibility="invisible"
             tools:visibility="visible"
-            android:layout_marginEnd="50dp"
             app:layout_constraintBottom_toBottomOf="@+id/ppIvComment"
             app:layout_constraintEnd_toEndOf="@+id/commentTvComment"
             app:layout_constraintTop_toTopOf="@+id/ppIvComment"

@@ -50,7 +50,7 @@ class SocialCommentsAdapter (var items: ArrayList<SocialCommentsModel>, val acti
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.commentTv.text = items[position].comment
-
+        setPpImageSrcWithGrayColor(holder)
         val date = items[position].timeStamp.toDate()
         holder.dateTv.text = "${date.day}/${date.month}/${date.year+1900} ${date.hours}:${date.minutes}:${date.seconds}"
 
@@ -82,12 +82,16 @@ class SocialCommentsAdapter (var items: ArrayList<SocialCommentsModel>, val acti
             if (it != null && link != null){
                 Picasso.get().load(link).resize(100,100).into(holder.ppImageView)
             }else{
-                holder.ppImageView.setImageResource(R.drawable.background_for_sheet)
-                holder.ppImageView.setColorFilter(Color.parseColor("#EFEFEF"))
+                setPpImageSrcWithGrayColor(holder)
             }
         }.addOnFailureListener {
 
         }
+    }
+
+    private fun setPpImageSrcWithGrayColor(holder : Holder){
+        holder.ppImageView.setImageResource(R.drawable.background_for_sheet)
+        holder.ppImageView.setColorFilter(Color.parseColor("#EFEFEF"))
     }
 
     private val firebase = FirebaseFirestore.getInstance()
