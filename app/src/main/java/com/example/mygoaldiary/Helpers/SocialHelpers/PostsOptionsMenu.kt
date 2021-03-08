@@ -13,7 +13,7 @@ import com.example.mygoaldiary.RecyclerView.SocialRecyclerViewAdapter
 import com.google.firebase.auth.FirebaseAuth
 import java.util.ArrayList
 
-class OptionsMenu (private val context : Context, private val activity : Activity){
+class PostsOptionsMenu (private val context : Context, private val activity : Activity){
 
     private lateinit var mPostOwnerId : String
 
@@ -97,13 +97,9 @@ class OptionsMenu (private val context : Context, private val activity : Activit
     }
 
     private fun ownerIsMe(menuItem : Int){
-
-        /*val menu = popupMenu.menu
-        menu.getItem(1).title = "s"*/
-
         when(menuItem) {
             R.id.notify -> FilterNotification().selectFilter(context, activity, items!![position!!].postId)
-            R.id.deleteThisPost -> PostDelete.delete(context, activity, items!![position!!].postId)
+            R.id.deleteThisPost -> PostDelete.delete(context, activity, items!![position!!].postId, null)
         }
     }
 
@@ -116,7 +112,7 @@ class OptionsMenu (private val context : Context, private val activity : Activit
 
         when(menuItem) {
             R.id.markThisPost -> postMarker.mark(items!!, position!!, holder!!)
-            R.id.reportPost -> ReportPostSheet(context, activity).createSheet(username!!, items!!, position!!)
+            R.id.reportPost -> ReportPostSheet(context, activity).createSheet(username!!, items!!, null, position!!)
         }
     }
 }

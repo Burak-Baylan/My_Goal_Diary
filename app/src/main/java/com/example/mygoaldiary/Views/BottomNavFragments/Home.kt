@@ -124,6 +124,7 @@ open class Home : Fragment() {
         isSearchOpen = true
         binding.searchLayout.visibility = View.VISIBLE
         binding.homeLinearLayout.visibility = View.GONE
+        binding.searchEditText.requestFocus()
         UIUtil.showKeyboard(requireActivity(), binding.searchEditText)
     }
 

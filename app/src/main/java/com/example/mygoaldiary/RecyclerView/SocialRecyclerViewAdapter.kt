@@ -14,7 +14,7 @@ import com.example.mygoaldiary.Creators.CommentSheet.CommentSheet
 import com.example.mygoaldiary.Creators.CommentSheet.LikeManager
 import com.example.mygoaldiary.Creators.ShowAlert
 import com.example.mygoaldiary.FirebaseManage.GetAvatar
-import com.example.mygoaldiary.Helpers.SocialHelpers.OptionsMenu
+import com.example.mygoaldiary.Helpers.SocialHelpers.PostsOptionsMenu
 import com.example.mygoaldiary.Helpers.SocialHelpers.PostLiker
 import com.example.mygoaldiary.Helpers.SocialHelpers.PostMarker
 import com.example.mygoaldiary.Models.SocialModel
@@ -22,7 +22,6 @@ import com.example.mygoaldiary.R
 import com.example.mygoaldiary.Views.ProfileActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import de.hdodenhof.circleimageview.CircleImageView
 import java.util.*
 
@@ -52,7 +51,7 @@ class SocialRecyclerViewAdapter(var items: ArrayList<SocialModel>, val activity:
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.layout_feed, parent, false)
         showAlert = ShowAlert(context)
-        optionsMenu = OptionsMenu(context, activity)
+        optionsMenu = PostsOptionsMenu(context, activity)
         commentSheet = CommentSheet(context, activity)
         likeManager = LikeManager(context, activity)
         return Holder(view)
@@ -60,7 +59,7 @@ class SocialRecyclerViewAdapter(var items: ArrayList<SocialModel>, val activity:
 
     private val auth = FirebaseAuth.getInstance()
     private var currentUser = auth.currentUser
-    private lateinit var optionsMenu : OptionsMenu
+    private lateinit var optionsMenu : PostsOptionsMenu
     private val postMarker = PostMarker()
     private lateinit var commentSheet : CommentSheet
     private lateinit var likeManager : LikeManager

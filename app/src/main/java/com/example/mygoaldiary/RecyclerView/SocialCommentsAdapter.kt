@@ -10,8 +10,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mygoaldiary.Creators.BottomSheets.ReportPostSheet
 import com.example.mygoaldiary.Creators.ShowAlert
 import com.example.mygoaldiary.Helpers.SocialHelpers.CommentLiker
+import com.example.mygoaldiary.Helpers.SocialHelpers.PostDelete
 import com.example.mygoaldiary.Models.SocialCommentsModel
 import com.example.mygoaldiary.R
 import com.google.firebase.auth.FirebaseAuth
@@ -30,6 +32,8 @@ class SocialCommentsAdapter (var items: ArrayList<SocialCommentsModel>, val acti
         var likeButton : ImageView = view.findViewById(R.id.likeIcComment)
         var likeTv : TextView = view.findViewById(R.id.likeTextViewCount)
         var dateTv : TextView = view.findViewById(R.id.dateTvComment)
+        var deleteCommentIv : ImageView = view.findViewById(R.id.deleteCommentIv)
+        var reportCommentIv : ImageView = view.findViewById(R.id.reportCommentIv)
     }
 
     private lateinit var context : Context
@@ -90,14 +94,14 @@ class SocialCommentsAdapter (var items: ArrayList<SocialCommentsModel>, val acti
     private fun getUserProperties(userId : String, holder : Holder, position : Int) {
         firebase.collection("Users").document(userId).addSnapshotListener { value, error ->
             if (error != null){
-                /** HATA **/
+                putUserProperties(holder, position, "...", "...")
             }else{
                 if (value != null && value.exists()){
                     val userEmail = value["userEmail"] as String
                     val userName = value["userName"] as String
                     putUserProperties(holder, position, userEmail, userName)
                 }else{
-                    println("User props error")
+                    putUserProperties(holder, position, "...", "...")
                 }
             }
         }
@@ -106,13 +110,9 @@ class SocialCommentsAdapter (var items: ArrayList<SocialCommentsModel>, val acti
     private fun getLikeCount(holder : Holder, position: Int){
         val reference = firebase.collection("Posts").document(items[position].postId).collection("Comments")
         reference.document(items[position].commentId).collection("Likes").addSnapshotListener { value, error ->
-            if (error != null){
-                holder.likeTv.text = "NaN"
-            }else{
-                if (value != null){
-                    holder.likeTv.text = value.count().toString()
-                }
-            }
+            holder.likeTv.text =
+                    if (error != null) "NaN"
+                    else value?.count()?.toString() ?: "NaN"
         }
     }
 
@@ -120,6 +120,25 @@ class SocialCommentsAdapter (var items: ArrayList<SocialCommentsModel>, val acti
         holder.commentTv.text = items[position].comment
         holder.emailTv.text = userEmail
         holder.usernameTv.text = username
+        if (currentUser != null) {
+            if (items[position].userUuid == currentUser.uid) {
+                holder.reportCommentIv.visibility = View.INVISIBLE
+                holder.deleteCommentIv.visibility = View.VISIBLE
+            }else{
+                holder.reportCommentIv.visibility = View.VISIBLE
+                holder.deleteCommentIv.visibility = View.INVISIBLE
+            }
+        }else{
+            holder.reportCommentIv.visibility = View.VISIBLE
+            holder.deleteCommentIv.visibility = View.INVISIBLE
+        }
+
+        holder.reportCommentIv.setOnClickListener {
+            ReportPostSheet(context, activity).createSheet(username, null, items, position)
+        }
+        holder.deleteCommentIv.setOnClickListener {
+            PostDelete.delete(context, activity, items[position].postId, items[position].commentId)
+        }
     }
 
     private lateinit var showAlert : ShowAlert

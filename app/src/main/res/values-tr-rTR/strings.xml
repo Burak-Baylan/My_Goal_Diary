@@ -146,4 +146,6 @@
     <string name="addProject">Proje Ekle</string>
     <string name="social">Sosyal</string>
     <string name="home">Ev</string>
+    <string name="commentDeleted">Yorum silindi.</string>
+    <string name="commentCouldntDeleted">Yorum silinemedi.</string>
 </resources>

@@ -141,7 +141,11 @@
 
     <string name="postDeleted">Post deleted.</string>
 
+    <string name="commentDeleted">Comment deleted.</string>
+
     <string name="postCouldntDeleted">Post could not deleted</string>
+
+    <string name="commentCouldntDeleted">Comment could not deleted.</string>
 
     <string name="yourPostLiked">Your Post Liked</string>
 

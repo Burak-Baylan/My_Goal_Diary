@@ -98,9 +98,6 @@ class AddPostSheet (val context : Context, val activity : Activity){
                             "ownerUuid" to currentUser.uid,
                             "comment" to commentEdt.text.toString().trim(),
                             "category" to selectedCategory!!,
-                            "likeCount" to 0,
-                            "currentDate" to GetCurrentDate.getDate(),
-                            "currentTime" to GetCurrentDate.getTime(),
                             "timeStamp" to Timestamp.now(),
                             "postId" to postUuid!!,
                             "pushNotify" to true

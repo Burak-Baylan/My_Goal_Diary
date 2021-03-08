@@ -23,6 +23,33 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0">
 
+        <ImageView
+            android:id="@+id/deleteCommentIv"
+            android:layout_width="17dp"
+            android:layout_height="17dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_delete_red"
+            android:visibility="invisible"
+            tools:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/ppIvComment"
+            app:layout_constraintEnd_toEndOf="@+id/commentTvComment"
+            app:layout_constraintTop_toTopOf="@+id/ppIvComment"
+            app:tint="#DAF05454" />
+
+        <ImageView
+            android:id="@+id/reportCommentIv"
+            android:layout_width="17dp"
+            android:layout_height="17dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_report_flag"
+            android:visibility="invisible"
+            tools:visibility="visible"
+            android:layout_marginEnd="50dp"
+            app:layout_constraintBottom_toBottomOf="@+id/ppIvComment"
+            app:layout_constraintEnd_toEndOf="@+id/commentTvComment"
+            app:layout_constraintTop_toTopOf="@+id/ppIvComment"
+            app:tint="#DAF05454" />
+
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/ppIvComment"
             android:layout_width="35dp"
