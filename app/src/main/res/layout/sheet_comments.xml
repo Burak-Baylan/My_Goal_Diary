@@ -12,8 +12,6 @@
     android:backgroundTint="#EFEFEF"
     android:id="@+id/bottomSheetContainer">
 
-    <!--    android:background="@drawable/background_sheet_dialog"-->
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -180,7 +178,7 @@
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/background_for_sheet"
                 android:gravity="center|start"
-                android:hint="Add Comment..."
+                android:hint="@string/addCommentWithDot"
                 android:inputType="none"
                 android:layout_marginBottom="10dp"
                 android:maxHeight="80dp"
@@ -206,7 +204,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="5dp"
                 android:background="@drawable/background_login_button_green"
-                android:text="Send"
+                android:text="@string/send"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="13sp"
@@ -301,7 +299,7 @@
                 android:layout_height="wrap_content"
                 android:visibility="invisible"
                 tools:visibility="visible"
-                android:text="No Comment Here"
+                android:text="@string/noCommentHere"
                 android:layout_marginTop="10dp"
                 android:textColor="@color/goodRed"
                 android:textSize="16sp"

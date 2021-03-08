@@ -10,14 +10,6 @@ open class MyHelpers {
             return InternetController.internetControl(activity)
         }
 
-        fun shortenWord(): ShortenWord {
-            return ShortenWord()
-        }
-
-        fun showOrHide(): ShowOrHide.Companion {
-            return ShowOrHide
-        }
-
         fun getDate() : GetCurrentDate.Companion{
             return GetCurrentDate
         }

@@ -1,7 +1,9 @@
 package com.example.mygoaldiary.Views.HomeMenuFragments
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.database.sqlite.SQLiteDatabase
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -52,6 +54,7 @@ open class AddProject : Fragment() {
             this.goBackButtonAddProject.setOnClickListener { requireActivity().finish() }
             this.showColorImageView.setImageResource(R.color.darkRed)
             this.nextButtonFromAddProject.setOnClickListener { next() }
+            this.projectNameEditText.requestFocus()
         }
 
         projectNameEditTextChangeListener(binding.projectNameEditText, binding.nextButtonFromAddProject)
@@ -64,7 +67,15 @@ open class AddProject : Fragment() {
         editText.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                doneButton.isEnabled = count > 0
+                if (s != null) {
+                    doneButton.isEnabled = if (s.isNotEmpty()){
+                        doneButton.setTextColor(Color.parseColor("#32a852"))
+                        true
+                    }else{
+                        doneButton.setTextColor(Color.parseColor("#AEAEAE"))
+                        false
+                    }
+                }
             }
             override fun afterTextChanged(s: Editable?) {}
         })
@@ -80,10 +91,11 @@ open class AddProject : Fragment() {
     private lateinit var myDeadlineTv : TextView
     private lateinit var addProjectSheetView : View
 
+    private lateinit var backupActivity : Activity
+
     @SuppressLint("InflateParams")
     private fun next(){
         projectName = binding.projectNameEditText.text.toString()
-
 
         addProjectSheetView = AddProjectSheet(requireContext(), requireActivity()).createSheet(projectName!!, selectedColor)
 
@@ -103,6 +115,7 @@ open class AddProject : Fragment() {
         addProjectSheetView.findViewById<Button>(R.id.projectSaveButton).setOnClickListener { saveProject() }
 
         myDeadlineTv.text = currentDate
+        backupActivity = requireActivity()
         selectDeadlineLayout.setOnClickListener {
             if (saveInternetTooIsChecked) {
                 MyDatePickerDialog.apply {
@@ -110,7 +123,7 @@ open class AddProject : Fragment() {
                     createDatePicker(requireContext(), requireActivity(), null)
                 }.show()
             }else{
-                showAlert.infoAlert("Info", "If you want to select deadline, you mus choose the 'Also upload to cloud' option.", true)
+                showAlert.infoAlert(backupActivity.getString(R.string.info), backupActivity.getString(R.string.selectDeadlineAlsoUploadCloud), true)
             }
         }
     }
@@ -150,12 +163,11 @@ open class AddProject : Fragment() {
                     saveProjectToSql(yearDateStfString, timeDateStfString, projectUuidString)
                     loadingDialog.dismissDialog()
                 }.addOnFailureListener {
-                    alertCreator.errorAlert(getString(R.string.error), getString(R.string.errorOccurred), true)
+                    alertCreator.errorAlert(getString(R.string.error), it.localizedMessage!!, true)
                     loadingDialog.dismissDialog()
                 }
-            }
-            else{ // Not logged in.
-                alertCreator.errorAlert(getString(R.string.error), "You must be logged in to save your project.", true)
+            } else{ // Not logged in.
+                alertCreator.errorAlert(getString(R.string.error), getString(R.string.loggedInToSaveProject), true)
             }
         }else{ // Just save SQL.
             saveProjectToSql(yearDateStfString, timeDateStfString, projectUuidString)

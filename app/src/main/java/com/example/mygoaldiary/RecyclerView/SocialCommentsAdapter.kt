@@ -1,5 +1,6 @@
 package com.example.mygoaldiary.RecyclerView
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
@@ -42,6 +43,7 @@ class SocialCommentsAdapter (var items: ArrayList<SocialCommentsModel>, val acti
     }
 
     private val currentUser = FirebaseAuth.getInstance().currentUser
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.commentTv.text = items[position].comment
 
@@ -57,7 +59,7 @@ class SocialCommentsAdapter (var items: ArrayList<SocialCommentsModel>, val acti
                 if (currentUser != null) {
                     firebase.collection("Posts").document(items[position].postId).get().addOnSuccessListener {
                         if (it.exists() && it != null) {
-                            CommentLiker().askLike(currentUser, items[position].userUuid, items[position].postId, items[position].commentId, this, it["comment"] as String)
+                            CommentLiker(activity).askLike(currentUser, items[position].userUuid, items[position].postId, items[position].commentId, this, it["comment"] as String)
                         }
                     }.addOnFailureListener {}
                 }

@@ -51,8 +51,6 @@ class FirebaseAuthClass (private val ctx : Context, private val act : Activity):
     }
 
     private fun authSuccessFunc(){
-        Toast.makeText(ctx, "successFunc", Toast.LENGTH_SHORT).show()
-
         FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener {
             SaveTokenToFirebase().save(it.token)
             FirebaseService.token = it.token

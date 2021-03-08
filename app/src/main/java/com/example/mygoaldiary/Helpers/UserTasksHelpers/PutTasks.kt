@@ -1,6 +1,7 @@
 package com.example.mygoaldiary.Helpers.UserTasksHelpers
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.view.View
 import android.widget.*
 import com.example.mygoaldiary.Creators.ShowAlert
@@ -11,7 +12,7 @@ import com.example.mygoaldiary.R
 import com.example.mygoaldiary.SQL.UpdateLastInteraction
 import com.example.mygoaldiary.Views.Details
 
-class PutTasks : UserProjects(){
+class PutTasks(private val activity : Activity) : UserProjects(){
 
     private val checkBoxArray = mutableListOf<Boolean>()
 
@@ -91,7 +92,7 @@ class PutTasks : UserProjects(){
 
         if (isHybrid == "true"){
             returnBool = save()
-            showAlert.warningAlert("Update from cloud", "Do you want to update from the cloud at the same time?", false).apply {
+            showAlert.warningAlert(activity.getString(R.string.updateFromCloud), activity.getString(R.string.doYouWantToUpdateFromTheCloud), false).apply {
                 this.setOnClickListener {
                     ShowAlert.mAlertDialog.dismiss()
                     updateFromFb(taskModel, returnBool)
@@ -116,14 +117,14 @@ class PutTasks : UserProjects(){
                     .document(taskModel.taskUuid)
                     .update("isDone", "$returnBool")
                     .addOnSuccessListener {
-                        showAlert.successAlert("Success", "Update success.", true)
+                        showAlert.successAlert(activity.getString(R.string.success), activity.getString(R.string.updateSuccess), true)
                         loadingDialog.dismissDialog()
                     }.addOnFailureListener {
-                        showAlert.errorAlert("Error", "Update fail.", true)
+                        showAlert.errorAlert(activity.getString(R.string.error), activity.getString(R.string.updateFail), true)
                         loadingDialog.dismissDialog()
                     }
         }else{
-            showAlert.infoAlert("Please", "Please", true)
+            showAlert.infoAlert(activity.getString(R.string.info), activity.getString(R.string.youMustBeLoggedInToDoThis), true)
         }
     }
 }

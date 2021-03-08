@@ -7,6 +7,7 @@ import com.example.mygoaldiary.ConstantValues
 import com.example.mygoaldiary.Creators.ShowAlert
 import com.example.mygoaldiary.Helpers.GetCurrentDate
 import com.example.mygoaldiary.LoadingDialog
+import com.example.mygoaldiary.R
 import com.example.mygoaldiary.RecyclerView.HomeRecyclerViewAdapter
 import com.example.mygoaldiary.SQL.ManageSQL
 import com.example.mygoaldiary.Views.BottomNavFragments.Home
@@ -49,18 +50,18 @@ class GetProjectsFromFb (private var context : Context, private var activity : A
                     saveProjectToSql(yearDate, timeDate, projectUuid, deadline, projectName)
                     getTasks(docs, projectUuid, yearDate)
                     if (i == projectIt.documents.size-1){
-                        GetProjects.getProjects(sqlManage, HomeRecyclerViewAdapter.homeItems, Home.homeRecyclerView)
+                        GetProjects.getProjects(activity, sqlManage, HomeRecyclerViewAdapter.homeItems, Home.homeRecyclerView)
                         loadingDialog.dismissDialog()
-                        showAlert.successAlert("Success", "Projects received.", true)
+                        showAlert.successAlert(activity.getString(R.string.success), activity.getString(R.string.projectsReceived), true)
                     }
                 }
             }else{
                 /** KAYITLI PROJE BULUNAMADI **/
                 loadingDialog.dismissDialog()
-                showAlert.errorAlert("Error", "Couldn't found saved project", true)
+                showAlert.errorAlert(activity.getString(R.string.error), activity.getString(R.string.couldntFoundSavedProject), true)
             }
         }.addOnFailureListener {
-            showAlert.errorAlert("Error", it.localizedMessage!!, true)
+            showAlert.errorAlert(activity.getString(R.string.error), it.localizedMessage!!, true)
             loadingDialog.dismissDialog()
         }
     }

@@ -81,10 +81,10 @@ class SocialRecyclerViewAdapter(var items: ArrayList<SocialModel>, val activity:
         holder.likeButton.setOnClickListener {
             currentUser = auth.currentUser
             if (currentUser != null)
-                PostLiker().askLike(currentUser!!, items[position].postId, items[position].userUuid, items[position].comment, holder.likeButton)
+                PostLiker(activity).askLike(currentUser!!, items[position].postId, items[position].userUuid, items[position].comment, holder.likeButton)
 
             else
-                showAlert.infoAlert(activity.getString(R.string.info), "You must be logged in to like a post", true)
+                showAlert.infoAlert(activity.getString(R.string.info), activity.getString(R.string.loggedInToLikePost), true)
 
         }
 
@@ -96,7 +96,7 @@ class SocialRecyclerViewAdapter(var items: ArrayList<SocialModel>, val activity:
                 if (currentUser != null)
                     postMarker.mark(items, position, holder)
                 else
-                    showAlert.infoAlert(activity.getString(R.string.info), "You must be logged in to mark a post", true)
+                    showAlert.infoAlert(activity.getString(R.string.info), activity.getString(R.string.loggedInToMarkPost), true)
 
             }
         }
@@ -120,7 +120,7 @@ class SocialRecyclerViewAdapter(var items: ArrayList<SocialModel>, val activity:
         if (currentUser != null){
             commentSheet.createSheet(items[position].postId, items[position].userUuid, items[position].comment)
         }else{
-            showAlert.infoAlert(activity.getString(R.string.info), "If you want to join the chat, you must be logged in", true)
+            showAlert.infoAlert(activity.getString(R.string.info), activity.getString(R.string.loggedInToJoinChat), true)
         }
     }
 
@@ -156,7 +156,7 @@ class SocialRecyclerViewAdapter(var items: ArrayList<SocialModel>, val activity:
                     intent.putExtra("username", username)
                     activity.startActivity(intent)
                 }else{
-                    showAlert.infoAlert("Info", "This user's profile is private", true)
+                    showAlert.infoAlert(activity.getString(R.string.info), activity.getString(R.string.profilePrivate), true)
                 }
             }
         }.addOnFailureListener {
@@ -168,7 +168,7 @@ class SocialRecyclerViewAdapter(var items: ArrayList<SocialModel>, val activity:
     private lateinit var date : Date
     private fun putUserProperties(holder: Holder, position: Int, userEmail: String, username: String){
         holder.commentTv.text = items[position].comment
-        holder.categoryTv.text = "Category: ${items[position].category}"
+        holder.categoryTv.text = "${activity.getString(R.string.category)}: ${items[position].category}"
         holder.emailTv.text = userEmail
         holder.usernameTv.text = username
         date = items[position].timeStamp.toDate()

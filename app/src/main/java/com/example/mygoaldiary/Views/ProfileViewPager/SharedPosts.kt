@@ -60,7 +60,6 @@ class SharedPosts : Fragment() {
     private fun get() = getPosts.get(items, firebase.collection("Posts").whereEqualTo("ownerUuid", userUuid))
 
     private val firebase = FirebaseFirestore.getInstance()
-    private val auth = FirebaseAuth.getInstance()
 
     private fun initializeRecyclerView() {
         items = ArrayList()

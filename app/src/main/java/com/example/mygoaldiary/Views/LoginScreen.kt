@@ -31,7 +31,6 @@ class LoginScreen : AppCompatActivity() {
     private var auth = FirebaseAuth.getInstance()
 
     private lateinit var loadingDialog: LoadingDialog
-    private lateinit var alert : android.app.AlertDialog.Builder
 
     private val firebaseSuperClass = FirebaseSuperClass(this, this)
 
@@ -120,7 +119,7 @@ class LoginScreen : AppCompatActivity() {
         firebase.collection("Users").document(currentUser!!.uid).update("userPassword", passwordEditText.text.toString()).addOnSuccessListener {
             login()
         }.addOnFailureListener {
-            showAlert.errorAlert("Error", "An error occurred. Please try again.", true)
+            showAlert.errorAlert(getString(R.string.error), getString(R.string.errorOccurred), true)
         }
     }
 

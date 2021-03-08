@@ -8,6 +8,7 @@ import com.example.mygoaldiary.Helpers.GetCurrentDate
 import com.example.mygoaldiary.Helpers.MyHelpers
 import com.example.mygoaldiary.Helpers.ShortenWord
 import com.example.mygoaldiary.Notification.PushNotification
+import com.example.mygoaldiary.R
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
@@ -46,12 +47,12 @@ class AddComment (private val context : Context, private val activity : Activity
             CommentSheet.commentPostEditText.text.clear()
             CommentSheet(context, activity).getComments()
 
-            val title = "\"${currentUser.displayName}\" Commented on Your Post."
+            val title = "\"${currentUser.displayName}\" ${activity.getString(R.string.commentedYourPost)}"
             val message = ShortenWord.shorten(comment, 50, 0, 50, "...")
 
             PushNotification.normalPush(title, message, ownerId, postId, postComment)
         }.addOnFailureListener {
-            showAlert.errorAlert("Error", it.localizedMessage!!, true)
+            showAlert.errorAlert(activity.getString(R.string.error), it.localizedMessage!!, true)
         }
     }
 

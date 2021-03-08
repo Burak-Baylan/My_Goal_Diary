@@ -5,7 +5,7 @@ import com.example.mygoaldiary.Views.Details
 import com.example.mygoaldiary.Views.HomeMenuFragments.UserProjects.UserProjects
 import java.lang.Exception
 
-class UpdateLastInteraction : UserProjects(){
+open class UpdateLastInteraction : UserProjects(){
 
     companion object{
         fun update(){

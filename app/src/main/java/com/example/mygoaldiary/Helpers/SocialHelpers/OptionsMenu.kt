@@ -27,7 +27,7 @@ class OptionsMenu (private val context : Context, private val activity : Activit
     fun createOptionsMenu(button : ImageView, postOwnerId : String){
         currentUser = auth.currentUser
         if (currentUser == null) {
-            showAlert.errorAlert("Error", "Need User", true)
+            showAlert.errorAlert(activity.getString(R.string.error), activity.getString(R.string.needUserOpenOptionsMenu), true)
         }else{
             this.menuIv = button
 
@@ -75,7 +75,7 @@ class OptionsMenu (private val context : Context, private val activity : Activit
             }
             showMenu()
         }else {
-            showAlert.errorAlert("Error", "Menu couldn't open. Please try again later.", true)
+            showAlert.errorAlert(activity.getString(R.string.error), activity.getString(R.string.menuCouldntOpen), true)
         }
     }
 

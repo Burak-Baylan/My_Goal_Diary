@@ -7,20 +7,6 @@
     tools:context=".Views.LoginScreen"
     android:background="#EFEFEF">
 
-    <!--TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:fontFamily="@font/acme"
-        android:text="Login"
-        android:textColor="#28875E"
-        android:textSize="50sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" /-->
-
     <ImageView
         android:id="@+id/textView4"
         android:layout_width="200dp"
@@ -56,7 +42,7 @@
         android:drawableStart="@drawable/ic_password"
         android:drawablePadding="10dp"
         android:ems="10"
-        android:hint="Password"
+        android:hint="@string/password"
         android:inputType="textPersonName"
         android:paddingStart="15dp"
         android:password="true"
@@ -73,7 +59,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="25dp"
         android:background="@drawable/background_login_button_green"
-        android:text="LOGIN"
+        android:text="@string/login"
         android:textColor="#FFFFFF"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="@+id/passwordEditText"
@@ -85,7 +71,7 @@
         android:id="@+id/signUpButton"
         android:layout_height="wrap_content"
         android:background="@drawable/background_sign_up_stroke_green"
-        android:text="SIGN UP"
+        android:text="@string/signUp"
         android:textColor="#28875E"
         android:layout_marginTop="50dp"
         android:layout_marginStart="25dp"
@@ -101,7 +87,7 @@
         android:layout_marginTop="15dp"
         android:gravity="center"
         android:textStyle="bold"
-        android:text="Forgot Password?"
+        android:text="@string/forgotPasswordWithQm"
         app:layout_constraintEnd_toEndOf="@+id/passwordEditText"
         app:layout_constraintStart_toStartOf="@+id/passwordEditText"
         app:layout_constraintTop_toBottomOf="@+id/loginButton" />

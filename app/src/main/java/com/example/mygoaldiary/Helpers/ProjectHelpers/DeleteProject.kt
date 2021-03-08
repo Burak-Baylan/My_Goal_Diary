@@ -77,7 +77,7 @@ class DeleteProject(private val mContext: Context, private val mActivity : Activ
             refresh()
         }else{
             alertDialogHere.cancel()
-            showAlert.errorAlert(mActivity.getString(R.string.error), mActivity.getString(R.string.deleteTaskFail), true)
+            showAlert.errorAlert(mContext.getString(R.string.error), mContext.getString(R.string.deleteTaskFail), true)
         }
         loadingDialog.dismissDialog()
     }

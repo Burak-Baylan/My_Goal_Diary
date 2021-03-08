@@ -1,14 +1,16 @@
 package com.example.mygoaldiary.Helpers.SocialHelpers
 
+import android.app.Activity
 import android.graphics.Color
 import android.widget.ImageView
 import com.example.mygoaldiary.Helpers.GetCurrentDate
 import com.example.mygoaldiary.Notification.FirebaseService
 import com.example.mygoaldiary.Notification.PushNotification
+import com.example.mygoaldiary.R
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseUser
 
-class PostLiker : SuperSocial(){
+class PostLiker(private val activity : Activity) : SuperSocial(){
 
     private lateinit var currentUser : FirebaseUser
     private lateinit var postId : String
@@ -116,8 +118,8 @@ class PostLiker : SuperSocial(){
     }
 
     private fun sendNotify(){
-        val title = "Your Post Liked"
-        val message = "\"${currentUser.displayName}\" Liked your post."
+        val title = activity.getString(R.string.yourPostLiked)
+        val message = "\"${currentUser.displayName}\" ${activity.getString(R.string.likedYourPost)}"
         PushNotification.normalPush(title, message, postOwnerId, postId, comment)
     }
 }

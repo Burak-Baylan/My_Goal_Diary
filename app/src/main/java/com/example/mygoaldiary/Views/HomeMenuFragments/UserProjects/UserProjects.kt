@@ -1,6 +1,5 @@
 package com.example.mygoaldiary.Views.HomeMenuFragments.UserProjects
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
@@ -97,6 +96,7 @@ open class UserProjects : Fragment() {
         } else {
             binding.saveTaskInternetTooCheckBox.visibility = View.GONE
             //binding.uploadToCloudIc.visibility = View.GONE
+            binding.infoForCantUploadCloud.visibility = View.GONE
             binding.infoUserNull.visibility = View.VISIBLE
         }
     }
@@ -133,8 +133,8 @@ open class UserProjects : Fragment() {
         val shortTitle = ShortenWord.shorten(taskModel.title, 15, 0, 15, "...")
         val deleteProjectView = DeleteAlertDialog.apply {
             create(mContext, mActivity)
-            titleText = "You Deleting a Task"
-            messageText = "If you delete this \"$shortTitle\" task, you cannot get it back. Are you sure you want to delete?"
+            titleText = mActivity.getString(R.string.youDeletingAProject)
+            messageText = "${mActivity.getString(R.string.ifYouDeleteThis)} \"$shortTitle\" ${mActivity.getString(R.string.task)}, ${mActivity.getString(R.string.youCannotGetItBack)}"
             this.view.findViewById<CheckBox>(R.id.deleteInternetTooCheckBox).visibility = if (taskModel.isHybrid == "false"){
                 View.GONE
             }else{

@@ -9,6 +9,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import androidx.core.content.ContextCompat.startActivity
 import com.example.mygoaldiary.Creators.ShowAlert
+import com.example.mygoaldiary.Helpers.InternetController
 import com.example.mygoaldiary.LoadingDialog
 import com.example.mygoaldiary.R
 import com.example.mygoaldiary.Views.MainActivity
@@ -25,8 +26,6 @@ class DeleteAccount : UpdateUsername(){
     private lateinit var goBackBtn : ImageView
 
     private lateinit var currentPassword : String
-    private var auth = FirebaseAuth.getInstance()
-    private var currentUser = auth.currentUser!!
 
 
     fun delete(context : Context, activity : Activity){
@@ -41,7 +40,11 @@ class DeleteAccount : UpdateUsername(){
     override fun listener(){
         goBackBtn.setOnClickListener { alertDialog.dismiss() }
         destroyAccountBtn.setOnClickListener {
-            destroyAccount()
+            if (InternetController.internetControl(activity)) {
+                destroyAccount()
+            }else{
+                showAlert.errorAlert(activity.getString(R.string.error), activity.getString(R.string.internetRequired), true)
+            }
         }
     }
 
@@ -54,24 +57,24 @@ class DeleteAccount : UpdateUsername(){
     }
 
     private fun getCurrentPasswordFromFB() {
-        firebase.collection("Users").document(currentUser.uid).get().addOnSuccessListener {
+        firebase.collection("Users").document(currentUser!!.uid).get().addOnSuccessListener {
             if (it.exists() && it != null){
                 if (currentPassword == it["userPassword"] as String){
                     lastControl()
                 }else{
                     loadingDialog.dismissDialog()
-                    showAlert.errorAlert("Error", "Password could not be matched.", true)
+                    showAlert.errorAlert(activity.getString(R.string.error), activity.getString(R.string.passwordNotMatched), true)
                 }
             }
         }.addOnFailureListener {
             loadingDialog.dismissDialog()
-            showAlert.errorAlert("Error", "Account couldn't destroyed. Please try again.", true)
+            showAlert.errorAlert(activity.getString(R.string.error), activity.getString(R.string.accoundCouldntDestroyed), true)
         }
     }
 
     private fun lastControl() {
         loadingDialog.dismissDialog()
-        showAlert.warningAlert("Warning", "Passwords matched. Are you sure you want to delete your account forever.", false).apply {
+        showAlert.warningAlert(activity.getString(R.string.warning), activity.getString(R.string.passwordsMatched), false).apply {
             this.setOnClickListener { // Yes Button
                 loadingDialog.startLoadingDialog()
                 ShowAlert.mAlertDialog.dismiss()
@@ -98,11 +101,11 @@ class DeleteAccount : UpdateUsername(){
                 }
             }.addOnFailureListener {
                 loadingDialog.dismissDialog()
-                showAlert.errorAlert("Error", it.localizedMessage!!, true)
+                showAlert.errorAlert(activity.getString(R.string.error), it.localizedMessage!!, true)
             }
         }.addOnFailureListener {
             loadingDialog.dismissDialog()
-            showAlert.errorAlert("Error", it.localizedMessage!!, true)
+            showAlert.errorAlert(activity.getString(R.string.error), it.localizedMessage!!, true)
         }
     }
 }

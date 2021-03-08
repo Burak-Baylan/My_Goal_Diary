@@ -63,7 +63,7 @@ open class ChooseAvatarSheet(val context : Context, val activity: Activity) : Ed
     private fun getAvatarLink() {
 
         fun error(){
-            showAlert.errorAlert(getString(R.string.error), "An error occurred when change the avatar.", true)
+            showAlert.errorAlert(activity.getString(R.string.error), activity.getString(R.string.errorOccurredWhenChangeAvatar), true)
             loadingDialog.dismissDialog()
         }
 
@@ -78,11 +78,10 @@ open class ChooseAvatarSheet(val context : Context, val activity: Activity) : Ed
     }
 
     private fun putAvatarFirebase(link : String){
-        println("KÖRINT USIR: ${currentUser.uid}")
-        firebase.collection("Users").document(currentUser.uid).update("avatarLink", link).addOnSuccessListener {
+        firebase.collection("Users").document(currentUser!!.uid).update("avatarLink", link).addOnSuccessListener {
             putUserAvatar(link)
         }.addOnFailureListener {
-            showAlert.errorAlert("Error", "Your avatar couldn't change.", true)
+            showAlert.errorAlert(activity.getString(R.string.error), activity.getString(R.string.avatarCouldntChange), true)
             loadingDialog.dismissDialog()
         }
     }
@@ -94,14 +93,14 @@ open class ChooseAvatarSheet(val context : Context, val activity: Activity) : Ed
         updateRequest = userProfileChangeRequest {
             this.photoUri = Uri.parse(link)
         }
-        currentUser.updateProfile(updateRequest).addOnSuccessListener {
-            showAlert.successAlert("Success", "Your avatar changed.", true)
+        currentUser!!.updateProfile(updateRequest).addOnSuccessListener {
+            showAlert.successAlert(activity.getString(R.string.success), activity.getString(R.string.avatarChanged), true)
             getAvatar()
             bottomSheet.dismiss()
             loadingDialog.dismissDialog()
         }.addOnFailureListener {
             firebase.collection("Users").document(currentUser.uid).update("avatarLink", null)
-            showAlert.errorAlert("Error", "Your avatar couldn't change.", true)
+            showAlert.errorAlert(activity.getString(R.string.error), activity.getString(R.string.avatarCouldntChange), true)
             bottomSheet.dismiss()
             loadingDialog.dismissDialog()
         }

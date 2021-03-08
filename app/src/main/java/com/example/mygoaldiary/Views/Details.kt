@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.example.mygoaldiary.Views.HomeMenuFragments.AddProject
-import com.example.mygoaldiary.Views.HomeMenuFragments.Tasks
 import com.example.mygoaldiary.Views.HomeMenuFragments.UserProjects.UserProjects
 import com.example.mygoaldiary.Helpers.ShortenWord
 import com.example.mygoaldiary.R
@@ -86,7 +85,6 @@ class Details : AppCompatActivity() {
     private fun keyController (key : String){
         if (projectId == "Diary" || projectId == "Add Project" || projectId == "Tasks" || projectId == "Reports") {
             when(key) {
-                "Tasks" -> { makeCurrentFragment(Tasks()) }
                 "Add Project" -> {
                     makeCurrentFragment(AddProject())
                     supportActionBarHider()

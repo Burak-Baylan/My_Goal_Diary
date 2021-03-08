@@ -20,6 +20,7 @@ class SendFeedback : ProfileActivity(){
     private lateinit var senButton : Button
     private lateinit var feedbackMessageEt : EditText
     private lateinit var goBackButton : ImageView
+    private lateinit var activity : Activity
     private var feedbackMessage : String = ""
 
     private var forFeedbackAlertDialog = UpdateUsername()
@@ -28,6 +29,7 @@ class SendFeedback : ProfileActivity(){
     fun show(context : Context, activity : Activity){
         loadingDialog = LoadingDialog(activity)
         showAlert = ShowAlert(context)
+        this.activity = activity
         view = forFeedbackAlertDialog.createView(context, R.layout.layout_feedback_sender)
         findViews()
         listener()
@@ -54,14 +56,14 @@ class SendFeedback : ProfileActivity(){
     }
 
     private fun send(message : String){
-        firebase.collection("Feedback").document(currentUser.uid).set(getSendData(message)).addOnSuccessListener {
+        firebase.collection("Feedback").document(currentUser!!.uid).set(getSendData(message)).addOnSuccessListener {
             loadingDialog.dismissDialog()
             forFeedbackAlertDialog.alertDialog.dismiss()
-            showAlert.successAlert("Success", "Feedback has been sent. Thanks for your feedback :)", true)
+            showAlert.successAlert(activity.getString(R.string.success), activity.getString(R.string.feedbackSent), true)
         }.addOnFailureListener {
             loadingDialog.dismissDialog()
             forFeedbackAlertDialog.alertDialog.dismiss()
-            showAlert.errorAlert("Error", "Feedback couldn't send please try again.", true)
+            showAlert.errorAlert(activity.getString(R.string.success), activity.getString(R.string.feedbackCouldntSent), true)
         }
     }
 
@@ -69,7 +71,7 @@ class SendFeedback : ProfileActivity(){
         return hashMapOf(
                 "message" to message,
                 "timeStamp" to Timestamp.now(),
-                "userUid" to currentUser.uid
+                "userUid" to currentUser!!.uid
         )
     }
 }

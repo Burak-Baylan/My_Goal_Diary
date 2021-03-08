@@ -26,7 +26,7 @@ class DeleteTask (private val mContext:  Context, private val mActivity : Activi
 
             if (currentUser == null){
                 loadingDialog.dismissDialog()
-                showAlert.errorAlert("Error", "You must be logged in to delete a task from the cloud.", true)
+                showAlert.errorAlert(mContext.getString(R.string.error), mContext.getString(R.string.loggedInToDeleteTaskFromCloud), true)
                 return
             }
 

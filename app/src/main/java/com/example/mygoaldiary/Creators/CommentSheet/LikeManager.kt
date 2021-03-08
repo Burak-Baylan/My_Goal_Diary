@@ -8,10 +8,10 @@ import com.example.mygoaldiary.Helpers.SocialHelpers.PostLiker
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.Query
 
-class LikeManager (likeContext : Context, likeActivity : Activity): CommentSheet(likeContext, likeActivity){
+class LikeManager (likeContext : Context, private val likeActivity : Activity): CommentSheet(likeContext, likeActivity){
 
     private var auth = FirebaseAuth.getInstance()
-    private var currentUser = auth.currentUser!!
+    private var currentUser = auth.currentUser
 
     fun listenLikeCount(){
         firebase.collection("Posts").document(postId).collection("Likes").addSnapshotListener { value, error ->
@@ -29,7 +29,7 @@ class LikeManager (likeContext : Context, likeActivity : Activity): CommentSheet
 
     private lateinit var mQuery : Query
     fun checkIfExists(imageView : ImageView, query : Query?, trueColor : String){
-        mQuery = query ?: firebase.collection("Posts").document(postId).collection("Likes").whereEqualTo("userId", currentUser.uid)
+        mQuery = query ?: firebase.collection("Posts").document(postId).collection("Likes").whereEqualTo("userId", currentUser!!.uid)
         mQuery.get().addOnSuccessListener {
             imageView.setColorFilter(Color.parseColor(
                     if (!it.isEmpty) trueColor
@@ -38,5 +38,5 @@ class LikeManager (likeContext : Context, likeActivity : Activity): CommentSheet
         }.addOnFailureListener {}
     }
 
-    fun like() = PostLiker().askLike(currentUser, postId, mOwnerId, mComment!!, likeButton)
+    fun like() = PostLiker(likeActivity).askLike(currentUser!!, postId, mOwnerId, mComment!!, likeButton)
 }

@@ -11,6 +11,7 @@ import com.example.mygoaldiary.Helpers.EditUserProfile.DeleteAccount
 import com.example.mygoaldiary.Helpers.EditUserProfile.UpdateEmail
 import com.example.mygoaldiary.Helpers.EditUserProfile.UpdatePassword
 import com.example.mygoaldiary.Helpers.EditUserProfile.UpdateUsername
+import com.example.mygoaldiary.R
 import com.example.mygoaldiary.databinding.ActivityEditUserProfileBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -24,17 +25,19 @@ open class EditUserProfile : AppCompatActivity() {
     private lateinit var showAlert : ShowAlert
     private val firebase = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
-    private val currentUser = auth.currentUser!!
+    val currentUser = auth.currentUser
 
     private lateinit var profileVisibilitySwitch : Switch
     private lateinit var notificationVisibilitySwitch : Switch
 
     companion object {
-        val currentUser = ProfileActivity.auth.currentUser!!
         lateinit var binding : ActivityEditUserProfileBinding
-
-        fun getAvatar() = Picasso.get().load(currentUser.photoUrl).into(binding.ppIvEdit)
     }
+
+    fun getAvatar() =
+            currentUser?.photoUrl?.let {
+                Picasso.get().load(currentUser.photoUrl).into(binding.ppIvEdit)
+            }
 
     override fun onResume() {
         getAvatar()
@@ -91,7 +94,7 @@ open class EditUserProfile : AppCompatActivity() {
     }
 
     private fun getSettings() {
-        firebase.collection("Users").document(currentUser.uid).get().addOnSuccessListener {
+        firebase.collection("Users").document(currentUser!!.uid).get().addOnSuccessListener {
             if (it.exists() && it != null){
                 val pushNotify = it["pushNotify"] as Boolean
                 val profileVisibility = it["profileVisibility"] as Boolean
@@ -109,16 +112,16 @@ open class EditUserProfile : AppCompatActivity() {
     }
 
     private fun updater(updateThis : String, isChecked : Boolean, switch : CompoundButton){
-        firebase.collection("Users").document(currentUser.uid).update(updateThis, isChecked).addOnSuccessListener {
+        firebase.collection("Users").document(currentUser!!.uid).update(updateThis, isChecked).addOnSuccessListener {
             // DO NOTHING
         }.addOnFailureListener {
             switch.isChecked = !isChecked
-            showAlert.errorAlert("Error", "The setting could not be updated. Please try again later.", true)
+            showAlert.errorAlert(getString(R.string.error), getString(R.string.theSettingCouldntUpdated), true)
         }
     }
 
     private fun fillUserProperties() {
-        currentUser.email?.let {
+        currentUser!!.email?.let {
             binding.emailTextView.setText(it)
         }
         currentUser.displayName?.let{

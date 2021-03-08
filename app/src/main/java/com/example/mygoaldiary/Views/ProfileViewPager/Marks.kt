@@ -120,7 +120,6 @@ class Marks : Fragment() {
 
     private val firebase = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
-    private val currentUser = auth.currentUser
 
     private fun initializeRecyclerView() {
         items = ArrayList()

@@ -24,10 +24,6 @@ class ParamsCreator {
         }
     }
 
-    fun linearLayoutLayoutParamsCreator(width : Int, height : Int) : LinearLayout.LayoutParams{
-        return LinearLayout.LayoutParams(width,height)
-    }
-
     fun constraintLayoutLayoutParamsCreator(width : Int, height : Int): ConstraintLayout.LayoutParams {
         return ConstraintLayout.LayoutParams(width, height)
     }

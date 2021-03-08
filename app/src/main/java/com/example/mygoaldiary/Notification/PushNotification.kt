@@ -45,7 +45,6 @@ class PushNotification {
         }
 
         private fun userNotifyControl() {
-            println("POSTİNG: $postOwnerId")
             firebase.collection("Users").document(postOwnerId).get().addOnSuccessListener {
                 if (it.exists() && it != null){
                     val pushNotify = it["pushNotify"] as Boolean
@@ -78,13 +77,7 @@ class PushNotification {
         private fun sendNotification(notification: PushNotificationData) =
             CoroutineScope(Dispatchers.IO).launch {
                 try {
-                    val response = RetrofitInstance.api.postNotification(notification)
-
-                    if (response.isSuccessful) {
-                        println("Response ${Gson().toJson(response)}")
-                    } else {
-                        println("NOTY ERROR: ${response.errorBody().toString()}")
-                    }
+                    RetrofitInstance.api.postNotification(notification)
                 } catch (e: Exception) {
                     println(e.localizedMessage!!)
                 }

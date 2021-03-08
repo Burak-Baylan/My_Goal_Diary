@@ -40,7 +40,7 @@ class ReportPostSheet (val context : Context, val activity : Activity){
         alertCreator = ShowAlert(context)
         bottomSheetView = LayoutInflater.from(context).inflate(R.layout.layout_report_post, null)
 
-        findViewByIdd<TextView>(R.id.reportPostComment).text = "You reporting '$username':"
+        findViewByIdd<TextView>(R.id.reportPostComment).text = "${activity.getString(R.string.youReporting)} '$username':"
         findViewByIdd<Button>(R.id.sendReportReason).setOnClickListener { sendReason() }
 
         bottomSheet = BottomSheetDialog(context, R.style.BottomSheetDialogTheme).apply {
@@ -67,7 +67,7 @@ class ReportPostSheet (val context : Context, val activity : Activity){
             reason = reasonEditText.text.toString()
             report()
         }else{
-            showAlert.errorAlert("Erorr", "Please write something.", true)
+            showAlert.errorAlert(activity.getString(R.string.error), activity.getString(R.string.pleaseWriteSomething), true)
         }
     }
 
@@ -75,11 +75,11 @@ class ReportPostSheet (val context : Context, val activity : Activity){
     private fun report() {
         firebase.collection("Reports").document().set(getHashData(reason!!)).addOnSuccessListener {
             loadingDialog.dismissDialog()
-            showAlert.successAlert("Success", "Thanks for your report.", true)
+            showAlert.successAlert(activity.getString(R.string.success), activity.getString(R.string.thanksForReport), true)
             bottomSheet.dismiss()
         }.addOnFailureListener {
             loadingDialog.dismissDialog()
-            showAlert.errorAlert("Error", "Couldn't report: ${it.localizedMessage!!}", true)
+            showAlert.errorAlert(activity.getString(R.string.error), "${activity.getString(R.string.couldntReport)}: ${it.localizedMessage!!}", true)
             bottomSheet.dismiss()
         }
     }

@@ -13,6 +13,7 @@ import com.example.mygoaldiary.Helpers.UserTasksHelpers.MoveFromLocalToCloud
 import com.example.mygoaldiary.Helpers.UserTasksHelpers.TaskFilter
 import com.example.mygoaldiary.Helpers.UserTasksHelpers.TasksHelper
 import com.example.mygoaldiary.R
+import com.example.mygoaldiary.SQL.UpdateDeadline
 import com.example.mygoaldiary.SQL.UpdateLastInteraction
 import com.example.mygoaldiary.Views.Details
 import com.google.firebase.auth.FirebaseAuth
@@ -36,16 +37,18 @@ class UserProjectsClickListeners : UserProjects() {
             this.editDeadline.setOnClickListener { editDeadline() }
             this.showAndHideLastInteraction.setOnClickListener { lastInteractionTvtIsVisible = ShowOrHide.showOrHide(lastInteractionTvtIsVisible, this.showAndHideLastInteraction, this.showLastInteractionDateTv) }
             this.showAndHideTargetedDeadline.setOnClickListener { deadlineTvIsVisible = ShowOrHide.showOrHide(deadlineTvIsVisible, this.showAndHideTargetedDeadline, this.editDeadline, this.showDeadlineTv) }
-            this.getInfoForDeadline.setOnClickListener { showAlert.infoAlert("Info", "If you want to select a deadline, please upload your current project to cloud.", true) }
+            this.getInfoForDeadline.setOnClickListener { showAlert.infoAlert(mActivity.getString(R.string.info), mActivity.getString(R.string.ifYouWantToSelectDeadline), true) }
             this.infoForCantUploadCloud.setOnClickListener { showAlert.infoAlert(mActivity.getString(R.string.info), mActivity.getString(R.string.taskNotCloud), true) }
-            this.infoUserNull.setOnClickListener { showAlert.infoAlert("Info", "If you are logged in, you can upload your projects and tasks to the cloud.",true) }
+            this.infoUserNull.setOnClickListener { showAlert.infoAlert(mActivity.getString(R.string.info), mActivity.getString(R.string.youCanUploadYourProjectsAndTasksToTheCloud),true) }
 
             this.newTaskEditText.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    this@with.taskDoneButton.visibility =
-                            if (count > 0) View.VISIBLE
-                            else View.GONE
+                    if (s != null) {
+                        this@with.taskDoneButton.visibility =
+                                if (s.isNotEmpty()) View.VISIBLE
+                                else View.GONE
+                    }
                 }
                 override fun afterTextChanged(s: Editable?) {}
             })
@@ -72,7 +75,7 @@ class UserProjectsClickListeners : UserProjects() {
     private fun editDeadline() {
         MyDatePickerDialog.apply {
             putHere = binding.showDeadlineTv
-            createDatePicker(mContext, mActivity, { saveDate() })
+            createDatePicker(mContext, mActivity) { saveDate() }
         }.show()
     }
 
@@ -85,16 +88,16 @@ class UserProjectsClickListeners : UserProjects() {
                         .collection("Projects")
                         .document(Details.projectUuid)
                         .update("deadline", MyDatePickerDialog.targetedTimeStamp).addOnSuccessListener {
-                            showAlert.successAlert("Success", "Deadline update successful.", true)
                             UpdateLastInteraction.update()
+                            showAlert.successAlert(mActivity.getString(R.string.success), mActivity.getString(R.string.deadlineUpdateSuccess), true)
                             loadingDialog.dismissDialog()
                         }.addOnFailureListener { e ->
-                            showAlert.errorAlert("Error", e.localizedMessage!!, true)
+                            showAlert.errorAlert(mActivity.getString(R.string.error), e.localizedMessage!!, true)
                             loadingDialog.dismissDialog()
                         }
             }
         }else{
-            showAlert.errorAlert("Error", "You must be connected to internet to update deadline.", true)
+            showAlert.errorAlert(mActivity.getString(R.string.error), mActivity.getString(R.string.youMustConnectToUpdateDeadline), true)
             binding.showDeadlineTv.text = GetCurrentDate.getDate()
         }
     }

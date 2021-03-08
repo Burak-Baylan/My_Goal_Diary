@@ -1,16 +1,18 @@
 package com.example.mygoaldiary.Helpers.SocialHelpers
 
+import android.app.Activity
 import android.graphics.Color
 import android.widget.ImageView
 import com.example.mygoaldiary.Helpers.GetCurrentDate
 import com.example.mygoaldiary.Helpers.ShortenWord
 import com.example.mygoaldiary.Notification.PushNotification
+import com.example.mygoaldiary.R
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 
-class CommentLiker {
+class CommentLiker(private val activity : Activity) {
 
     private lateinit var currentUser : FirebaseUser
     private lateinit var commentId : String
@@ -49,7 +51,7 @@ class CommentLiker {
                 getBackLike()
             }
         }.addOnFailureListener {
-            println("Fayıl")
+            println("commentLiker checkIfExists error: ${it.localizedMessage!!}")
         }
     }
 
@@ -67,8 +69,8 @@ class CommentLiker {
     }
 
     private fun sendNotify() {
-        val title = "Your Comment Liked"
-        val message = "\"${currentUser.displayName}\" Liked your comment."
+        val title = activity.getString(R.string.yourCommentLiked)
+        val message = "\"${currentUser.displayName}\" ${activity.getString(R.string.likedYourComment)}"
 
         PushNotification.commentPush(title, message, commentUserId, postId, commentId, commentString)
     }

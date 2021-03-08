@@ -41,10 +41,4 @@ class AlertDialogWithComponents (val context : Context, val activity : Activity)
 
         return dialog
     }
-
-
-    fun createAlertWithView(view: Int){
-
-    }
-
 }

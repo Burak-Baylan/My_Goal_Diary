@@ -34,11 +34,11 @@ class AddPostSheet (val context : Context, val activity : Activity){
         val provinceList : MutableList<String> = ArrayList()
         val spinner = bottomSheetView.findViewById(R.id.categorySpinner) as SmartMaterialSpinner<*>
         with(provinceList){
-            this.add("General")
-            this.add("Advices")
-            this.add("Goals")
-            this.add("Technology")
-            this.add("Games")
+            this.add(activity.getString(R.string.general))
+            this.add(activity.getString(R.string.advices))
+            this.add(activity.getString(R.string.goals))
+            this.add(activity.getString(R.string.technology))
+            this.add(activity.getString(R.string.games))
             spinner.item = this
         }
 
@@ -107,16 +107,16 @@ class AddPostSheet (val context : Context, val activity : Activity){
                     )
                 } else {
                     loadingDialog.dismissDialog()
-                    showAlert.errorAlert("Error", "Description cannot be empty", true)
+                    showAlert.errorAlert(activity.getString(R.string.error), activity.getString(R.string.descriptionEmpty), true)
                     null
                 }
             }else{
                 loadingDialog.dismissDialog()
-                showAlert.errorAlert("Error", "You must choose a category.", true)
+                showAlert.errorAlert(activity.getString(R.string.error), activity.getString(R.string.mustChooseCategory), true)
                 null
             }
         }else{
-            showAlert.infoAlert(activity.getString(R.string.error), "If you want to share a post, you must be logged in.", true)
+            showAlert.infoAlert(activity.getString(R.string.error), activity.getString(R.string.loginForSharePost), true)
             loadingDialog.dismissDialog()
             null
         }

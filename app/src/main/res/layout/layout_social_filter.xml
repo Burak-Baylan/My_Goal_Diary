@@ -27,7 +27,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:buttonTint="#000000"
-                android:text="All"
+                android:text="@string/all"
                 android:textColor="#000000"
                 android:textStyle="bold" />
 
@@ -38,7 +38,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:buttonTint="#000000"
-                android:text="General"
+                android:text="@string/general"
                 android:textColor="#000000"
                 android:textStyle="bold" />
 
@@ -49,7 +49,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:buttonTint="#000000"
-                android:text="Advices"
+                android:text="@string/advices"
                 android:textColor="#000000"
                 android:textStyle="bold" />
 
@@ -60,7 +60,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:buttonTint="#000000"
-                android:text="Goals"
+                android:text="@string/goals"
                 android:textColor="#000000"
                 android:textStyle="bold" />
 
@@ -71,7 +71,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:buttonTint="#000000"
-                android:text="Technology"
+                android:text="@string/technology"
                 android:textColor="#000000"
                 android:textStyle="bold" />
 
@@ -82,7 +82,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:buttonTint="#000000"
-                android:text="Games"
+                android:text="@string/games"
                 android:textColor="#000000"
                 android:textStyle="bold" />
         </RadioGroup>

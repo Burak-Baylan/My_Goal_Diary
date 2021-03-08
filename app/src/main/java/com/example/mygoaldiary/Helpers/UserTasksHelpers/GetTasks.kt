@@ -40,7 +40,7 @@ open class GetTasks (private val mActivity : Activity): UserProjects(){
         tasksDone = 0
         totalTasks = 0
         get()?.let {
-            PutTasks().putViews(it)
+            PutTasks(mActivity).putViews(it)
             binding.tasksDone.text = "$tasksDone/$totalTasks"
             binding.tasksScrollView.removeAllViews()
             binding.tasksScrollView.addView(layout)

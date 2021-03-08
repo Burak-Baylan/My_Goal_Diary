@@ -1,13 +1,13 @@
 <resources>
     <string name="app_name">My Goal Diary</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
     <string name="learnDetailsAboutUploadInternet">If you enable this option, you will upload this project to both your phone memory and cloud (internet) at the same time.</string>
 
     <string name="error">Error</string>
 
-    <string name="errorOccurred">An error occurred while trying to add a project. Please try again.</string>
+    <string name="errorOccurredToAddProject">An error occurred while trying to add a project. Please try again.</string>
+
+    <string name="errorOccurred">An error occurred. Please try again.</string>
 
     <string name="success">Success</string>
 
@@ -17,13 +17,11 @@
 
     <string name="learnDetails">Learn Details</string>
 
-    <string name="newProject">New Project</string>
-
     <string name="emailPasswordCouldNotEmpty">Email and Password cannot be empty.</string>
 
     <string name="emailShouldntEmpty">E-Mail shouldn\'t be empty.</string>
 
-    <string name="login">Login</string>
+    <string name="login">LOGIN</string>
 
     <string name="emailPasswordUsernameCannotEmpty">Email, Password and Username cannot be empty.</string>
 
@@ -34,6 +32,8 @@
     <string name="deadline">Deadline</string>
 
     <string name="tasks">Tasks</string>
+
+    <string name="task">Task</string>
 
     <string name="pleaseLoginToUploadCloud">You must be logged in to save to cloud.</string>
 
@@ -57,7 +57,7 @@
 
     <string name="seeFromLocalDb">View From the Local Database Only</string>
 
-    <string name="seeFromCloudDb">View from the Cloud Only</string>
+    <string name="seeFromCloudDb">View From the Cloud Only</string>
 
     <string name="seeFromBoth">View From Both Local Database and Cloud</string>
 
@@ -73,13 +73,218 @@
 
     <string name="taskNotCloud">If you want to save the task in the cloud, your current project must be uploaded the cloud. You can upload it from above.</string>
 
-    <string name="youUploadingYourProjectToTheCloud">You updating your current project with its content in the cloud. Do you want to continue.</string>
+    <string name="youUploadingYourProjectToTheCloud">You updating your current project with its content in the cloud. Do you want to continue?</string>
 
     <string name="projectMovingInternetError">Internet connection is required to move the project to the cloud.</string>
 
     <string name="remindProjectInternet">If you do something without being connected to the internet, the event does not apply to your account.</string>
-    <string name="title_activity_dnm">dnm</string>
-    <string name="tab_text_1">Tab 1</string>
-    <string name="tab_text_2">Tab 2</string>
+
+    <string name="general">General</string>
+    <string name="advices">Advices</string>
+    <string name="goals">Goals</string>
+    <string name="technology">Technology</string>
+    <string name="games">Games</string>
+
+    <string name="descriptionEmpty">Description cannot be empty.</string>
+
+    <string name="mustChooseCategory">You must choose a category.</string>
+
+    <string name="loginForSharePost">If you want to share a post, you must be logged in.</string>
+
+    <string name="errorOccurredWhenChangeAvatar">An error occurred when change the avatar.</string>
+
+    <string name="avatarCouldntChange">Your avatar couldn\'t change.</string>
+
+    <string name="avatarChanged">Your avatar changed.</string>
+
+    <string name="youReporting">You reporting</string>
+
+    <string name="pleaseWriteSomething">Please write something.</string>
+
+    <string name="thanksForReport">Thanks for your report.</string>
+
+    <string name="couldntReport">Couldn\'t report.</string>
+
+    <string name="passwordNotMatched">Password could not be matched.</string>
+
+    <string name="accoundCouldntDestroyed">Account couldn\'t destroyed. Please try again.</string>
+
+    <string name="passwordsMatched">Passwords matched. Are you sure you want to delete your account forever?</string>
+
+    <string name="emailUpdated">Email updated.</string>
+
+    <string name="internetRequired">Internet required.</string>
+
+    <string name="doYouWantSendUpdatePasswordMail">Do you want to send password change mail to your email?</string>
+
+    <string name="ifYouAcceptSendUpdatePasswordMail">If you accept, you will be logged out and you will need to login again.</string>
+
+    <string name="internetRequiredToExit">You must be connected to internet to exit your account.</string>
+
+    <string name="usernameUpdate">Username updated.</string>
+
+    <string name="projectsReceived">Projects received.</string>
+
+    <string name="couldntFoundSavedProject">Could not found saved project.</string>
+
+    <string name="commentedYourPost">Commented on Your Post.</string>
+
+    <string name="likedYourComment">Liked your comment.</string>
+
+    <string name="yourCommentLiked">Your Comment Liked</string>
+
+    <string name="needUserOpenOptionsMenu">You must be logged in to open this.</string>
+
+    <string name="menuCouldntOpen">Menu could not open. Please try again later.</string>
+
+    <string name="deletePostCouldntGetBack">If you delete this post, you cannot get it back. Are you sure?</string>
+
+    <string name="postDeleted">Post deleted.</string>
+
+    <string name="postCouldntDeleted">Post could not deleted</string>
+
+    <string name="yourPostLiked">Your Post Liked</string>
+
+    <string name="likedYourPost">Liked your post.</string>
+
+    <string name="taskCouldntAdded">The task could not be added. Please try again.</string>
+
+    <string name="loggedInToDeleteTaskFromCloud">You must be logged in to delete a task from the cloud.</string>
+
+    <string name="updateFromCloud">Update From Cloud</string>
+
+    <string name="doYouWantToUpdateFromTheCloud">Do you want to update from the cloud at the same time?</string>
+
+    <string name="updateSuccess">Update Success</string>
+
+    <string name="updateFail">Update Fail</string>
+
+    <string name="youMustBeLoggedInToDoThis">You must be logged in to do this.</string>
+
+    <string name="feedbackSent">Feedback has been sent. Thanks for your feedback :)</string>
+
+    <string name="feedbackCouldntSent">Feedback could not send, please try again.</string>
+
+    <string name="loggedInToLikePost">You must be logged in to like a post.</string>
+
+    <string name="loggedInToMarkPost">You must be logged in to mark a post.</string>
+
+    <string name="loggedInToJoinChat">If you want to join the chat, you must be logged in.</string>
+
+    <string name="profilePrivate">This user\'s profile is private.</string>
+
+    <string name="ifYouGetProjectsFromCloud">If you get your projects from the cloud, your current projects and tasks will be deleted.</string>
+
+    <string name="internetRequiredToGetYourProjects">Internet connection is required to get you projects.</string>
+
+    <string name="youCannotGetItBack">you cannot get it back. Are you sure you want to delete?</string>
+
+    <string name="ifYouWantToSelectDeadline">If you want to select a deadline, please upload your current project to cloud.</string>
+
+    <string name="youCanUploadYourProjectsAndTasksToTheCloud">If you are logged in, you can upload your projects and tasks to the cloud.</string>
+
+    <string name="deadlineUpdateSuccess">Deadline update successful.</string>
+
+    <string name="youMustConnectToUpdateDeadline">You must be connected to internet to update deadline."</string>
+
+    <string name="selectDeadlineAlsoUploadCloud">If you want to select deadline, you must choose the \'Also upload to cloud\' option.</string>
+
+    <string name="loggedInToSaveProject">You must be logged in to save your project.</string>
+
+    <string name="theSettingCouldntUpdated">The setting could not be updated. Please try again.</string>
+
+    <string name="edit">Edit</string>
+
+    <string name="hideProfile">Hide Profile</string>
+
+    <string name="hideNotifications">Hide Notifications</string>
+
+    <string name="password">Password</string>
+
+    <string name="forgotPasswordWithQm">Forgot Password?</string>
+
+    <string name="signUp">SIGN UP</string>
+
+    <string name="profile">Profile</string>
+
+    <string name="feedback">Feedback</string>
+
+    <string name="logout">Logout</string>
+
+    <string name="username">Username</string>
+
+    <string name="or">OR</string>
+
+    <string name="done">DONE</string>
+
+    <string name="no">NO</string>
+
+    <string name="yes">YES</string>
+
+    <string name="newProject">New Project</string>
+
+    <string name="next">NEXT</string>
+
+    <string name="newProjectName">New Project Name</string>
+
+    <string name="noMarkHere">No Mark Here</string>
+
+    <string name="noPostHere">No Post Here</string>
+
+    <string name="noCommentHere">No Comment Here</string>
+
+    <string name="cancel">Cancel</string>
+
+    <string name="save">Save</string>
+
+    <string name="destroyAccount">Destroy Account</string>
+
+    <string name="currentPassword">Current Password</string>
+
+    <string name="destroy">DESTROY</string>
+
+    <string name="category">Category</string>
+
+    <string name="feedbackWithDot">Feedback...</string>
+
+    <string name="sendFeedback">Send Feedback</string>
+
+    <string name="send">SEND</string>
+
+    <string name="forgotPassword">Forgot Password</string>
+
+    <string name="open">Open</string>
+
+    <string name="close">Close</string>
+
+    <string name="reportReason">Report Reason</string>
+
+    <string name="apply">APPLY</string>
+
+    <string name="all">All</string>
+
+    <string name="updateEmail">Update Email</string>
+
+    <string name="updateUsername">Update Username</string>
+
+    <string name="alsoDeleteFromTheCloud">Also delete from the cloud.</string>
+
+    <string name="addPost">Add Post</string>
+
+    <string name="writeSomethingWithDot">Write Something...</string>
+
+    <string name="share">SHARE</string>
+
+    <string name="saveProject">Save Project</string>
+
+    <string name="addCommentWithDot">Add Comment...</string>
+
+    <string name="searchByDateOrTittleWithDot">Search by date or title...</string>
+
+    <string name="addProject">Add Project</string>
+
+    <string name="home">Home</string>
+
+    <string name="social">Social</string>
 
 </resources>

@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import com.example.mygoaldiary.Creators.ShowAlert
+import com.example.mygoaldiary.Helpers.InternetController
 import com.example.mygoaldiary.LoadingDialog
 import com.example.mygoaldiary.R
 import com.example.mygoaldiary.Views.EditUserProfile
@@ -28,8 +29,6 @@ open class UpdateUsername : EditUserProfile() {
 
     private lateinit var newUsername : String
     protected var firebase = FirebaseFirestore.getInstance()
-    private var auth = FirebaseAuth.getInstance()
-    private var currentUser = auth.currentUser!!
     protected lateinit var showAlert : ShowAlert
     private lateinit var oldUsername : String
     protected lateinit var loadingDialog : LoadingDialog
@@ -68,17 +67,21 @@ open class UpdateUsername : EditUserProfile() {
 
     protected open fun listener() {
         saveUsernameButton.setOnClickListener {
-            newUsername = newUsernameEditText.text.toString()
-            if (newUsername.isNotEmpty()){
-                alertDialog.dismiss()
-                loadingDialog.startLoadingDialog()
-                oldUsername = currentUser.displayName!!
-                firebase.collection("Users").document(currentUser.uid).update("userName", newUsername).addOnSuccessListener {
-                    updateAuth()
-                }.addOnFailureListener {
-                    loadingDialog.dismissDialog()
-                    showAlert.errorAlert("Error", it.localizedMessage!!, true)
+            if (InternetController.internetControl(activity)) {
+                newUsername = newUsernameEditText.text.toString()
+                if (newUsername.isNotEmpty()) {
+                    alertDialog.dismiss()
+                    loadingDialog.startLoadingDialog()
+                    oldUsername = currentUser!!.displayName!!
+                    firebase.collection("Users").document(currentUser.uid).update("userName", newUsername).addOnSuccessListener {
+                        updateAuth()
+                    }.addOnFailureListener {
+                        loadingDialog.dismissDialog()
+                        showAlert.errorAlert(activity.getString(R.string.error), it.localizedMessage!!, true)
+                    }
                 }
+            }else{
+                showAlert.errorAlert(activity.getString(R.string.error), activity.getString(R.string.internetRequired), true)
             }
         }
     }
@@ -87,9 +90,9 @@ open class UpdateUsername : EditUserProfile() {
         val profileUpdate = userProfileChangeRequest {
             displayName = newUsername
         }
-        currentUser.updateProfile(profileUpdate).addOnSuccessListener {
+        currentUser!!.updateProfile(profileUpdate).addOnSuccessListener {
             loadingDialog.dismissDialog()
-            showAlert.successAlert("Success", "Username updated.", false).apply {
+            showAlert.successAlert(activity.getString(R.string.success), activity.getString(R.string.usernameUpdate), false).apply {
                 this.setOnClickListener {
                     activity.finish()
                 }
@@ -97,7 +100,7 @@ open class UpdateUsername : EditUserProfile() {
         }.addOnFailureListener { error ->
             firebase.collection("Users").document(currentUser.uid).update("userName", oldUsername).addOnCompleteListener {
                 loadingDialog.dismissDialog()
-                showAlert.errorAlert("Error", error.localizedMessage!!, true)
+                showAlert.errorAlert(activity.getString(R.string.error), error.localizedMessage!!, true)
             }
         }
     }

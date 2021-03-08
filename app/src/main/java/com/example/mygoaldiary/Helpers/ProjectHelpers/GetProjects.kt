@@ -1,6 +1,7 @@
 package com.example.mygoaldiary.Helpers.ProjectHelpers
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.graphics.Typeface
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mygoaldiary.ConstantValues
@@ -13,7 +14,7 @@ abstract class GetProjects : Home(){
 
     companion object {
         @SuppressLint("Recycle")
-        fun getProjects(sqlManage: ManageSQL, items: ArrayList<ModelHome>, recyclerView: RecyclerView) {
+        fun getProjects(activity : Activity, sqlManage: ManageSQL, items: ArrayList<ModelHome>, recyclerView: RecyclerView) {
 
             recyclerView.removeAllViews()
             items.clear()

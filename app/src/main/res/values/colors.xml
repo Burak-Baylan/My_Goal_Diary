@@ -7,36 +7,36 @@
     <color name="teal_700">#FF018786</color>
     <color name="white">#FFFFFFFF</color>
 
+
+
+    <color name="blue">#1ba1d1</color>
+    <color name="black">#000000</color>
+    <color name="darkGreen">#1dad10</color>
+
     <!--!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
     <color name="darkRed">#822222</color>
-    <color name="lightRed">#ba2d2d</color>
-    <color name="darkOrange">#e05514</color>
-    <color name="lightOrange">#e07d14</color>
-    <color name="yellow">#e0b414</color>
+    <color name="lightRed">#F05454</color>
+    <color name="darkOrange">#F35004</color>
+    <color name="lightOrange">#fcba03</color>
+    <color name="yellow">#EAE60D</color>
 
-    <color name="lightGreen">#92e014</color>
-    <color name="green">#44e014</color>
-    <color name="darkGreen">#1dad10</color>
-    <color name="seaGreen">#24bf67</color>
-    <color name="cyan">#23cfa4</color>
+    <color name="lightGreen">#6CDC0A</color>
+    <color name="green">#32a852</color>
+    <color name="garipGreen">#42DC99</color>
+    <color name="seaGreen">#2F9C6C</color>
+    <color name="cyan">#23C1CF</color>
 
-    <color name="lightBlue">#23cfcf</color>
-    <color name="blue">#1ba1d1</color>
-    <color name="navyBlue">#1b64d1</color>
-    <color name="darkBlue">#1518cf</color>
-    <color name="purple">#7b15cf</color>
+    <color name="lightBlue">#4287f5</color>
+    <color name="blueForAddProject">#2866CA</color>
+    <color name="navyBlue">#a442f5</color>
+    <color name="darkBlue">#6942F5</color>
+    <color name="purple">#570DE1</color>
 
-    <color name="pink">#c015cf</color>
-    <color name="lightPink">#cf15a7</color>
-    <color name="black">#000000</color>
-    <color name="darkGray">#303030</color>
-    <color name="gray">#959595</color>
-
-    <!--color name="pink">#c015cf</color>
-    <color name="lightPink">#cf15a7</color>
-    <color name="black">#000000</color>
-    <color name="darkGray">#303030</color>
-    <color name="gray">#959595</color-->
+    <color name="pink">#9424C8</color>
+    <color name="lightPink">#f542e6</color>
+    <color name="garipPink">#f54296</color>
+    <color name="darkGray">#3C3C3C</color>
+    <color name="gray">#000000</color>
 
     <color name="transparent">#00959595</color>
     <!--!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->

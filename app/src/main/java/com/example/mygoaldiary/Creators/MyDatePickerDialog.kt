@@ -7,6 +7,7 @@ import android.content.Context
 import android.widget.DatePicker
 import android.widget.TextView
 import com.example.mygoaldiary.R
+import com.example.mygoaldiary.SQL.UpdateDeadline
 import com.google.firebase.Timestamp
 import java.util.*
 
@@ -61,6 +62,7 @@ class MyDatePickerDialog {
     }
 
     private val combinedCal: Calendar = GregorianCalendar(TimeZone.getTimeZone("GMT"))
+    @SuppressLint("SetTextI18n")
     private fun pickDate(mDatePicker: DatePicker) {
         with(mDatePicker){
             combinedCal.set(this.year, this.month, this.dayOfMonth)
@@ -69,13 +71,10 @@ class MyDatePickerDialog {
         val timeStamp = Timestamp(Date(combinedCal.timeInMillis))
         targetedTimeStamp = timeStamp
 
-        println("İlk: ${timeStamp.toDate().toLocaleString()}")
-        println("İki: ${Timestamp.now().toDate()}")
-        println("İlk: $timeStamp")
-        println("İki: ${Timestamp.now()}")
-
         val date = timeStamp.toDate()
-        mTextView.text = "${date.year + 1900}/${put0(date.month)}/${put0(date.date)}" //"$day/${month+1}/$year"
+        val cleanDate = "${date.year + 1900}/${put0(date.month+1)}/${put0(date.date)}"
+        UpdateDeadline(mContext, mActivity).update(cleanDate)
+        mTextView.text = cleanDate //"$day/${month+1}/$year"
     }
 
     private fun put0(value : Int) : String{

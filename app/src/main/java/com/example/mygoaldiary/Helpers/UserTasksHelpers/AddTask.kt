@@ -71,7 +71,7 @@ class AddTask  : TasksHelper() {
             UIUtil.hideKeyboard(mActivity)
             UpdateLastInteraction.update()
         }else{
-            showAlert.errorAlert("Error", "The task couldn't be added. Please try again.", true)
+            showAlert.errorAlert(mContext.getString(R.string.error), mContext.getString(R.string.taskCouldntAdded), true)
         }
         loadingDialog.dismissDialog()
     }

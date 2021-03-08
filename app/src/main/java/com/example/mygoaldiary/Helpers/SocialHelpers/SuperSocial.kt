@@ -8,7 +8,5 @@ open class SuperSocial {
     protected val firebase = FirebaseFirestore.getInstance()
     protected lateinit var showAlert : ShowAlert
 
-    //fun addPost() = AddPost()
-    //val addPost = AddPost()
 
 }

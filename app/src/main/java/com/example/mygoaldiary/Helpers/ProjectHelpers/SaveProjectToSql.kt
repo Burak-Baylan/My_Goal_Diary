@@ -39,7 +39,7 @@ class SaveProjectToSql (private var context : Context, private var activity : Ac
             if (finishActivityWhenSaveProject)
                 activity.finish()
         }catch (e : Exception){
-            showAlert.errorAlert(activity.getString(R.string.error), activity.getString(R.string.errorOccurred), true)
+            showAlert.errorAlert(activity.getString(R.string.error), activity.getString(R.string.errorOccurredToAddProject), true)
         }
     }
 }

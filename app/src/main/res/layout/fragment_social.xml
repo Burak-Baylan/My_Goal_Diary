@@ -39,23 +39,23 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/socialPpIv"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
-                    android:src="@drawable/ic_user" />
+                    android:src="#CCCCCC" />
 
                 <TextView
                     android:id="@+id/showUsernameTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:text="Login"
+                    android:text="@string/login"
                     android:textColor="#E65E27" />
 
             </LinearLayout>
 
-            <TextView
+            <!--<TextView
                 android:id="@+id/titleTextViewSocial"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/filterIc"
                 app:layout_constraintStart_toEndOf="@+id/loginLayout"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent" />-->
 
             <ImageView
                 android:id="@+id/filterIc"

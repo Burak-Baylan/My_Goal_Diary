@@ -77,14 +77,14 @@ open class Home : Fragment() {
 
             this.getAllProjects.setOnClickListener {
                 if (InternetController.internetControl(requireActivity())) {
-                    showAlert.warningAlert("Warning", "If you get your projects from the cloud, your current projects and tasks will be deleted.", true).apply {
+                    showAlert.warningAlert(backupActivity.getString(R.string.warning), backupActivity.getString(R.string.ifYouGetProjectsFromCloud), true).apply {
                         this.setOnClickListener {
                             ShowAlert.mAlertDialog.dismiss()
                             GetProjectsFromFb(requireContext(), requireActivity()).get()
                         }
                     }
                 }else{
-                    showAlert.errorAlert("Error", "Internet connection is required to get you projects.", true)
+                    showAlert.errorAlert(backupActivity.getString(R.string.error), backupActivity.getString(R.string.internetRequiredToGetYourProjects), true)
                 }
             }
 
@@ -138,7 +138,7 @@ open class Home : Fragment() {
     protected fun refresh(){
         items.clear()
         adapter.notifyDataSetChanged()
-        GetProjects.getProjects(sqlManage, items, binding.mRecyclerView)
+        GetProjects.getProjects(backupActivity, sqlManage, items, binding.mRecyclerView)
         binding.homeRefreshLayout.isRefreshing = false
         closeSearchView()
     }
@@ -151,21 +151,25 @@ open class Home : Fragment() {
     val currentUser = auth.currentUser
     override fun onResume() {
         super.onResume()
+
+        val loginStr = backupActivity.getString(R.string.login)
+
         val username = auth.currentUser.let {
             if (it == null) {
-                binding.homePpIv.setImageResource(R.drawable.ic_user)
                 binding.getAllProjects.visibility = View.GONE
-                "Login"
+                loginStr
             }else {
-                Picasso.get().load(it.photoUrl).into(binding.homePpIv)
+                it.photoUrl?.let { photoUrl ->
+                    Picasso.get().load(photoUrl).into(binding.homePpIv)
+                }
                 binding.getAllProjects.visibility = View.VISIBLE
                 it.displayName
             }
         }
         binding.showUsernameTextView.text = username
-        if (username != "Login") {
+        if (username != loginStr) {
             if (username != null)
-                ShortenWord.shorten(username, "...", 5, 0, 5, binding.showUsernameTextView)
+                ShortenWord.shorten(username, "...", 25, 0, 25, binding.showUsernameTextView)
         }
     }
 

@@ -9,6 +9,7 @@ import com.example.mygoaldiary.Creators.ShowAlert
 import com.example.mygoaldiary.Helpers.InternetController
 import com.example.mygoaldiary.Helpers.SendFeedback
 import com.example.mygoaldiary.LoadingDialog
+import com.example.mygoaldiary.R
 import com.example.mygoaldiary.Views.ProfileViewPager.Marks
 import com.example.mygoaldiary.Views.ProfileViewPager.SharedPosts
 import com.example.mygoaldiary.Views.ProfileViewPager.MyViewPagerAdapter
@@ -24,7 +25,7 @@ open class ProfileActivity : AppCompatActivity() {
     }
     private lateinit var binding : ActivityProfileBinding
     private lateinit var sendFeedback: SendFeedback
-    val currentUser = auth.currentUser!!
+    val currentUser = auth.currentUser
     var userUuid : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +37,7 @@ open class ProfileActivity : AppCompatActivity() {
         window.statusBarColor = Color.parseColor("#B8B8B8")
 
         val getUserUuid = intent.getStringExtra("userUuid")
-        userUuid = getUserUuid ?: currentUser.uid
+        userUuid = getUserUuid ?: currentUser?.uid
 
         createTabs()
         sendFeedback = SendFeedback()
@@ -60,11 +61,10 @@ open class ProfileActivity : AppCompatActivity() {
     }
 
     private fun myAccount() {
-        currentUser.photoUrl?.let { photoUrl ->
+        currentUser!!.photoUrl?.let { photoUrl ->
             Picasso.get().load(photoUrl).into(binding.ppIvProfile)
         }
         binding.usernameTexView.text = currentUser.displayName
-
         binding.logoutLayout.setOnClickListener {
             logout()
         }
@@ -78,6 +78,7 @@ open class ProfileActivity : AppCompatActivity() {
     private fun notMyAccount(){
         binding.editProfileBtn.visibility = View.INVISIBLE
         binding.logoutLayout.visibility = View.INVISIBLE
+        binding.feedbackLayout.visibility = View.INVISIBLE
         binding.usernameTexView.text = intent.getStringExtra("username")
         Picasso.get().load(intent.getStringExtra("ppUrl")).into(binding.ppIvProfile)
     }
@@ -91,13 +92,13 @@ open class ProfileActivity : AppCompatActivity() {
         firebase = FirebaseFirestore.getInstance()
         if (InternetController.internetControl(this)) {
             loadingDialog.startLoadingDialog()
-            firebase.collection("Users").document(currentUser.uid).update("notifyToken", null).addOnSuccessListener {
+            firebase.collection("Users").document(currentUser!!.uid).update("notifyToken", null).addOnSuccessListener {
                 out()
             }.addOnFailureListener {
                 out()
             }
         }else{
-            showAlert.errorAlert("Error", "You must be connected to internet to exit your account.", true)
+            showAlert.errorAlert(getString(R.string.error), getString(R.string.internetRequiredToExit), true)
         }
     }
 
@@ -114,7 +115,11 @@ open class ProfileActivity : AppCompatActivity() {
     private fun getUserProperties() {
         intent.getBooleanExtra("accountControl", true).apply {
             if (this){
-                myAccount()
+                if (currentUser != null) {
+                    myAccount()
+                }else{
+                    notMyAccount()
+                }
             }else{
                 notMyAccount()
             }

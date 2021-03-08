@@ -79,19 +79,23 @@ open class CommentSheet(private val contextHere: Context, private val activity: 
     }
 
     private fun getUserProps() {
-        firebase.collection("Users").document(mOwnerId).get().addOnSuccessListener {
-            if (it.exists() && it != null){
-                usernameText.text = it["userName"] as String
-                emailText.text = it["userEmail"] as String
-                it["avatarLink"]?.let { link ->
-                    Picasso.get().load(link as String).into(ppIv)
+        firebase.collection("Posts").document(postId).get().addOnSuccessListener { postIt ->
+            if (postIt.exists() && postIt != null){
+                firebase.collection("Users").document(postIt["ownerUuid"] as String).get().addOnSuccessListener {
+                    if (it.exists() && it != null){
+                        usernameText.text = it["userName"] as String
+                        emailText.text = it["userEmail"] as String
+                        it["avatarLink"]?.let { link ->
+                            Picasso.get().load(link as String).into(ppIv)
+                        }
+                        userPropProgress.visibility = View.INVISIBLE
+                        userPropLayout.visibility = View.VISIBLE
+                        getComment()
+                    }
+                }.addOnFailureListener {
+                    println("CommentSheet: ${it.localizedMessage}")
                 }
-                userPropProgress.visibility = View.INVISIBLE
-                userPropLayout.visibility = View.VISIBLE
-                getComment()
             }
-        }.addOnFailureListener {
-            println("CommentSheet: ${it.localizedMessage}")
         }
     }
 
